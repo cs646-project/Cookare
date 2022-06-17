@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">cookare</string>
+    <string name="collection">Collection</string>
+    <string name="like">Like</string>
 </resources>
