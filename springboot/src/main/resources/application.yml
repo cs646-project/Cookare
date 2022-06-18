@@ -1,0 +1,20 @@
+# ?????
+server:
+  port: 9090
+# ?????
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://sh-cynosdbmysql-grp-p0taec8i.sql.tencentcdb.com:28503/data651?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: Rootroot651
+  servlet:
+    multipart:
+      max-file-size: -1  #??????
+      max-request-size: -1 #?????
+mybatis-plus:
+  mapper-locations: classpath:mapper/**/*.xml
+  configuration:
+    #?????SQL??
+    #    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
