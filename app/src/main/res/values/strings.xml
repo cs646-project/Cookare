@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">cookare</string>
+
+    <!-- Accessibility strings -->
+    <string name="a11y_bottom_navigation_bar">Bottom navigation bar with Having actions </string>
+    <string name="navigation_item_home">Home</string>
+    <string name="navigation_item_food">Food</string>
+    <string name="navigation_item_list">List</string>
+    <string name="navigation_item_setting">Setting</string>
 </resources>
