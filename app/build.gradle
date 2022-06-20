@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
 }
 
+
 android {
     compileSdk 32
 
@@ -72,4 +73,8 @@ dependencies {
 
     // Pager
     implementation "com.google.accompanist:accompanist-pager:0.12.0"
+
+    implementation("androidx.compose.material3:material3:1.0.0-alpha13")
+    implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha13")
+    implementation("com.github.Gurupreet:FontAwesomeCompose:1.0.0-beta02")
 }

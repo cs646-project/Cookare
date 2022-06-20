@@ -22,10 +22,17 @@
         <entry key="../../../../../../layout/compose-model-1655480768262.xml" value="0.125" />
         <entry key="../../../../../../layout/compose-model-1655481913902.xml" value="0.25" />
         <entry key="../../../../../../layout/compose-model-1655481971798.xml" value="0.165" />
+        <entry key="../../../../../../layout/compose-model-1655729729605.xml" value="0.1772108843537415" />
+        <entry key="../../../../../../layout/compose-model-1655730449953.xml" value="0.33240740740740743" />
+        <entry key="../../../../../../layout/compose-model-1655731118393.xml" value="0.335" />
+        <entry key="../../../../../../layout/compose-model-1655731414164.xml" value="0.13773532668881505" />
+        <entry key="../../../../../../layout/compose-model-1655731497720.xml" value="0.25" />
+        <entry key="../../../../../../layout/compose-model-1655731601877.xml" value="0.34620737647877525" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.1" />
       </map>
     </option>
   </component>
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

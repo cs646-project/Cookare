@@ -1,4 +1,4 @@
-package com.example.cookare.ui.home.collection
+package com.example.cookare.ui.component.list.collection
 
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDp
