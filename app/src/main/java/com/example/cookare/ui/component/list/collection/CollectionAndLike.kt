@@ -1,5 +1,6 @@
 package com.example.cookare.ui.component.list.collection
 
+import RecipeCard
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.spring
@@ -17,7 +18,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.cookare.R
@@ -37,7 +37,7 @@ enum class TabPage {
  */
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun ShowTabBar(){
+fun CollectionAndLikeScreen(){
 
     // cur selected tab
     var tabPage by remember { mutableStateOf(TabPage.Like) }
@@ -45,7 +45,7 @@ fun ShowTabBar(){
     Scaffold(
         topBar = {
             TabBar(
-                backgroundColor = colorResource(id = R.color.tab_bar_color),
+                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
                 tabPage = tabPage,
                 onTabSelected = { tabPage = it },
                 pagerState = pagerState
@@ -62,14 +62,16 @@ fun ShowTabBar(){
  */
 @ExperimentalPagerApi
 @Composable
-fun TabsContent(pagerState: PagerState) {
+fun TabsContent(
+    pagerState: PagerState,
+) {
     // horizontal pager for our tab layout.
     HorizontalPager(state = pagerState) {
         // the different pages.
             page ->
         when (page) {
-            0 -> TabContentScreen(content = "Page 1")
-            1 -> TabContentScreen(content = "Page 2")
+            0 -> TabContentScreen(content = "Collection")
+            1 -> TabContentScreen(content = "Like")
         }
     }
 }
@@ -82,16 +84,21 @@ fun TabsContent(pagerState: PagerState) {
 fun TabContentScreen(content: String) {
     Column(
         modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+//        horizontalAlignment = Alignment.CenterHorizontally,
+//        verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = content,
-            style = MaterialTheme.typography.h2,
-            color = Color.Black,
-            fontWeight = FontWeight.Bold,
-            textAlign = TextAlign.Center
-        )
+        Column(){
+            Text(
+                text = content,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            )
+            Row(){
+                RecipeCard(title = "test1", description = "This is a test1", {})
+                RecipeCard(title = "test2", description = "This is a test2", {})
+            }
+        }
     }
 }
 
@@ -153,12 +160,12 @@ fun TabBar(
     // // a variable for the scope
     val scope = rememberCoroutineScope()
     TabRow(
-        selectedTabIndex = tabPage.ordinal,
-//        selectedTabIndex =  pagerState.currentPage,
+//        selectedTabIndex = tabPage.ordinal,
+        selectedTabIndex =  pagerState.currentPage,
         backgroundColor = backgroundColor,
         // this indicator will be forced to fill up the entire TabRow
         indicator = { tabPositions ->
-            TabIndicator(tabPositions, tabPage)
+            TabIndicator(tabPositions, pagerState, tabPage)
         }
     ) {
         list.forEachIndexed { index, _ ->
@@ -184,19 +191,6 @@ fun TabBar(
                 }
             )
         }
-
-//        Tab(
-//            icon = if( tabPage == TabPage.Collection) Icons.Default.Star else Icons.Default.StarBorder,
-//            title = stringResource(id = R.string.collection),
-//            selected = tabPage == TabPage.Collection,
-//            onClick = { onTabSelected(TabPage.Collection) }
-//        )
-//        Tab(
-//            icon = if( tabPage == TabPage.Like) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-//            title = stringResource(id = R.string.like),
-//            selected = tabPage == TabPage.Like,
-//            onClick = { onTabSelected(TabPage.Like) },
-//        )
     }
 }
 
@@ -206,11 +200,12 @@ fun TabBar(
  * Shows an indicator for the tab
  *
  * @param tabPositions -> the list of tab positions from a tab row
- * @param tabPage -> cur selected tab page
  */
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabIndicator(
     tabPositions: List<TabPosition>,
+    pagerState: PagerState,
     tabPage: TabPage
 ) {
     val transition = updateTransition(
@@ -221,21 +216,21 @@ fun TabIndicator(
     // indicatorLeft is the horizontal position of the left edge of the indicator in the tab row
     val indicatorLeft by transition.animateDp(
         transitionSpec = {
-            spring(stiffness = Spring.StiffnessMedium)
+            spring(stiffness = Spring.StiffnessHigh)
         },
         label = "indicator left"
     ) {
-        page -> tabPositions[page.ordinal].left
+        tabPositions[(pagerState.currentPage+1)%2].left
     }
 
     // indicatorRight is the horizontal position of the right edge of the indicator
     val indicatorRight by transition.animateDp(
         transitionSpec = {
-            spring(stiffness = Spring.StiffnessMedium)
+            spring(stiffness = Spring.StiffnessHigh)
         },
         label = "indicator right"
     ) {
-            page -> tabPositions[page.ordinal].right
+            tabPositions[(pagerState.currentPage+1)%2].right
     }
 
     Box(
@@ -246,7 +241,7 @@ fun TabIndicator(
             .width(indicatorRight - indicatorLeft)
             .fillMaxSize()
             .border(
-                BorderStroke(2.dp, Color.White),
+                BorderStroke(2.dp, colorResource(id = R.color.unselected_color)),
             )
 
     )
@@ -285,6 +280,6 @@ private fun PreviewTab() {
 @Composable
 private fun PreviewShowTabBar(){
     CookareTheme {
-        ShowTabBar()
+        CollectionAndLikeScreen()
     }
 }
