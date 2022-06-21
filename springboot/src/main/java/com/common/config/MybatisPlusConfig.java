@@ -1,4 +1,4 @@
-package com.example.demo.common;
+package com.common.config;
 
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
@@ -8,15 +8,16 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- *  mybatis-plus 分页插件
+ *  mybatis-plus Configuration
  */
 @Configuration
-@MapperScan("com.example.demo")
+@MapperScan("com.bisfunc")
+@MapperScan("com.usrfunc")
 public class MybatisPlusConfig {
     /**
-     * 分页插件
+     * Interceptor
      */
-    //最新版
+    //分页
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(){
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
