@@ -3,6 +3,15 @@ package com.example.cookare.ui.theme
 import androidx.compose.ui.graphics.Color
 
 
+val Purple40 = Color(0xFF6650a4)
+val PurpleGrey40 = Color(0xFF625b71)
+val Pink40 = Color(0xFF7D5260)
+
+val Orange = Color(0xfffa9e51)
+val Gray = Color(0xffb4b4b4)
+val BackgroundWhite = Color(0xfff8f8f8)
+val LightPink = Color(0xfffff4e8)
+
 val green200 = Color(0xffa5d6a7)
 val green500 = Color(0xff4caf50)
 val green700 = Color(0xff388e3c)
@@ -28,10 +37,15 @@ val tiktokRed = Color(0xFFEE1D52)
 val tiktokBlack = Color(0xFF010101)
 val blue = Color(0xFF5851DB)
 
-val orange = Color(0xFFF56040)
 val yellow = Color(0xFFFCAF45)
 val graySurface = Color(0xFF2A2A2A)
 val gradientGreenColors = listOf(green200, green500, green700)
-val gradientRedColors = listOf(orange, tiktokRed)
+val gradientRedColors = listOf(Orange, tiktokRed)
 val gradientBluePurple = listOf(blue, purple)
-val instagramGradient = listOf(blue, purple, orange, yellow)
+val instagramGradient = listOf(blue, purple, Orange, yellow)
+
+val Purple80 = Color(0xFFD0BCFF)
+val PurpleGrey80 = Color(0xFFCCC2DC)
+val Pink80 = Color(0xFFEFB8C8)
+
+
