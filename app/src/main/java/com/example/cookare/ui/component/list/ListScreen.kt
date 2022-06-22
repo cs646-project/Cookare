@@ -28,18 +28,17 @@ fun ListScreen() {
             ListScreenContent(navController = navController)
         }
         composable(route = ScreenRoute.CollectionScreen.route){
-            CollectionAndLikeScreen()
+            CollectionAndLikeScreen(TabPage.Collection)
         }
         composable(route = ScreenRoute.LikeScreen.route){
-            CollectionAndLikeScreen()
+            CollectionAndLikeScreen(TabPage.Like)
         }
     }
 }
 
 @Composable
 fun ListScreenContent(navController: NavController){
-    Column(
-        verticalArrangement = Arrangement.Center,
+    Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 50.dp)

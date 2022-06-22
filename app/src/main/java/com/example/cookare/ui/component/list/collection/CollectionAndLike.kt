@@ -37,11 +37,14 @@ enum class TabPage {
  */
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun CollectionAndLikeScreen(){
+fun CollectionAndLikeScreen(defaultPage: TabPage){
 
-    // cur selected tab
-    var tabPage by remember { mutableStateOf(TabPage.Like) }
-    val pagerState = rememberPagerState(pageCount = 2)
+    // cur selected tab (default page)
+    var tabPage by remember { mutableStateOf(defaultPage) }
+    val pagerState = rememberPagerState(
+        pageCount = 2,
+        initialPageOffset = if(defaultPage == TabPage.Collection) 0.0f else 1.0f
+    )
     Scaffold(
         topBar = {
             TabBar(
@@ -65,9 +68,9 @@ fun CollectionAndLikeScreen(){
 fun TabsContent(
     pagerState: PagerState,
 ) {
-    // horizontal pager for our tab layout.
+    // horizontal pager for our tab layout
     HorizontalPager(state = pagerState) {
-        // the different pages.
+        // the different pages
             page ->
         when (page) {
             0 -> TabContentScreen(content = "Collection")
@@ -157,15 +160,13 @@ fun TabBar(
     pagerState: PagerState
 ) {
     val list = listOf(TabPage.Collection, TabPage.Like)
-    // // a variable for the scope
     val scope = rememberCoroutineScope()
     TabRow(
-//        selectedTabIndex = tabPage.ordinal,
-        selectedTabIndex =  pagerState.currentPage,
+        selectedTabIndex = tabPage.ordinal,
         backgroundColor = backgroundColor,
         // this indicator will be forced to fill up the entire TabRow
         indicator = { tabPositions ->
-            TabIndicator(tabPositions, pagerState, tabPage)
+            TabIndicator(tabPositions, tabPage)
         }
     ) {
         list.forEachIndexed { index, _ ->
@@ -173,21 +174,20 @@ fun TabBar(
                 icon =
                 if(list[index] == TabPage.Collection){
                     // if collection selected, solid, otherwise border
-                    if(pagerState.currentPage == index) Icons.Default.Star else Icons.Default.StarBorder
+                    if(list[index] == tabPage) Icons.Default.Star else Icons.Default.StarBorder
                 }
                 else {
-                    if(pagerState.currentPage == index) Icons.Default.Favorite else Icons.Default.FavoriteBorder
+                    if(list[index] == tabPage) Icons.Default.Favorite else Icons.Default.FavoriteBorder
                 },
 
                 // use list[index] to tell from two pages
                 title = if(list[index] == TabPage.Collection) stringResource(id = R.string.collection) else stringResource(id = R.string.like),
-                selected = pagerState.currentPage == index,
+                selected = list[index] == tabPage,
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(index)
                     }
-                    // list[pagerState.currentPage] -> cur selected page
-                    onTabSelected( if(list[pagerState.currentPage] == TabPage.Collection) TabPage.Collection else TabPage.Like)
+                    onTabSelected( if(list[index] == TabPage.Collection) TabPage.Collection else TabPage.Like)
                 }
             )
         }
@@ -205,7 +205,6 @@ fun TabBar(
 @Composable
 fun TabIndicator(
     tabPositions: List<TabPosition>,
-    pagerState: PagerState,
     tabPage: TabPage
 ) {
     val transition = updateTransition(
@@ -220,7 +219,7 @@ fun TabIndicator(
         },
         label = "indicator left"
     ) {
-        tabPositions[(pagerState.currentPage+1)%2].left
+        tabPositions[(tabPage.ordinal+1)%2].left
     }
 
     // indicatorRight is the horizontal position of the right edge of the indicator
@@ -230,7 +229,7 @@ fun TabIndicator(
         },
         label = "indicator right"
     ) {
-            tabPositions[(pagerState.currentPage+1)%2].right
+            tabPositions[(tabPage.ordinal+1)%2].right
     }
 
     Box(
@@ -280,6 +279,6 @@ private fun PreviewTab() {
 @Composable
 private fun PreviewShowTabBar(){
     CookareTheme {
-        CollectionAndLikeScreen()
+        CollectionAndLikeScreen(TabPage.Like)
     }
 }
