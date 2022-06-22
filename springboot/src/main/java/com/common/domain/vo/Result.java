@@ -1,6 +1,6 @@
 package com.common.domain.vo;
 
-import com.common.constants.ApiErrorCode;
+import com.common.constants.ApiCode;
 import com.common.constants.Constants;
 
 /**
@@ -59,9 +59,9 @@ public class Result<T> {
     }
 
     public static <T> Result<T> success(T data) {
-        ApiErrorCode aec = ApiErrorCode.SUCCESS;
+        ApiCode aec = ApiCode.SUCCESS;
         if (data instanceof Boolean && Boolean.FALSE.equals(data)) {
-            aec = ApiErrorCode.ERROR;
+            aec = ApiCode.ERROR;
         }
         return restResult(aec, data);
     }
@@ -70,7 +70,7 @@ public class Result<T> {
         return restResult(Constants.ERROR, msg, null);
     }
 
-    public static <T> Result<T> restResult(ApiErrorCode errorCode, T data) {
+    public static <T> Result<T> restResult(ApiCode errorCode, T data) {
         return restResult(errorCode.getCode(), errorCode.getMsg(), data);
     }
 

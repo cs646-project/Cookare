@@ -1,11 +1,9 @@
-package com.usrfunc.login.Service;
+package com.usrfunc.user.Service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.usrfunc.login.entity.User;
+import com.usrfunc.user.entity.User;
 
-import java.util.List;
-
-public interface ILoginService extends IService<User> {
+public interface IUserService extends IService<User> {
     /**
      * 根据用户名获取用户信息
      *
@@ -17,10 +15,10 @@ public interface ILoginService extends IService<User> {
     User getUserInfoByPhone(String phone);
 
     User getUserInfoByEmail(String email);
-    /**
-     * get current login user's userID
-     *
-     * @return
-     */
-    Integer getCurrentUserId();
+
+    int createUser(User user);
+
+    boolean isValidUserInfo(User user);
+
+    int updateUser(User user);
 }

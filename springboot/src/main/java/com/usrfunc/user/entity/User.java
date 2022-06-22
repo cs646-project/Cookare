@@ -1,4 +1,4 @@
-package com.usrfunc.login.entity;
+package com.usrfunc.user.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;

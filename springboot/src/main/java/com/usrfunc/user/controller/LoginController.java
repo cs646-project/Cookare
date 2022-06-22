@@ -1,4 +1,4 @@
-package com.usrfunc.login.controller;
+package com.usrfunc.user.controller;
 
 import cn.dev33.satoken.session.SaSession;
 import cn.dev33.satoken.stp.SaTokenInfo;
@@ -6,10 +6,11 @@ import cn.dev33.satoken.stp.StpUtil;
 import com.common.constants.Constants;
 import com.common.constants.MsgConstants;
 import com.common.domain.vo.Result;
-import com.usrfunc.login.Service.ILoginService;
-import com.usrfunc.login.entity.User;
-import com.usrfunc.login.entity.Vo.LoginVo;
-import com.usrfunc.login.entity.dto.LoginInputDto;
+import com.usrfunc.user.Service.ILoginService;
+import com.usrfunc.user.Service.IUserService;
+import com.usrfunc.user.entity.User;
+import com.usrfunc.user.entity.Vo.LoginVo;
+import com.usrfunc.user.entity.dto.LoginInputDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -20,15 +21,18 @@ public class LoginController {
     @Resource
     ILoginService loginService;
 
+    @Resource
+    IUserService userService;
+
     @PostMapping("/login")
     @ResponseBody
     public Result<?> login(@RequestBody LoginInputDto loginInputDto) {
         Integer method = loginInputDto.getMethod();
         User user = null;
         if(method == Constants.LoginMethod.BY_EMAIL){
-            user = loginService.getUserInfoByEmail(loginInputDto.getLoginCard());
+            user = userService.getUserInfoByEmail(loginInputDto.getLoginCard());
         } else if (method == Constants.LoginMethod.BY_PHONE){
-            user = loginService.getUserInfoByPhone(loginInputDto.getLoginCard());
+            user = userService.getUserInfoByPhone(loginInputDto.getLoginCard());
         }
         if (user == null) {
             return Result.error(MsgConstants.CheckDto.INVALID_LOGIN_INFO);
@@ -60,6 +64,6 @@ public class LoginController {
     @ResponseBody
     public Result<String> logout() {
         StpUtil.logout();
-        return Result.success(MsgConstants.Behavior.LOG_OUT);
+        return Result.success(MsgConstants.NormalReturn.LOG_OUT);
     }
 }

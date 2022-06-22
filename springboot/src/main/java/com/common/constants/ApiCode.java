@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum ApiErrorCode {
+public enum ApiCode {
     /**
      * 失败
      */

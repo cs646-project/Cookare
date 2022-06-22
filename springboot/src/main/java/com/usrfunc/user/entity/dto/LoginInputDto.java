@@ -1,4 +1,4 @@
-package com.usrfunc.login.entity.dto;
+package com.usrfunc.user.entity.dto;
 
 import lombok.Data;
 

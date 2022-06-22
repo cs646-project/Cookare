@@ -1,6 +1,6 @@
-package com.usrfunc.login.entity.Vo;
+package com.usrfunc.user.entity.Vo;
 
-import com.usrfunc.login.entity.User;
+import com.usrfunc.user.entity.User;
 import lombok.Data;
 
 @Data
