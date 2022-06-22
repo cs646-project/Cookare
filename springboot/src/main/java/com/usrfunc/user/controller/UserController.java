@@ -2,7 +2,6 @@ package com.usrfunc.user.controller;
 
 import com.common.constants.MsgConstants;
 import com.common.domain.vo.Result;
-import com.usrfunc.user.Service.ILoginService;
 import com.usrfunc.user.Service.IUserService;
 import com.usrfunc.user.entity.User;
 import org.springframework.web.bind.annotation.*;

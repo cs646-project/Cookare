@@ -59,6 +59,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         }
         //查重
         checkDuplicateUserInfo(user);
+
         //用户添加
         int ret = userMapper.insert(user);
 
@@ -68,6 +69,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
         SaSession session = StpUtil.getSession();
         // 设置用户信息
         session.set(Constants.SESSION_USER_KEY, user);
+
 
         //业务相关初始化
 

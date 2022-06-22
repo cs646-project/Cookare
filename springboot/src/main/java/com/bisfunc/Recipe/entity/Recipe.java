@@ -1,4 +1,4 @@
-package com.usrfunc.user.entity;
+package com.bisfunc.Recipe.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
@@ -6,20 +6,19 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@TableName("user")
-public class User {
+@TableName("recipe")
+public class Recipe {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    private String username;
+    private String title;
 
-    private String password;
+    @TableField(fill = FieldFill.INSERT_UPDATE)
+    private Integer updateUser;
 
-    private String email;
+    private String content;
 
-    private String phone;
-
-    private String avatarUrl;
+    private String tags;
 
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
@@ -29,5 +28,9 @@ public class User {
 
     private Integer deleteFlg;
 
-    private String tags;
+    private Integer likesNum;
+
+    private Integer collectNum;
+
+    private Integer commentNum;
 }

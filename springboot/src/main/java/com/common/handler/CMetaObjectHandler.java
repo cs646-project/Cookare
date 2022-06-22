@@ -30,7 +30,10 @@ public class CMetaObjectHandler implements com.baomidou.mybatisplus.core.handler
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        Long userId = StpUtil.getLoginIdAsLong();
+        Long userId = 0l;
+        if (StpUtil.isLogin()) {
+            userId = StpUtil.getLoginIdAsLong();
+        }
         this.strictInsertFill(metaObject, CREAT_USER, Long.class, userId);
         this.strictInsertFill(metaObject, CREAT_TIME, Date.class, DateUtils.currentDate());
         this.strictUpdateFill(metaObject, UPDATE_USER, Long.class, userId);
