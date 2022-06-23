@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.list.collection
+package com.example.cookare.ui.component.home.collection
 
 import RecipeCard
 import androidx.compose.animation.core.Spring
