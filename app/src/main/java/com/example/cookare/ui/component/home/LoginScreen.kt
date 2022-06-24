@@ -53,9 +53,8 @@ import com.example.cookare.ui.utils.TestTags
     ExperimentalAnimationApi::class,
     ExperimentalMaterialApi::class)
 @Composable
-fun SettingScreen(onLoginSuccess: () -> Unit) {
-    Text(text = "in SettingScreen")
-
+fun LoginScreen(onLoginSuccess: () -> Unit) {
+    Text(text = "in LoginScreen")
     Scaffold() {
         var email by remember { mutableStateOf(TextFieldValue("")) }
         var password by remember { mutableStateOf(TextFieldValue("")) }
@@ -253,18 +252,19 @@ fun DrawCanvas(
 @SuppressLint("UnusedCrossfadeTargetStateParameter")
 @Composable
 fun LoginOnboarding() {
-    var loggedIn by remember { mutableStateOf(false) }
+//    var loggedIn by remember { mutableStateOf(false) }
+    val userStateVM = UserState.current
     val coroutineScope = rememberCoroutineScope()
     val homeScreenState = rememberSaveable { mutableStateOf(BottomNavType.SETTING) }
-    Crossfade(targetState = loggedIn) {
-        if (loggedIn) {
+    Crossfade(targetState = userStateVM.isLoggedIn) {
+        if (userStateVM.isLoggedIn) {
             // Text(text = "in LoginOnboaring function")
             HomeScreenNavigate()
         } else {
-            SettingScreen {
+            LoginScreen {
                 coroutineScope.launch {
                     delay(2000)
-                    loggedIn = true
+                    userStateVM.isLoggedIn = true
                 }
             }
         }

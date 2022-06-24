@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
@@ -39,9 +40,8 @@ import com.example.cookare.ui.theme.AppThemeState
 import com.example.cookare.ui.theme.*
 import com.example.cookare.ui.utils.TestTags
 import com.example.cookare.ui.component.food.FoodScreen
+import com.example.cookare.ui.component.home.*
 import com.example.cookare.ui.component.list.ListScreen
-import com.example.cookare.ui.component.home.HomeScreen
-import com.example.cookare.ui.component.home.LoginOnboarding
 import com.example.cookare.ui.component.home.collection.CollectionAndLikeScreen
 import com.example.cookare.ui.component.home.collection.TabPage
 import com.example.cookare.ui.component.home.notification.NotificationScreen
@@ -55,15 +55,17 @@ class MainActivity : ComponentActivity() {
     @OptIn(ExperimentalAnimationApi::class,
         ExperimentalFoundationApi::class,
         ExperimentalMaterialApi::class)
+    private val userState by viewModels<UserStateViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            val systemUiController = remember { SystemUiController(window) }
-            val appTheme = remember { mutableStateOf(AppThemeState()) }
-            BaseView(appTheme.value, systemUiController) {
-                MainAppContent(appTheme)
+            CompositionLocalProvider(UserState provides userState) {
+                val systemUiController = remember { SystemUiController(window) }
+                val appTheme = remember { mutableStateOf(AppThemeState()) }
+                BaseView(appTheme.value, systemUiController) {
+                    MainAppContent(appTheme)
+                }
             }
-
         }
     }
 }
@@ -147,12 +149,15 @@ fun HomeScreenContent(
     chooseColorBottomModalState: ModalBottomSheetState, //use for a11y
     modifier: Modifier
 ) {
+    val userStateVM = UserState.current
     Column(modifier = modifier) {
         Crossfade(homeScreen) { screen ->
             androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background) {
                 when (screen) {
-                    BottomNavType.HOME -> LoginOnboarding()
-//                    BottomNavType.HOME -> HomeScreenNavigate()
+                    BottomNavType.HOME -> {
+                        if(userStateVM.isLoggedIn) HomeScreenNavigate()
+                        else LoginOnboarding()
+                    }
                     BottomNavType.FOOD -> FoodScreen()
                     BottomNavType.LIST -> ListScreen()
                     BottomNavType.SETTING -> SettingScreen()
