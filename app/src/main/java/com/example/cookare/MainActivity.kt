@@ -41,6 +41,7 @@ import com.example.cookare.ui.utils.TestTags
 import com.example.cookare.ui.component.food.FoodScreen
 import com.example.cookare.ui.component.list.ListScreen
 import com.example.cookare.ui.component.home.HomeScreen
+import com.example.cookare.ui.component.home.LoginOnboarding
 import com.example.cookare.ui.component.setting.SettingScreen
 
 import com.guru.fontawesomecomposelib.FaIcon
@@ -146,7 +147,7 @@ fun HomeScreenContent(
         Crossfade(homeScreen) { screen ->
             androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background) {
                 when (screen) {
-                    BottomNavType.HOME -> HomeScreen()
+                    BottomNavType.HOME -> LoginOnboarding()
                     BottomNavType.FOOD -> FoodScreen()
                     BottomNavType.LIST -> ListScreen()
                     BottomNavType.SETTING -> SettingScreen()
@@ -163,7 +164,7 @@ fun HomeScreenContent(
     ExperimentalMaterialApi::class)
 @Composable
 fun MainAppContent(appThemeState: MutableState<AppThemeState>) {
-    //Default home screen state is always HOME
+    //Default home screen state is always SETTING
     val homeScreenState = rememberSaveable { mutableStateOf(BottomNavType.HOME) }
     val bottomNavBarContentDescription = stringResource(id = R.string.a11y_bottom_navigation_bar)
     val chooseColorBottomModalState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
@@ -295,8 +296,6 @@ fun BottomNavigationContent(
             modifier = Modifier.testTag(TestTags.BOTTOM_NAV_WIDGETS_TEST_TAG)
         )
         NavigationBarItem(
-
-
             icon = {
                 FaIcon(
                     faIcon = FaIcons.Tools, tint = androidx.compose.material3.LocalContentColor
