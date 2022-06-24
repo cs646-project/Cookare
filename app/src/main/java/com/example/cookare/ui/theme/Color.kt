@@ -11,6 +11,8 @@ val Orange = Color(0xfffa9e51)
 val Gray = Color(0xffb4b4b4)
 val BackgroundWhite = Color(0xfff8f8f8)
 val LightPink = Color(0xfffff4e8)
+val LightRed = Color(0xfffff2f2)
+val MediumRed = Color(0xffef9f9f)
 
 val green200 = Color(0xffa5d6a7)
 val green500 = Color(0xff4caf50)

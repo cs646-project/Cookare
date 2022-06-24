@@ -14,7 +14,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
-import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.*
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
@@ -33,8 +32,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Email
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.cookare.ui.theme.AppThemeState
 import com.example.cookare.ui.theme.*
 import com.example.cookare.ui.utils.TestTags
@@ -42,7 +42,11 @@ import com.example.cookare.ui.component.food.FoodScreen
 import com.example.cookare.ui.component.list.ListScreen
 import com.example.cookare.ui.component.home.HomeScreen
 import com.example.cookare.ui.component.home.LoginOnboarding
+import com.example.cookare.ui.component.home.collection.CollectionAndLikeScreen
+import com.example.cookare.ui.component.home.collection.TabPage
+import com.example.cookare.ui.component.home.notification.NotificationScreen
 import com.example.cookare.ui.component.setting.SettingScreen
+import com.example.cookare.ui.utils.ScreenRoute
 
 import com.guru.fontawesomecomposelib.FaIcon
 import kotlinx.coroutines.launch
@@ -148,11 +152,31 @@ fun HomeScreenContent(
             androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background) {
                 when (screen) {
                     BottomNavType.HOME -> LoginOnboarding()
+//                    BottomNavType.HOME -> HomeScreenNavigate()
                     BottomNavType.FOOD -> FoodScreen()
                     BottomNavType.LIST -> ListScreen()
                     BottomNavType.SETTING -> SettingScreen()
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun HomeScreenNavigate() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = ScreenRoute.HomeScreen.route){
+        composable(route = ScreenRoute.HomeScreen.route){
+            HomeScreen(navController = navController)
+        }
+        composable(route = ScreenRoute.CollectionScreen.route){
+            CollectionAndLikeScreen(TabPage.Collection)
+        }
+        composable(route = ScreenRoute.LikeScreen.route){
+            CollectionAndLikeScreen(TabPage.Like)
+        }
+        composable(route = ScreenRoute.NotificationScreen.route){
+            NotificationScreen()
         }
     }
 }

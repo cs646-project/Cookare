@@ -41,6 +41,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.example.cookare.ui.component.home.HomeScreen
 import com.example.cookare.BottomNavigationContent
+import com.example.cookare.HomeScreenNavigate
 import com.example.cookare.R
 import com.example.cookare.ui.utils.TestTags
 
@@ -258,7 +259,7 @@ fun LoginOnboarding() {
     Crossfade(targetState = loggedIn) {
         if (loggedIn) {
             // Text(text = "in LoginOnboaring function")
-            HomeScreen()
+            HomeScreenNavigate()
         } else {
             SettingScreen {
                 coroutineScope.launch {
