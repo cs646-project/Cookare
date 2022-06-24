@@ -2,16 +2,19 @@ package com.example.cookare
 
 import FaIcons
 import android.content.res.Configuration
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material3.*
 import androidx.compose.material3.Text
 import androidx.compose.material3.MaterialTheme
@@ -19,22 +22,28 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Email
 import com.example.cookare.ui.theme.AppThemeState
 import com.example.cookare.ui.theme.*
 import com.example.cookare.ui.utils.TestTags
 import com.example.cookare.ui.component.food.FoodScreen
 import com.example.cookare.ui.component.list.ListScreen
 import com.example.cookare.ui.component.home.HomeScreen
+import com.example.cookare.ui.component.home.LoginOnboarding
 import com.example.cookare.ui.component.setting.SettingScreen
-import com.example.cookare.ui.component.home.PalletMenu
+
 import com.guru.fontawesomecomposelib.FaIcon
 import kotlinx.coroutines.launch
 
@@ -50,9 +59,57 @@ class MainActivity : ComponentActivity() {
             BaseView(appTheme.value, systemUiController) {
                 MainAppContent(appTheme)
             }
+
         }
     }
 }
+@OptIn(ExperimentalMaterialApi::class, androidx.compose.animation.ExperimentalAnimationApi::class)
+@Composable
+fun PalletMenu(
+    modifier: Modifier,
+    onPalletChange: (ColorPallet) -> Unit
+) {
+    Box(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            horizontalAlignment = Alignment.Start,
+            modifier = modifier
+                .background(MaterialTheme.colorScheme.background)
+                .animateContentSize(),
+        ) {
+            MenuItem(green500, "Green") {
+                onPalletChange.invoke(ColorPallet.GREEN)
+            }
+            MenuItem(purple, "Purple") {
+                onPalletChange.invoke(ColorPallet.PURPLE)
+            }
+            MenuItem(orange500, "Orange") {
+                onPalletChange.invoke(ColorPallet.ORANGE)
+            }
+            MenuItem(blue500, "Blue") {
+                onPalletChange.invoke(ColorPallet.BLUE)
+            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                MenuItem(dynamicLightColorScheme(LocalContext.current).primary, "Dynamic") {
+                    onPalletChange.invoke(ColorPallet.WALLPAPER)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun MenuItem(color: Color, name: String, onPalletChange: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .padding(8.dp)
+            .clickable(onClick = onPalletChange),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+
+        Text(text = name, modifier = Modifier.padding(8.dp))
+    }
+}
+
 
 @Composable
 fun BaseView(
@@ -90,7 +147,7 @@ fun HomeScreenContent(
         Crossfade(homeScreen) { screen ->
             androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background) {
                 when (screen) {
-                    BottomNavType.HOME -> HomeScreen()
+                    BottomNavType.HOME -> LoginOnboarding()
                     BottomNavType.FOOD -> FoodScreen()
                     BottomNavType.LIST -> ListScreen()
                     BottomNavType.SETTING -> SettingScreen()
@@ -107,7 +164,7 @@ fun HomeScreenContent(
     ExperimentalMaterialApi::class)
 @Composable
 fun MainAppContent(appThemeState: MutableState<AppThemeState>) {
-    //Default home screen state is always HOME
+    //Default home screen state is always SETTING
     val homeScreenState = rememberSaveable { mutableStateOf(BottomNavType.HOME) }
     val bottomNavBarContentDescription = stringResource(id = R.string.a11y_bottom_navigation_bar)
     val chooseColorBottomModalState = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
