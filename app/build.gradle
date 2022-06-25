@@ -88,4 +88,8 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.0.0-alpha13")
     implementation("androidx.compose.material3:material3-window-size-class:1.0.0-alpha13")
     implementation("com.github.Gurupreet:FontAwesomeCompose:1.0.0-beta02")
+
+
+    implementation "androidx.compose.ui:ui-util:1.2.0-rc01"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.24.11-rc"
 }
