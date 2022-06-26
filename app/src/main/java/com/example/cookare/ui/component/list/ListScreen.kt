@@ -67,124 +67,124 @@ fun ListScreen() {
 @Composable
 fun TextInputs(){
     Text(text = "Add Your Post", modifier = Modifier.padding(8.dp), fontSize = 35.sp, style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),)
-    var text by remember { mutableStateOf(TextFieldValue("")) }
+    var title by remember { mutableStateOf(TextFieldValue("")) }
+    var description by remember { mutableStateOf(TextFieldValue("")) }
+    var tips by remember { mutableStateOf(TextFieldValue("")) }
+    var time by remember { mutableStateOf(TextFieldValue("")) }
+    var level by remember { mutableStateOf(TextFieldValue("")) }
+    var tag by remember { mutableStateOf(TextFieldValue("")) }
+    var step_1 by remember { mutableStateOf(TextFieldValue("")) }
+    var step_2 by remember { mutableStateOf(TextFieldValue("")) }
+    var step_3 by remember { mutableStateOf(TextFieldValue("")) }
 
     OutlinedTextField(
-        value = text,
+        value = title,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         label = { Text(text = "Title") },
         placeholder = { Text(text = "") },
-        visualTransformation = PasswordVisualTransformation(),
+        // visualTransformation = PasswordVisualTransformation(),
         onValueChange = {
-            text = it
+            title = it
         }
     )
 
     OutlinedTextField(
-        value = text,
+        value = description,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         label = { Text(text = "Description") },
         placeholder = { Text(text = "") },
-        visualTransformation = PasswordVisualTransformation(),
         onValueChange = {
-            text = it
+            description = it
         }
     )
 
     OutlinedTextField(
-        value = text,
+        value = tips,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         label = { Text(text = "Tips") },
         placeholder = { Text(text = "") },
-        visualTransformation = PasswordVisualTransformation(),
         onValueChange = {
-            text = it
+            tips = it
         }
     )
 
     OutlinedTextField(
-        value = text,
+        value = time,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         label = { Text(text = "Time") },
         placeholder = { Text(text = "") },
-        visualTransformation = PasswordVisualTransformation(),
         onValueChange = {
-            text = it
+            time = it
         }
     )
 
     OutlinedTextField(
-        value = text,
+        value = level,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         label = { Text(text = "Level") },
         placeholder = { Text(text = "") },
-        visualTransformation = PasswordVisualTransformation(),
         onValueChange = {
-            text = it
+            level = it
         }
     )
 
     OutlinedTextField(
-        value = text,
+        value = tag,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         label = { Text(text = "Tag") },
         placeholder = { Text(text = "") },
-        visualTransformation = PasswordVisualTransformation(),
         onValueChange = {
-            text = it
+            tag = it
         }
     )
 
     Text(text = "Procedure", modifier = Modifier.padding(8.dp), fontSize = 20.sp, style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),)
 
     OutlinedTextField(
-        value = text,
+        value = step_1,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         label = { Text(text = "Step 1") },
         placeholder = { Text(text = "") },
-        visualTransformation = PasswordVisualTransformation(),
         onValueChange = {
-            text = it
+            step_1 = it
         }
     )
 
     OutlinedTextField(
-        value = text,
+        value = step_2,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         label = { Text(text = "Step 2") },
         placeholder = { Text(text = "") },
-        visualTransformation = PasswordVisualTransformation(),
         onValueChange = {
-            text = it
+            step_2 = it
         }
     )
 
     OutlinedTextField(
-        value = text,
+        value = step_3,
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth(),
         label = { Text(text = "Step 3") },
         placeholder = { Text(text = "") },
-        visualTransformation = PasswordVisualTransformation(),
         onValueChange = {
-            text = it
+            step_3 = it
         }
     )
 }
