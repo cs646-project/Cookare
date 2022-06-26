@@ -1,4 +1,9 @@
 buildscript {
+    repositories {
+        google()
+        mavenCentral()
+    }
+
     ext {
         compose_version = '1.0.1'
     }
