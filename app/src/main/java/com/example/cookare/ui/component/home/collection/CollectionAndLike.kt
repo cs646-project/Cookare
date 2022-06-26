@@ -98,8 +98,8 @@ fun TabContentScreen(content: String) {
                     .padding(16.dp)
             )
             Row(){
-                RecipeCard(title = "test1", description = "This is a test1", {})
-                RecipeCard(title = "test2", description = "This is a test2", {})
+//                RecipeCard(title = "test1", description = "This is a test1", {})
+//                RecipeCard(title = "test2", description = "This is a test2", {})
             }
         }
     }
