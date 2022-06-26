@@ -33,4 +33,6 @@ public class Recipe {
     private Integer collectNum;
 
     private Integer commentNum;
+
+    private String coverUrl;
 }

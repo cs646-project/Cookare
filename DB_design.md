@@ -30,6 +30,7 @@ delete_flg, INTEGER
 likes_num, INTEGER
 collect_num, INTEGER
 comment_num, INTEGER
+cover_url, VARCHAR
 ```
 
 #### USER_RECIPE_REL

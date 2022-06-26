@@ -30,13 +30,13 @@ public class CMetaObjectHandler implements com.baomidou.mybatisplus.core.handler
      */
     @Override
     public void insertFill(MetaObject metaObject) {
-        Long userId = 0l;
+        Integer userId = 0;
         if (StpUtil.isLogin()) {
-            userId = StpUtil.getLoginIdAsLong();
+            userId = StpUtil.getLoginIdAsInt();
         }
-        this.strictInsertFill(metaObject, CREAT_USER, Long.class, userId);
+        this.strictInsertFill(metaObject, CREAT_USER, Integer.class, userId);
         this.strictInsertFill(metaObject, CREAT_TIME, Date.class, DateUtils.currentDate());
-        this.strictUpdateFill(metaObject, UPDATE_USER, Long.class, userId);
+        this.strictUpdateFill(metaObject, UPDATE_USER, Integer.class, userId);
         this.strictUpdateFill(metaObject, UPDATE_TIME, Date.class, DateUtils.currentDate());
         this.strictInsertFill(metaObject, DELETE_FLG, Integer.class, Constants.DELETE_FLG_FALSE);
     }
@@ -48,8 +48,8 @@ public class CMetaObjectHandler implements com.baomidou.mybatisplus.core.handler
      */
     @Override
     public void updateFill(MetaObject metaObject) {
-        Long userId = StpUtil.getLoginIdAsLong();
-        this.strictUpdateFill(metaObject, UPDATE_USER, Long.class, userId);
+        Integer userId = StpUtil.getLoginIdAsInt();
+        this.strictUpdateFill(metaObject, UPDATE_USER, Integer.class, userId);
         this.strictUpdateFill(metaObject, UPDATE_TIME, Date.class, DateUtils.currentDate());
     }
 

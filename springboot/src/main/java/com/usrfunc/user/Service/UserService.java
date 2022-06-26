@@ -96,7 +96,7 @@ public class UserService extends ServiceImpl<UserMapper, User> implements IUserS
     @Override
     public int updateUser(User user) {
         Integer currentUserId = loginService.getCurrentUserId();
-        // 待更新用户与当前登录用户信息不一致
+        // not the right user login
         if (user.getId() == null || !user.getId().equals(currentUserId)) {
             throw new CkException(MsgConstants.ERROR.WRONG_USER);
         }

@@ -26,5 +26,9 @@ public class MsgConstants {
         public static final String DUPLICATE_INFO = "Duplicated Information!";
 
         public static final String WRONG_USER = "Wrong user for action.";
+
+        public static final String INCONSISTENT_INFO = "Info is inconsistent to server.";
+
+        public static final String NOT_EXIST = "Content does not exist.";
     }
 }
