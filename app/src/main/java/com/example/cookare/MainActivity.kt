@@ -87,7 +87,7 @@ fun PalletMenu(
                 .background(MaterialTheme.colorScheme.background)
                 .animateContentSize(),
         ) {
-            MenuItem(green500, "Green") {
+            MenuItem(green000, "Green") {
                 onPalletChange.invoke(ColorPallet.GREEN)
             }
             MenuItem(purple, "Purple") {
