@@ -1,5 +1,6 @@
 package com.example.cookare.ui.component.home.collection
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.spring
@@ -221,6 +222,7 @@ fun TabBar(
  *
  * @param tabPositions -> the list of tab positions from a tab row
  */
+@SuppressLint("UnusedTransitionTargetStateParameter")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabIndicator(
