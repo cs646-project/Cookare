@@ -63,7 +63,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
 import com.example.cookare.ui.utils.loadPicture
 import com.example.cookare.model.Recipe
-
+import com.example.cookare.ui.component.home.collection.CollectionContent
+import com.example.cookare.ui.component.home.collection.LikeContent
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
 
 
 @OptIn(
@@ -229,8 +232,8 @@ fun SearchBar() {
 
 @Composable
 fun NamesBar() {
-    val names = listOf("Recommend", "Following","Latest","Hot")
-    var selected by remember { mutableStateOf(0) }
+    val names = listOf("Recommend", "Vegetarian","Pregnant","Diet")
+    var selected by remember { mutableStateOf(1) }
     LazyRow(Modifier.padding(0.dp, 8.dp), contentPadding = PaddingValues(12.dp, 0.dp)) {
         itemsIndexed(names) { index, name ->
             Column(
@@ -255,12 +258,6 @@ fun NamesBar() {
     }
 }
 
-data class Place(
-    val name: String,
-    val city: String,
-    val time: String,
-    @DrawableRes val imageId: Int
-)
 
 
 
@@ -555,19 +552,16 @@ data class Love(
     val description: String
 )
 val loves = mutableStateListOf(
-    Love("Jisung", "Nct Dream", 4.4f, "favorite", R.drawable.ic_pic1, "bsajdkahsjdhasdhasjdhsaddbsa"),
-    Love("Mark Lee", "Nct 127", 4.8f, "very good", R.drawable.ic_pic3, "dagsdkashdkahsd"),
+    Love("Tomato fish", "recommendation", 4.4f, "favorite", R.drawable.ic_pic1, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
+    Love("Green egg", "recommendation", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
     Love(
-        "NCT",
-        "Dream",
+        "Fish Soup",
+        "recommendation",
         5f,
-        "youngest",
-        R.drawable.ic_pic1,
+        "favorite",
+        R.drawable.ic_pic2,
         """
-     dhaskdhlashdlasdhlasd
-     dbaskjdkasdasdhasdhas
-     dasdhkasldhlasdhas
-     dabsdhasdhasdja;sjd;asl
+     This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days.
      
     """.trimIndent()
     )
