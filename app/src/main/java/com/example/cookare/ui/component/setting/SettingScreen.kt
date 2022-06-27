@@ -11,20 +11,31 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.util.lerp
+import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.example.cookare.R
 import com.example.cookare.model.User
 import com.example.cookare.ui.component.components.CookareDivider
 import com.example.cookare.ui.component.components.CookareSurface
 import com.example.cookare.ui.component.components.UserImage
+import com.example.cookare.ui.component.home.HomeScreen
 import com.example.cookare.ui.theme.*
 import kotlin.math.max
 import kotlin.math.min
@@ -70,14 +81,17 @@ fun Profile() {
 
 @Composable
 private fun Header() {
-    Spacer(
-        modifier = Modifier
-            .height(280.dp)
-            .fillMaxWidth()
-            .background(Brush.horizontalGradient(listOf(Shadow4, Ocean3)))
-    )
-}
 
+    AsyncImage(
+        model = "https://img.lookvin.com/editor/201809/04/13434993.jpg",
+        contentDescription = "",
+        modifier = Modifier
+            .fillMaxWidth()
+            )
+
+
+
+}
 
 
 @Composable
@@ -199,7 +213,7 @@ private fun Title(user: User, scrollProvider: () -> Int) {
                         .padding(12.dp, 4.dp)
                         .width(IntrinsicSize.Max)) {
                     Text(name, fontSize = 15.sp,
-                        color = if (index == selected) Color(0xfffa9e51) else Color(0xffb4b4b4)
+                        color = if (index == selected) green000 else Gray
                     )
                     Box(
                         Modifier
@@ -208,7 +222,7 @@ private fun Title(user: User, scrollProvider: () -> Int) {
                             .height(2.dp)
                             .clip(RoundedCornerShape(1.dp))
                             .background(
-                                if (index == selected) Color(0xfffa9e51) else Color.Transparent
+                                if (index == selected) green000 else Color.Transparent
                             )
                     )
                 }
@@ -274,4 +288,12 @@ private fun CollapsingImageLayout(
             imagePlaceable.placeRelative(imageX, imageY)
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+
+
+
 }
