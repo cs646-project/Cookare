@@ -163,7 +163,7 @@ fun HomeScreenContent(
                         if(userStateVM.isLoggedIn) HomeScreenNavigate()
                         else LoginOnboarding()
                     }
-                    BottomNavType.FOOD -> FoodScreen(hiltViewModel())
+                    BottomNavType.FOOD -> FoodScreen()
                     BottomNavType.LIST -> ListScreen()
                     BottomNavType.SETTING -> SettingScreen()
                 }
