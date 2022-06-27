@@ -65,8 +65,11 @@ import com.example.cookare.ui.utils.loadPicture
 import com.example.cookare.model.Recipe
 import com.example.cookare.ui.component.home.collection.CollectionContent
 import com.example.cookare.ui.component.home.collection.LikeContent
+import com.example.cookare.ui.component.home.collection.TabPage
+import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
 
 
 @OptIn(
@@ -79,8 +82,10 @@ var currentLovePageState by mutableStateOf(LovePageState.Closed)
 var cardSize by mutableStateOf(IntSize(0, 0))
 var fullSize by mutableStateOf(IntSize(0, 0))
 var cardOffset by mutableStateOf(IntOffset(0, 0))
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HomeScreen(navController:NavController) {
+    val pagerState = rememberPagerState(pageCount = 4)
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -106,27 +111,35 @@ fun HomeScreen(navController:NavController) {
                     .background(BackgroundWhite)
 
             ) {
-
                 TopBar(navController)
                 SearchBar()
-                NamesBar()
+                Scaffold(
+                    topBar = {
+                        NamesBar(
+                            pagerState = pagerState,
+                            backgroundColor = Color.White
+                        )
+                    }
+                ) {
+                    CommunityContent(pagerState = pagerState)
+                }
+//                NamesBar()
                 //CardItem()
-                LovesArea(
-                    { cardSize = it },
-                    { love, offset ->
-                        currentLove = love
-                        currentLovePageState = LovePageState.Opening
-                        cardOffset = offset
-                    })
+//                LovesArea(
+//                    { cardSize = it },
+//                    { love, offset ->
+//                        currentLove = love
+//                        currentLovePageState = LovePageState.Opening
+//                        cardOffset = offset
+//                    })
             }
+
         }
-        LoveDetailsPage(currentLove, currentLovePageState, cardSize, fullSize, cardOffset, {
-            currentLovePageState = LovePageState.Closing
-        }, {
-            currentLovePageState = LovePageState.Closed
-        })
-
-
+//        LoveDetailsPage(currentLove, currentLovePageState, cardSize, fullSize, cardOffset, {
+//            currentLovePageState = LovePageState.Closing
+//        }, {
+//            currentLovePageState = LovePageState.Closed
+//        })
     }
 
 }
@@ -230,18 +243,25 @@ fun SearchBar() {
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun NamesBar() {
-    val names = listOf("Recommend", "Vegetarian","Pregnant","Diet")
-    var selected by remember { mutableStateOf(1) }
-    LazyRow(Modifier.padding(0.dp, 8.dp), contentPadding = PaddingValues(12.dp, 0.dp)) {
-        itemsIndexed(names) { index, name ->
+fun NamesBar(pagerState: PagerState, backgroundColor: Color) {
+    val names = listOf("Recommend", "Following","Latest","Hot")
+//    var selected by remember { mutableStateOf(0) }
+//    val pagerState = rememberPagerState(
+//        pageCount = 2
+//    )
+    TabRow(
+        backgroundColor = backgroundColor,
+        selectedTabIndex = pagerState.currentPage) {
+        names.forEachIndexed{
+            index, _ ->
             Column(
                 Modifier
                     .padding(12.dp, 4.dp)
                     .width(IntrinsicSize.Max)) {
-                Text(name, fontSize = 15.sp,
-                    color = if (index == selected) green000 else Gray
+                Text(names[index], fontSize = 15.sp,
+                    color = if (index == pagerState.currentPage) green000 else Gray
                 )
                 Box(
                     Modifier
@@ -250,16 +270,79 @@ fun NamesBar() {
                         .height(2.dp)
                         .clip(RoundedCornerShape(1.dp))
                         .background(
-                            if (index == selected) green000 else Color.Transparent
+                            if (index == pagerState.currentPage) green000 else Color.Transparent
                         )
                 )
             }
         }
     }
+//    LazyRow(Modifier.padding(0.dp, 8.dp), contentPadding = PaddingValues(12.dp, 0.dp)) {
+//        itemsIndexed(names) { index, name ->
+//            Column(
+//                Modifier
+//                    .padding(12.dp, 4.dp)
+//                    .width(IntrinsicSize.Max)) {
+//                Text(name, fontSize = 15.sp,
+//                    color = if (index == selected) green000 else Gray
+//                )
+//                Box(
+//                    Modifier
+//                        .fillMaxWidth()
+//                        .padding(top = 4.dp)
+//                        .height(2.dp)
+//                        .clip(RoundedCornerShape(1.dp))
+//                        .background(
+//                            if (index == selected) green000 else Color.Transparent
+//                        )
+//                )
+//            }
+//        }
+//    }
+//    CommunityContent(pagerState)
 }
 
+@ExperimentalPagerApi
+@Composable
+fun CommunityContent(
+    pagerState: PagerState,
+) {
+    // horizontal pager for our tab layout
+    HorizontalPager(state = pagerState) {
+        // the different pages
+            page ->
+        when (page) {
+            0 -> RDContent()
+            1 -> LikeContent()
+            2 -> RDContent()
+            3 -> LikeContent()
+        }
+    }
+}
 
-
+@Composable
+fun RDContent(){
+    Column(Modifier.onSizeChanged { fullSize = it }) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .background(BackgroundWhite)
+        ) {
+            LovesArea(
+                { cardSize = it },
+                { love, offset ->
+                    currentLove = love
+                    currentLovePageState = LovePageState.Opening
+                    cardOffset = offset
+                })
+        }
+    }
+    LoveDetailsPage(currentLove, currentLovePageState, cardSize, fullSize, cardOffset, {
+        currentLovePageState = LovePageState.Closing
+    }, {
+        currentLovePageState = LovePageState.Closed
+    })
+}
 
 @Composable
 fun LovesArea(onCardSizedChanged: (IntSize) -> Unit,
