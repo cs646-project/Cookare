@@ -157,14 +157,16 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             }
 
             item {
-                var loading by remember { mutableStateOf(false) }
+                var loading_login by remember { mutableStateOf(false) }
+                var loading_signup by remember { mutableStateOf(false) }
+
                 Button(
                     onClick = {
                         if (invalidInput(email.text, password.text)) {
                             hasError = true
-                            loading = false
+                            loading_login = false
                         } else {
-                            loading = true
+                            loading_login = true
                             hasError = false
                             onLoginSuccess.invoke()
                         }
@@ -175,7 +177,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                         .height(50.dp)
                         .clip(CircleShape)
                 ) {
-                    if (loading) {
+                    if (loading_login) {
                         HorizontalDottedProgressBar()
                     } else {
                         Text(text = "Log In")
@@ -192,7 +194,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                         .height(50.dp)
                         .clip(CircleShape)
                 ){
-                    if (loading) {
+                    if (loading_signup) {
                         HorizontalDottedProgressBar()
                     } else {
                         Text(text = "Sign Up")
