@@ -6,6 +6,7 @@
     <string name="navigation_item_food">Food</string>
     <string name="navigation_item_list">List</string>
     <string name="navigation_item_setting">Setting</string>
+    <string name="navigation_item_profile">Profile</string>
     <string name="collection">Collection</string>
     <string name="like">Like</string>
 <!--    <string name="navigation_item_setting">Profile</string>-->

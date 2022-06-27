@@ -181,6 +181,23 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                         Text(text = "Log In")
                     }
                 }
+
+                Button(
+                    onClick = {
+
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                        .height(50.dp)
+                        .clip(CircleShape)
+                ){
+                    if (loading) {
+                        HorizontalDottedProgressBar()
+                    } else {
+                        Text(text = "Sign Up")
+                    }
+                }
             }
 
         }

@@ -286,7 +286,8 @@ fun BottomNavigationContent(
         NavigationBarItem(
             icon = {
                 FaIcon(
-                    faIcon = FaIcons.Tools, tint = androidx.compose.material3.LocalContentColor
+                    faIcon = FaIcons.Cheese,
+                    tint = androidx.compose.material3.LocalContentColor
                         .current.copy(
                             alpha =
                             LocalContentAlpha.current
@@ -304,12 +305,12 @@ fun BottomNavigationContent(
                     style = TextStyle(fontSize = 12.sp)
                 )
             },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_WIDGETS_TEST_TAG)
+            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
         )
         NavigationBarItem(
             icon = {
                 FaIcon(
-                    faIcon = FaIcons.Tools, tint = androidx.compose.material3.LocalContentColor
+                    faIcon = FaIcons.Book, tint = androidx.compose.material3.LocalContentColor
                         .current.copy(
                             alpha =
                             LocalContentAlpha.current
@@ -327,12 +328,12 @@ fun BottomNavigationContent(
                     style = TextStyle(fontSize = 12.sp)
                 )
             },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_WIDGETS_TEST_TAG)
+            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
         )
         NavigationBarItem(
             icon = {
                 FaIcon(
-                    faIcon = FaIcons.Tools, tint = androidx.compose.material3.LocalContentColor
+                    faIcon = FaIcons.Compass, tint = androidx.compose.material3.LocalContentColor
                         .current.copy(
                             alpha =
                             LocalContentAlpha.current
@@ -346,11 +347,11 @@ fun BottomNavigationContent(
             },
             label = {
                 androidx.compose.material3.Text(
-                    text = stringResource(id = R.string.navigation_item_setting),
+                    text = stringResource(id = R.string.navigation_item_profile),
                     style = TextStyle(fontSize = 12.sp)
                 )
             },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_WIDGETS_TEST_TAG)
+            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
         )
     }
 }
@@ -387,7 +388,8 @@ private fun NavigationRailContent(
         NavigationRailItem(
             icon = {
                 FaIcon(
-                    faIcon = FaIcons.Tools, tint = androidx.compose.material3.LocalContentColor
+                    faIcon = FaIcons.Cheese,
+                    tint = androidx.compose.material3.LocalContentColor
                         .current.copy(
                             alpha =
                             LocalContentAlpha.current
@@ -405,12 +407,12 @@ private fun NavigationRailContent(
                     style = TextStyle(fontSize = 12.sp)
                 )
             },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_WIDGETS_TEST_TAG)
+            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
         )
         NavigationRailItem(
             icon = {
                 FaIcon(
-                    faIcon = FaIcons.Tools, tint = androidx.compose.material3.LocalContentColor
+                    faIcon = FaIcons.Book, tint = androidx.compose.material3.LocalContentColor
                         .current.copy(
                             alpha =
                             LocalContentAlpha.current
@@ -428,12 +430,12 @@ private fun NavigationRailContent(
                     style = TextStyle(fontSize = 12.sp)
                 )
             },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_WIDGETS_TEST_TAG)
+            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
         )
         NavigationRailItem(
             icon = {
                 FaIcon(
-                    faIcon = FaIcons.Tools, tint = androidx.compose.material3.LocalContentColor
+                    faIcon = FaIcons.Compass, tint = androidx.compose.material3.LocalContentColor
                         .current.copy(
                             alpha =
                             LocalContentAlpha.current
@@ -447,11 +449,11 @@ private fun NavigationRailContent(
             },
             label = {
                 Text(
-                    text = stringResource(id = R.string.navigation_item_setting),
+                    text = stringResource(id = R.string.navigation_item_profile),
                     style = TextStyle(fontSize = 12.sp)
                 )
             },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_WIDGETS_TEST_TAG)
+            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
         )
     }
 }
@@ -462,8 +464,5 @@ private fun NavigationRailContent(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    val appThemeState = remember { mutableStateOf(AppThemeState(false, ColorPallet.GREEN)) }
-    BaseView(appThemeState.value, null) {
-        MainAppContent(appThemeState)
-    }
+
 }
