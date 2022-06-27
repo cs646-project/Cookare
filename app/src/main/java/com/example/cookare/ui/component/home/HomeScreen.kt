@@ -1,5 +1,6 @@
 package com.example.cookare.ui.component.home
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
@@ -23,19 +24,30 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cookare.R
+import com.example.cookare.model.Recipe
+import com.example.cookare.ui.component.food.FoodScreen
+import com.example.cookare.ui.component.food.FoodScreenViewModel
 
 import com.example.cookare.ui.theme.BackgroundWhite
 import com.example.cookare.ui.theme.Gray
 import com.example.cookare.ui.theme.LightPink
+import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
 import com.example.cookare.ui.utils.ScreenRoute
+import com.example.cookare.ui.utils.loadPicture
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -46,6 +58,12 @@ var fullSize by mutableStateOf(IntSize(0, 0))
 
 @Composable
 fun HomeScreen(navController:NavController) {
+//    val recipes = viewModel.recipes.value
+//    for(recipe in recipes){
+//        Log.d("HomeScreenDebug", "recipe: ${recipe.title}")
+//    }
+
+
     Column(Modifier.onSizeChanged { fullSize = it }) {
         Column(
             Modifier
@@ -57,12 +75,15 @@ fun HomeScreen(navController:NavController) {
             TopBar(navController)
             SearchBar()
             NamesBar()
-            PlaceArea()
-            PlaceArea()
-            PlaceArea()
+            RecipeCommunity(hiltViewModel())
+//            PlaceArea()
+//            PlaceArea()
+//            PlaceArea()
         }
+//        RecipeCommunity(hiltViewModel())
     }
 
+//    FoodScreen(hiltViewModel())
     // TODO
 }
 
@@ -196,10 +217,8 @@ fun NamesBar() {
 }
 
 @Composable
-fun PlaceArea() {
-    val place = Place("university of waterloo", "waterloo", "5 minutes ago", R.drawable.ic_pic1)
-    Column(Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)) {
-
+fun PlaceArea(recipe: Recipe) {
+    Column(Modifier.padding(start = 24.dp, top = 6.dp, end = 24.dp)) {
         Surface(
             Modifier
                 .fillMaxWidth()
@@ -209,26 +228,72 @@ fun PlaceArea() {
                 .padding(8.dp),
         ) {
             Row(Modifier.height(IntrinsicSize.Max)) {
-                Image(
-                    painterResource(place.imageId),
-                    "图像",
-                    Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .size(80.dp),
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center
-                )
+                recipe.featuredImage?.let { url ->
+                    val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
+                    image?.let { img ->
+                        Image(
+                            bitmap = img.asImageBitmap(),
+                            contentDescription = "Recipe Featured Image",
+                            Modifier
+                                .clip(RoundedCornerShape(16.dp))
+                                .size(80.dp),
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center
+                        )
+                    }
+                }
                 Column(
                     Modifier
                         .padding(12.dp, 0.dp)
                         .fillMaxHeight(), verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text(place.time, fontSize = 14.sp, color = Color(0xffb4b4b4))
-                    Text(place.name, fontSize = 16.sp)
-                    Text(place.city, fontSize = 14.sp, color = Color(0xffb4b4b4))
+                    recipe.publisher?.let {
+                        Text(
+                            buildAnnotatedString {
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontStyle = FontStyle.Italic,
+                                        fontSize = 14.sp,
+                                        color = Color(0xffb4b4b4)
+                                    )
+                                ) {
+                                    append("Publisher: ")
+                                    append(recipe.publisher)
+                                }
+                            }
+                        )
+                    }
+                    recipe.title?.let {
+                        Text(recipe.title, fontSize = 16.sp)
+                    }
+
+                    recipe.dateAdded?.let {
+                        Text(
+                            buildAnnotatedString {
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = 12.sp,
+                                        color = Color(0xffb4b4b4)
+                                    )
+                                ) {
+                                    append("Posted on ")
+                                    append(recipe.dateAdded)
+                                }
+                            }
+                        )
+                    }
                 }
             }
         }
+    }
+}
+
+@Composable
+fun RecipeCommunity(viewModel: FoodScreenViewModel){
+    val recipes = viewModel.recipes.value
+
+    for(recipe in recipes){
+        PlaceArea(recipe)
     }
 }
 
