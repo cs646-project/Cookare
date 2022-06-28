@@ -77,7 +77,8 @@ fun HomeScreen(navController:NavController) {
                 Icon(painter = painterResource(R.drawable.ic_add), contentDescription = "add_posts",
                     modifier = Modifier
                         .padding(10.dp)
-                        .size(32.dp))
+                        .size(32.dp),
+                tint = BackgroundWhite)
             }
         },
         isFloatingActionButtonDocked = true,
@@ -595,7 +596,7 @@ val loves = mutableStateListOf(
     Love("Tomato fish", "recommendation", 4.8f, "very good", R.drawable.ic_pic2, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
 
     Love(
-        "Fish Soup",
+        "Tomato pasta",
         "recommendation",
         5f,
         "favorite",
@@ -639,7 +640,7 @@ val loves2 = mutableStateListOf(
 )
 val loves3 = mutableStateListOf(
     Love("Glazed Honey Balsamic Pork Chops", "Gluten free", 4.4f, "favorite", R.drawable.ic_pic31, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
-    Love("Tomato egg", "Gluten free", 4.8f, "very good", R.drawable.ic_pic32, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+    Love("Tomato egg", "Gluten free", 4.8f, "very good", R.drawable.ic_pic45, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
     Love("Green egg", "Lactose free", 4.8f, "very good", R.drawable.ic_pic44, "It is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
     Love(
         "Fish Soup",
