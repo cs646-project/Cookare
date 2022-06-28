@@ -1,6 +1,7 @@
 package com.example.cookare.ui.component.profile
 
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,13 +9,18 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,9 +32,12 @@ import com.example.cookare.model.User
 import com.example.cookare.ui.component.components.CookareDivider
 import com.example.cookare.ui.component.components.CookareSurface
 import com.example.cookare.ui.component.components.UserImage
+import com.example.cookare.ui.component.home.Love
 import com.example.cookare.ui.theme.*
 import kotlin.math.max
 import kotlin.math.min
+import com.example.cookare.ui.component.home.LovePageState
+
 
 
 private val BottomBarHeight = 56.dp
@@ -41,6 +50,10 @@ private val MaxTitleOffset = ImageOverlap + MinTitleOffset + GradientScroll
 private val ExpandedImageSize = 300.dp
 private val CollapsedImageSize = 150.dp
 private val HzPadding = Modifier.padding(horizontal = 24.dp)
+
+private val recipe1 = Recipe("Tomato Fish", "waterloo", "5 minutes ago", R.drawable.ic_pic1)
+private val recipe2 = Recipe("Fish Soup ", "waterloo", "yesterday", R.drawable.ic_pic2)
+private val recipe3 = Recipe("Green Egg", "waterloo", "yesterday", R.drawable.ic_pic3)
 
 @Composable
 fun ProfileScreen() {
@@ -77,7 +90,7 @@ private fun Header() {
         contentDescription = "",
         modifier = Modifier
             .fillMaxWidth()
-            )
+    )
 
 
 
@@ -147,7 +160,9 @@ private fun Body(
                     )
                     Spacer(Modifier.height(16.dp))
                     CookareDivider()
-
+                    RecipeArea(recipe = recipe1)
+                    RecipeArea(recipe = recipe2)
+                    RecipeArea(recipe = recipe3)
                     Spacer(
                         modifier = Modifier
                             .padding(bottom = BottomBarHeight)
@@ -159,6 +174,42 @@ private fun Body(
         }
     }
 }
+@Composable
+fun RecipeArea(recipe:Recipe) {
+
+    Column(Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)) {
+        Surface(
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.White)
+                .padding(8.dp),
+        ) {
+            Row(Modifier.height(IntrinsicSize.Max)) {
+                Image(
+                    painterResource(recipe.imageId),
+                    "图像",
+                    Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .size(80.dp),
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                )
+                Column(
+                    Modifier
+                        .padding(12.dp, 0.dp)
+                        .fillMaxHeight(), verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    androidx.compose.material3.Text(recipe.time, fontSize = 14.sp, color = Color(0xffb4b4b4))
+                    androidx.compose.material3.Text(recipe.name, fontSize = 16.sp)
+                    androidx.compose.material3.Text(recipe.city, fontSize = 14.sp, color = Color(0xffb4b4b4))
+                }
+            }
+        }
+    }
+}
+
 
 @Composable
 private fun Title(user: User, scrollProvider: () -> Int) {
@@ -279,6 +330,13 @@ private fun CollapsingImageLayout(
         }
     }
 }
+
+data class Recipe(
+    val name: String,
+    val city: String,
+    val time: String,
+    @DrawableRes val imageId: Int
+)
 
 @Preview(showBackground = true)
 @Composable

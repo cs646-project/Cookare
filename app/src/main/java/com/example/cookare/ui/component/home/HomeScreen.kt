@@ -590,14 +590,16 @@ data class Love(
     val description: String
 )
 val loves = mutableStateListOf(
-    Love("Tomato fish", "recommendation", 4.4f, "favorite", R.drawable.ic_pic1, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
+    Love("Roasted Chicken.", "recommendation", 4.4f, "favorite", R.drawable.ic_pic1, "One Pan Garlic Roasted Chicken and Baby Potatoes. One pan garlic roasted chicken and baby potatoes is an easy to make, delicious, and wholesome meal for the entire family. Prep this sheet pan in 10 minutes. and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
     Love("Green egg", "recommendation", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+    Love("Tomato fish", "recommendation", 4.8f, "very good", R.drawable.ic_pic2, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+
     Love(
         "Fish Soup",
         "recommendation",
         5f,
         "favorite",
-        R.drawable.ic_pic2,
+        R.drawable.ic_pic31,
         """
      This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days.
      
@@ -605,23 +607,24 @@ val loves = mutableStateListOf(
     )
 )
 val loves1 = mutableStateListOf(
-    Love("Tomato fish1", "recommendation", 4.4f, "favorite", R.drawable.ic_pic1, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
-    Love("Green egg", "recommendation", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+    Love("Garlic Shrimp", "vegetarian", 4.4f, "favorite", R.drawable.ic_pic_21, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
+    Love("Gluten noodle", "vegetarian", 4.8f, "very good", R.drawable.ic_pic22, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+    Love("vegetable soup", "vegetarian", 4.8f, "very good", R.drawable.ic_pic24, "Apple cider vinegar, potato, tomato paste, red pepper broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
     Love(
         "Fish Soup",
         "recommendation",
         5f,
         "favorite",
-        R.drawable.ic_pic2,
+        R.drawable.ic_pic23,
         """
-     This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days.
-     
+     Creamy Garlic Shrimp. Creamy garlic shrimp is a delicious, quick and easy 15-minute meal (including prep!) that you need to include in your weeknight dinner meal plan
+    
     """.trimIndent()
     )
 )
 val loves2 = mutableStateListOf(
-    Love("Tomato fish2", "recommendation", 4.4f, "favorite", R.drawable.ic_pic1, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
-    Love("Green egg", "recommendation", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+    Love("Garlic Shrimp", "Lactose free", 4.4f, "favorite", R.drawable.ic_pic1, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
+    Love("Green egg", "Lactose free", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
     Love(
         "Fish Soup",
         "recommendation",
@@ -629,14 +632,15 @@ val loves2 = mutableStateListOf(
         "favorite",
         R.drawable.ic_pic2,
         """
-     This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days.
-     
+    Creamy Tuscan Chicken. Creamy Tuscan chicken with sun-dried tomatoes and spinach is a quick and easy 30 minute Italian chicken dinner that is delicious, flavorful, and comforting.
+    
     """.trimIndent()
     )
 )
 val loves3 = mutableStateListOf(
-    Love("Tomato fish3", "recommendation", 4.4f, "favorite", R.drawable.ic_pic1, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
-    Love("Green egg", "recommendation", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+    Love("Glazed Honey Balsamic Pork Chops", "Gluten free", 4.4f, "favorite", R.drawable.ic_pic31, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
+    Love("Tomato egg", "Gluten free", 4.8f, "very good", R.drawable.ic_pic32, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+    Love("Green egg", "Lactose free", 4.8f, "very good", R.drawable.ic_pic44, "It is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
     Love(
         "Fish Soup",
         "recommendation",
@@ -644,8 +648,7 @@ val loves3 = mutableStateListOf(
         "favorite",
         R.drawable.ic_pic2,
         """
-     This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days.
-     
+   Glazed Honey Balsamic Pork Chops. Quick and easy, glazed honey balsamic pork chops are tender and juicy, seared in thyme and coated with a honey balsamic sauce. Make it in under 30 minutes.
     """.trimIndent()
     )
 )
