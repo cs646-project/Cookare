@@ -221,6 +221,7 @@ data class Notification(
     @DrawableRes val postId: Int
 )
 
+/*
 @Preview
 @Composable
 private fun PreviewNotificationScreen() {
@@ -228,3 +229,5 @@ private fun PreviewNotificationScreen() {
         NotificationScreen()
     }
 }
+
+ */
