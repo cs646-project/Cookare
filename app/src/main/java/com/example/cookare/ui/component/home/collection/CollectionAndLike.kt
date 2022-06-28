@@ -364,7 +364,7 @@ fun RecipeItem(recipe: Recipe) {
 
 @Composable
 fun LikeRecipes(viewModel: FoodScreenViewModel) {
-    val recipes = viewModel.recipes.value
+    val recipes = viewModel.recipes1.value
 
     for (recipe in recipes) {
         RecipeItem(recipe)
@@ -373,7 +373,7 @@ fun LikeRecipes(viewModel: FoodScreenViewModel) {
 
 @Composable
 fun CollectionRecipes(viewModel: FoodScreenViewModel) {
-    val recipes = viewModel.recipes.value
+    val recipes = viewModel.recipes2.value
 
     for (recipe in recipes) {
         RecipeItem(recipe)

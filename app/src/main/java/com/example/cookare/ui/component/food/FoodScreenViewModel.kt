@@ -21,15 +21,23 @@ constructor(
     private @Named("auth_token") val token: String,
     ): ViewModel()
  {
-     val recipes: MutableState<List<Recipe>> = mutableStateOf(listOf())
+     val recipes1: MutableState<List<Recipe>> = mutableStateOf(listOf())
+     val recipes2: MutableState<List<Recipe>> = mutableStateOf(listOf())
      init {
          viewModelScope.launch {
-             val result = repository.search(
+             val result1 = repository.search(
                  token = token,
                  page = 1,
                  query = "beef"
              )
-             recipes.value = result
+
+             val result2 = repository.search(
+                 token = token,
+                 page = 1,
+                 query = "chicken"
+             )
+             recipes1.value = result1
+             recipes2.value = result2
          }
      }
 }
