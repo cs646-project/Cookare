@@ -132,11 +132,11 @@ fun BaseView(
     content: @Composable () -> Unit
 ) {
     val color = when (appThemeState.pallet) {
-        ColorPallet.GREEN -> green700
+        ColorPallet.GREEN -> green000
         ColorPallet.BLUE -> blue700
         ColorPallet.ORANGE -> orange700
         ColorPallet.PURPLE -> purple700
-        else -> green700
+        else -> green000
     }
     ComposeCookBookMaterial3Theme(
         darkTheme = appThemeState.darkTheme,

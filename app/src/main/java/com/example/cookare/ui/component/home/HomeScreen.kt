@@ -16,12 +16,9 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.runtime.*
 import androidx.compose.ui.draw.clip
@@ -37,35 +34,18 @@ import com.example.cookare.R
 import com.example.cookare.ui.theme.BackgroundWhite
 import com.example.cookare.ui.theme.Gray
 import com.example.cookare.ui.utils.ScreenRoute
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.*
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
-import com.example.cookare.ui.utils.loadPicture
-import com.example.cookare.model.Recipe
-import com.example.cookare.ui.component.home.collection.CollectionContent
 import com.example.cookare.ui.component.home.collection.LikeContent
-import com.example.cookare.ui.component.home.collection.TabPage
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -82,6 +62,7 @@ var currentLovePageState by mutableStateOf(LovePageState.Closed)
 var cardSize by mutableStateOf(IntSize(0, 0))
 var fullSize by mutableStateOf(IntSize(0, 0))
 var cardOffset by mutableStateOf(IntOffset(0, 0))
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HomeScreen(navController:NavController) {
@@ -102,7 +83,7 @@ fun HomeScreen(navController:NavController) {
         isFloatingActionButtonDocked = true,
 
         ) {
-        // Screen content
+
         Column(Modifier.onSizeChanged { fullSize = it }) {
             Column(
                 Modifier
@@ -113,33 +94,21 @@ fun HomeScreen(navController:NavController) {
             ) {
                 TopBar(navController)
                 SearchBar()
-                Scaffold(
-                    topBar = {
-                        NamesBar(
+
+                NamesBar(
                             pagerState = pagerState,
-                            backgroundColor = Color.White
                         )
-                    }
-                ) {
-                    CommunityContent(pagerState = pagerState)
-                }
-//                NamesBar()
-                //CardItem()
-//                LovesArea(
-//                    { cardSize = it },
-//                    { love, offset ->
-//                        currentLove = love
-//                        currentLovePageState = LovePageState.Opening
-//                        cardOffset = offset
-//                    })
+                CommunityContent(pagerState = pagerState)
+
+
             }
 
         }
-//        LoveDetailsPage(currentLove, currentLovePageState, cardSize, fullSize, cardOffset, {
-//            currentLovePageState = LovePageState.Closing
-//        }, {
-//            currentLovePageState = LovePageState.Closed
-//        })
+        LoveDetailsPage(currentLove, currentLovePageState, cardSize, fullSize, cardOffset, {
+            currentLovePageState = LovePageState.Closing
+        }, {
+            currentLovePageState = LovePageState.Closed
+        })
     }
 
 }
@@ -241,7 +210,7 @@ fun SearchBar() {
                 .clip(CircleShape)
                 .background(green000)
         ) {
-            Icon(painterResource(R.drawable.ic_search), "搜索",
+            Icon(painterResource(R.drawable.ic_search), "Search",
                 Modifier
                     .size(24.dp)
                     .align(Alignment.Center), tint = Color.White
@@ -252,60 +221,48 @@ fun SearchBar() {
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun NamesBar(pagerState: PagerState, backgroundColor: Color) {
-    val names = listOf("Recommend", "Following","Latest","Hot")
-//    var selected by remember { mutableStateOf(0) }
-//    val pagerState = rememberPagerState(
-//        pageCount = 2
-//    )
+fun NamesBar(pagerState: PagerState) {
+    val names = listOf("New for you", "Vegetarian","Lactose free","Gluten free")
+
     TabRow(
-        backgroundColor = backgroundColor,
-        selectedTabIndex = pagerState.currentPage) {
+
+        modifier = Modifier.padding(12.dp, 8.dp),
+        backgroundColor = BackgroundWhite,
+        selectedTabIndex = pagerState.currentPage,
+        indicator ={ positions ->
+            TabRowDefaults.Indicator(
+                Modifier.tabIndicatorOffset(positions[pagerState.currentPage])
+                    ,
+                color = green000
+            )
+           },
+        divider = {}
+                ) {
         names.forEachIndexed{
             index, _ ->
             Column(
                 Modifier
-                    .padding(12.dp, 4.dp)
-                    .width(IntrinsicSize.Max)) {
+                    .background(BackgroundWhite)
+                    .width(IntrinsicSize.Max)
+                    .padding(bottom = 4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,) {
                 Text(names[index], fontSize = 15.sp,
                     color = if (index == pagerState.currentPage) green000 else Gray
                 )
-                Box(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(top = 4.dp)
-                        .height(2.dp)
-                        .clip(RoundedCornerShape(1.dp))
-                        .background(
-                            if (index == pagerState.currentPage) green000 else Color.Transparent
-                        )
-                )
+    //                Box(
+    //                    Modifier
+    //                        .fillMaxWidth()
+    //                        .padding(top = 4.dp)
+    //                        .height(2.dp)
+    //                        .clip(RoundedCornerShape(1.dp))
+    //                        .background(
+    //                            if (index == pagerState.currentPage) green000 else Color.Transparent
+    //                        )
+    //                )
             }
         }
     }
-//    LazyRow(Modifier.padding(0.dp, 8.dp), contentPadding = PaddingValues(12.dp, 0.dp)) {
-//        itemsIndexed(names) { index, name ->
-//            Column(
-//                Modifier
-//                    .padding(12.dp, 4.dp)
-//                    .width(IntrinsicSize.Max)) {
-//                Text(name, fontSize = 15.sp,
-//                    color = if (index == selected) green000 else Gray
-//                )
-//                Box(
-//                    Modifier
-//                        .fillMaxWidth()
-//                        .padding(top = 4.dp)
-//                        .height(2.dp)
-//                        .clip(RoundedCornerShape(1.dp))
-//                        .background(
-//                            if (index == selected) green000 else Color.Transparent
-//                        )
-//                )
-//            }
-//        }
-//    }
-//    CommunityContent(pagerState)
 }
 
 @ExperimentalPagerApi
@@ -328,27 +285,17 @@ fun CommunityContent(
 
 @Composable
 fun RDContent(){
-    Column(Modifier.onSizeChanged { fullSize = it }) {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .weight(1f)
-                .background(BackgroundWhite)
-        ) {
-            LovesArea(
+
+    LovesArea(
                 { cardSize = it },
                 { love, offset ->
                     currentLove = love
                     currentLovePageState = LovePageState.Opening
                     cardOffset = offset
                 })
-        }
-    }
-    LoveDetailsPage(currentLove, currentLovePageState, cardSize, fullSize, cardOffset, {
-        currentLovePageState = LovePageState.Closing
-    }, {
-        currentLovePageState = LovePageState.Closed
-    })
+
+
+
 }
 
 @Composable
@@ -663,8 +610,10 @@ enum class LovePageState {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    val navController = rememberNavController()
-
-    HomeScreen(navController = navController)
+    LoveDetailsPage(currentLove, currentLovePageState, cardSize, fullSize, cardOffset, {
+        currentLovePageState = LovePageState.Opening
+    }, {
+        currentLovePageState = LovePageState.Open
+    })
 
 }
