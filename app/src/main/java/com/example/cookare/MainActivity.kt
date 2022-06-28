@@ -55,6 +55,7 @@ import com.guru.fontawesomecomposelib.FaIcon
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import com.example.cookare.ui.component.home.PostTemplate
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -187,8 +188,10 @@ fun HomeScreenNavigate() {
             CollectionAndLikeScreen(TabPage.Like)
         }
         composable(route = ScreenRoute.NotificationScreen.route){
-//            NotificationNavigate()
             NotificationScreen()
+        }
+        composable(route = ScreenRoute.PostTemplates.route){
+            PostTemplate()
         }
     }
 }
