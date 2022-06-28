@@ -6,6 +6,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -28,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -54,7 +56,6 @@ import com.example.cookare.ui.utils.TestTags
     ExperimentalMaterialApi::class)
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit) {
-    Text(text = "in LoginScreen")
     Scaffold() {
         var email by remember { mutableStateOf(TextFieldValue("")) }
         var password by remember { mutableStateOf(TextFieldValue("")) }
@@ -71,21 +72,28 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+
         ){
             item { Spacer(modifier = Modifier.height(20.dp)) }
             item {
                 Text(
-                    text = "Welcome Back to Cookare",
-                    style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),
-                    modifier = Modifier.padding(top = 8.dp)
+                    text = "Cookare",
+                    style = MaterialTheme.typography.headlineLarge.copy(fontWeight = FontWeight.ExtraBold),
+                    modifier = Modifier.padding(top = 10.dp)
                 )
+                Image(painterResource(R.drawable.logo), "logo",
+                    Modifier
+                        .clip(CircleShape)
+                        .fillMaxWidth())
             }
             item {
                 Text(
-                    text = "We have missed you, Let's start by Sign In!",
-                    style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(bottom = 12.dp)
+                    text = "Cares you most",
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 100.dp)
                 )
             }
 
@@ -173,7 +181,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp)
+                        .padding(vertical = 40.dp)
                         .height(50.dp)
                         .clip(CircleShape)
                 ) {
@@ -190,7 +198,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp)
+                        .padding(vertical = 2.dp)
                         .height(50.dp)
                         .clip(CircleShape)
                 ){
