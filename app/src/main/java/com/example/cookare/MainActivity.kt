@@ -55,6 +55,7 @@ import com.example.cookare.ui.utils.ScreenRoute
 import com.guru.fontawesomecomposelib.FaIcon
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import com.example.cookare.ui.component.home.PostTemplate
 
 
 @AndroidEntryPoint
@@ -192,6 +193,9 @@ fun HomeScreenNavigate() {
         composable(route = ScreenRoute.NotificationScreen.route){
 //            NotificationNavigate()
             NotificationScreen(upPress)
+        }
+        composable(route = ScreenRoute.PostTemplates.route){
+            PostTemplate(navController = navController)
         }
         composable(route = ScreenRoute.ProfileScreen.route){
             ProfileScreen()

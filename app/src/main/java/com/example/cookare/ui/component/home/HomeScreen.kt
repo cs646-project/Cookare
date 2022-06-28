@@ -91,7 +91,7 @@ fun HomeScreen(navController:NavController) {
             FloatingActionButton(
                 backgroundColor = green000,
 
-                onClick = { /* ... */ }) {
+                onClick = { navController.navigate(ScreenRoute.PostTemplates.route) }) {
                 /* FAB content */
                 Icon(painter = painterResource(R.drawable.ic_add), contentDescription = "add_posts",
                     modifier = Modifier
