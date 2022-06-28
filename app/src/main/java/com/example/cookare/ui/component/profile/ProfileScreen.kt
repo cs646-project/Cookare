@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.setting
+package com.example.cookare.ui.component.profile
 
 
 import androidx.compose.foundation.*
@@ -11,31 +11,21 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.paint
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.util.lerp
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
-import coil.request.ImageRequest
 import com.example.cookare.R
 import com.example.cookare.model.User
 import com.example.cookare.ui.component.components.CookareDivider
 import com.example.cookare.ui.component.components.CookareSurface
 import com.example.cookare.ui.component.components.UserImage
-import com.example.cookare.ui.component.home.HomeScreen
 import com.example.cookare.ui.theme.*
 import kotlin.math.max
 import kotlin.math.min
@@ -53,7 +43,7 @@ private val CollapsedImageSize = 150.dp
 private val HzPadding = Modifier.padding(horizontal = 24.dp)
 
 @Composable
-fun SettingScreen() {
+fun ProfileScreen() {
     Box(Modifier.fillMaxSize()) {
         Profile()
     }

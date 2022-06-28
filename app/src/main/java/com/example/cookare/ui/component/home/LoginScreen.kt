@@ -274,7 +274,7 @@ fun LoginOnboarding() {
 //    var loggedIn by remember { mutableStateOf(false) }
     val userStateVM = UserState.current
     val coroutineScope = rememberCoroutineScope()
-    val homeScreenState = rememberSaveable { mutableStateOf(BottomNavType.SETTING) }
+    val homeScreenState = rememberSaveable { mutableStateOf(BottomNavType.PROFILE) }
     Crossfade(targetState = userStateVM.isLoggedIn) {
         if (userStateVM.isLoggedIn) {
             // Text(text = "in LoginOnboaring function")
