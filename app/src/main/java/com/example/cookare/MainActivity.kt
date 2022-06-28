@@ -185,10 +185,10 @@ fun HomeScreenNavigate() {
             HomeScreen(navController = navController)
         }
         composable(route = ScreenRoute.CollectionScreen.route){
-            CollectionAndLikeScreen(TabPage.Collection)
+            CollectionAndLikeScreen(TabPage.Collection, navController = navController)
         }
         composable(route = ScreenRoute.LikeScreen.route){
-            CollectionAndLikeScreen(TabPage.Like)
+            CollectionAndLikeScreen(TabPage.Like, navController = navController)
         }
         composable(route = ScreenRoute.NotificationScreen.route){
 //            NotificationNavigate()
