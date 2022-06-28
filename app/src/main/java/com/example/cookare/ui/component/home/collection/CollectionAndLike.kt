@@ -98,7 +98,7 @@ fun TabsContent(
 
 @Composable
 fun LikeContent(){
-    Column(Modifier.onSizeChanged { fullSize = it }) {
+    Column() {
         Column(
             Modifier
                 .fillMaxWidth()
@@ -113,7 +113,7 @@ fun LikeContent(){
 
 @Composable
 fun CollectionContent() {
-    Column(Modifier.onSizeChanged { fullSize = it }) {
+    Column() {
         Column(
             Modifier
                 .fillMaxWidth()
