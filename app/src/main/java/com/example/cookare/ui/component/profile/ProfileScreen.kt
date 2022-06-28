@@ -51,6 +51,10 @@ private val ExpandedImageSize = 300.dp
 private val CollapsedImageSize = 150.dp
 private val HzPadding = Modifier.padding(horizontal = 24.dp)
 
+private val recipe1 = Recipe("Tomato Fish", "waterloo", "5 minutes ago", R.drawable.ic_pic1)
+private val recipe2 = Recipe("Fish Soup ", "waterloo", "yesterday", R.drawable.ic_pic2)
+private val recipe3 = Recipe("Green Egg", "waterloo", "yesterday", R.drawable.ic_pic3)
+
 @Composable
 fun ProfileScreen() {
     Box(Modifier.fillMaxSize()) {
@@ -86,7 +90,7 @@ private fun Header() {
         contentDescription = "",
         modifier = Modifier
             .fillMaxWidth()
-            )
+    )
 
 
 
@@ -156,9 +160,9 @@ private fun Body(
                     )
                     Spacer(Modifier.height(16.dp))
                     CookareDivider()
-                    PlaceArea(place=place)
-                    PlaceArea(place=place2)
-                    PlaceArea(place=place3)
+                    RecipeArea(recipe = recipe1)
+                    RecipeArea(recipe = recipe2)
+                    RecipeArea(recipe = recipe3)
                     Spacer(
                         modifier = Modifier
                             .padding(bottom = BottomBarHeight)
@@ -171,7 +175,7 @@ private fun Body(
     }
 }
 @Composable
-fun PlaceArea(place:Place) {
+fun RecipeArea(recipe:Recipe) {
 
     Column(Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)) {
         Surface(
@@ -184,7 +188,7 @@ fun PlaceArea(place:Place) {
         ) {
             Row(Modifier.height(IntrinsicSize.Max)) {
                 Image(
-                    painterResource(place.imageId),
+                    painterResource(recipe.imageId),
                     "图像",
                     Modifier
                         .clip(RoundedCornerShape(16.dp))
@@ -197,17 +201,15 @@ fun PlaceArea(place:Place) {
                         .padding(12.dp, 0.dp)
                         .fillMaxHeight(), verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    androidx.compose.material3.Text(place.time, fontSize = 14.sp, color = Color(0xffb4b4b4))
-                    androidx.compose.material3.Text(place.name, fontSize = 16.sp)
-                    androidx.compose.material3.Text(place.city, fontSize = 14.sp, color = Color(0xffb4b4b4))
+                    androidx.compose.material3.Text(recipe.time, fontSize = 14.sp, color = Color(0xffb4b4b4))
+                    androidx.compose.material3.Text(recipe.name, fontSize = 16.sp)
+                    androidx.compose.material3.Text(recipe.city, fontSize = 14.sp, color = Color(0xffb4b4b4))
                 }
             }
         }
     }
 }
-val place = Place("university of waterloo", "waterloo", "5 minutes age", R.drawable.ic_pic1)
-val place2 = Place("university of ", "waterloo", "5 minutes age", R.drawable.ic_pic1)
-val place3 = Place("university waterloo", "waterloo", "5 minutes age", R.drawable.ic_pic1)
+
 
 @Composable
 private fun Title(user: User, scrollProvider: () -> Int) {
@@ -329,7 +331,7 @@ private fun CollapsingImageLayout(
     }
 }
 
-data class Place(
+data class Recipe(
     val name: String,
     val city: String,
     val time: String,
