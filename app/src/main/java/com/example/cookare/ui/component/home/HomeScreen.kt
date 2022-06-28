@@ -152,10 +152,17 @@ fun TopBar(navController:NavController) {
             .padding(28.dp, 28.dp, 28.dp, 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Image(painterResource(R.drawable.avatar_lia), "avatar",
-            Modifier
-                .clip(CircleShape)
-                .size(64.dp))
+        OutlinedButton(
+            onClick = { navController.navigate(ScreenRoute.ProfileScreen.route) },
+            modifier= Modifier.size(64.dp),
+            shape = CircleShape,
+            contentPadding = PaddingValues(0.dp),
+        ) {
+            Image(painterResource(R.drawable.avatar_lia), "avatar",
+                Modifier
+                    .clip(CircleShape)
+                    .fillMaxWidth())
+        }
         Column(
             Modifier
                 .padding(start = 14.dp)

@@ -4,5 +4,5 @@ enum class BottomNavType {
     HOME,
     FOOD,
     LIST,
-    SETTING
+    PROFILE
 }

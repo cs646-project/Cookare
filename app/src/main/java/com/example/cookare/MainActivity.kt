@@ -33,7 +33,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -41,20 +40,20 @@ import com.example.cookare.ui.theme.AppThemeState
 import com.example.cookare.ui.theme.*
 import com.example.cookare.ui.utils.TestTags
 import com.example.cookare.ui.component.food.FoodScreen
-import com.example.cookare.ui.component.food.FoodScreenViewModel
 import com.example.cookare.ui.component.home.*
 import com.example.cookare.ui.component.list.ListScreen
 import com.example.cookare.ui.component.home.collection.CollectionAndLikeScreen
 import com.example.cookare.ui.component.home.collection.TabPage
 //import com.example.cookare.ui.component.home.notification.NotificationNavigate
 import com.example.cookare.ui.component.home.notification.NotificationScreen
-import com.example.cookare.ui.component.setting.SettingScreen
+import com.example.cookare.ui.component.profile.ProfileScreen
 import com.example.cookare.ui.utils.ScreenRoute
+
 
 import com.guru.fontawesomecomposelib.FaIcon
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -166,7 +165,7 @@ fun HomeScreenContent(
                     }
                     BottomNavType.FOOD -> FoodScreen()
                     BottomNavType.LIST -> ListScreen()
-                    BottomNavType.SETTING -> SettingScreen()
+                    BottomNavType.PROFILE -> ProfileScreen()
                 }
             }
         }
@@ -189,6 +188,9 @@ fun HomeScreenNavigate() {
         composable(route = ScreenRoute.NotificationScreen.route){
 //            NotificationNavigate()
             NotificationScreen()
+        }
+        composable(route = ScreenRoute.ProfileScreen.route){
+            ProfileScreen()
         }
     }
 }
@@ -342,9 +344,9 @@ fun BottomNavigationContent(
                         )
                 )
             },
-            selected = homeScreenState.value == BottomNavType.SETTING,
+            selected = homeScreenState.value == BottomNavType.PROFILE,
             onClick = {
-                homeScreenState.value = BottomNavType.SETTING
+                homeScreenState.value = BottomNavType.PROFILE
                 animate = false
             },
             label = {
@@ -444,9 +446,9 @@ private fun NavigationRailContent(
                         )
                 )
             },
-            selected = homeScreenState.value == BottomNavType.SETTING,
+            selected = homeScreenState.value == BottomNavType.PROFILE,
             onClick = {
-                homeScreenState.value = BottomNavType.SETTING
+                homeScreenState.value = BottomNavType.PROFILE
                 animate = false
             },
             label = {
