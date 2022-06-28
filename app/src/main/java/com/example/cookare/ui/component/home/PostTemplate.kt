@@ -37,15 +37,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
+import androidx.navigation.NavController
+import com.example.cookare.ui.utils.ScreenRoute
 
 @OptIn(
     ExperimentalMaterial3Api::class,
     ExperimentalAnimationApi::class,
     ExperimentalMaterialApi::class)
 @Composable
-fun PostTemplate() {
+fun PostTemplate(navController:NavController) {
     LazyColumn(state = rememberLazyListState()) {
-        item { TextInputs() }
+        item { TextInputs(navController) }
 
         item {
             var loading by remember { mutableStateOf(false) }
@@ -71,7 +73,7 @@ fun PostTemplate() {
 }
 
 @Composable
-fun TextInputs(){
+fun TextInputs(navController: NavController){
     var title by remember { mutableStateOf(TextFieldValue("")) }
     var description by remember { mutableStateOf(TextFieldValue("")) }
     var tips by remember { mutableStateOf(TextFieldValue("")) }
@@ -92,7 +94,7 @@ fun TextInputs(){
             verticalAlignment = Alignment.CenterVertically
         ) {
             OutlinedButton(
-                onClick = {},
+                onClick = {navController.navigate(ScreenRoute.HomeScreen.route)},
                 modifier = Modifier.size(60.dp).padding(12.dp),
                 shape = CircleShape,
                 border = BorderStroke(1.5.dp, Color.White),
@@ -241,5 +243,5 @@ fun TextInputs(){
 @Preview
 @Composable
 fun PreviewInputs() {
-    PostTemplate()
+    // PostTemplate()
 }

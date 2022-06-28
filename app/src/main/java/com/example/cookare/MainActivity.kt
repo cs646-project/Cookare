@@ -191,7 +191,7 @@ fun HomeScreenNavigate() {
             NotificationScreen()
         }
         composable(route = ScreenRoute.PostTemplates.route){
-            PostTemplate()
+            PostTemplate(navController = navController)
         }
     }
 }
