@@ -213,6 +213,6 @@ data class Notification(
 @Composable
 private fun PreviewNotificationScreen() {
     CookareTheme {
-//        NotificationScreen()
+        NotificationScreen()
     }
 }

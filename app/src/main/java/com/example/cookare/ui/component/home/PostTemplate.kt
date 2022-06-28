@@ -1,15 +1,17 @@
 package com.example.cookare.ui.component.home
 
 import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.TextField
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -30,6 +32,11 @@ import com.example.cookare.ui.component.home.HorizontalDottedProgressBar
 import com.example.cookare.ui.component.home.invalidInput
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 
 @OptIn(
     ExperimentalMaterial3Api::class,
@@ -65,7 +72,6 @@ fun PostTemplate() {
 
 @Composable
 fun TextInputs(){
-    Text(text = "Add Your Post", modifier = Modifier.padding(8.dp), fontSize = 35.sp, style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.ExtraBold),)
     var title by remember { mutableStateOf(TextFieldValue("")) }
     var description by remember { mutableStateOf(TextFieldValue("")) }
     var tips by remember { mutableStateOf(TextFieldValue("")) }
@@ -75,6 +81,49 @@ fun TextInputs(){
     var step_1 by remember { mutableStateOf(TextFieldValue("")) }
     var step_2 by remember { mutableStateOf(TextFieldValue("")) }
     var step_3 by remember { mutableStateOf(TextFieldValue("")) }
+
+    Column{
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .background(color = MaterialTheme.colorScheme.onPrimaryContainer),
+//            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedButton(
+                onClick = {},
+                modifier = Modifier.size(60.dp).padding(12.dp),
+                shape = CircleShape,
+                border = BorderStroke(1.5.dp, Color.White),
+                contentPadding = PaddingValues(0.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "go back",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(30.dp),
+                    tint = Color.White
+                )
+            }
+
+            Text(
+                buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White,
+                        )
+                    ) {
+                        append("Add Your Post")
+                    }
+                }
+            )
+        }
+    }
+
 
     OutlinedTextField(
         value = title,
