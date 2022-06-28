@@ -77,7 +77,10 @@ fun HomeScreen(navController:NavController) {
                 Icon(painter = painterResource(R.drawable.ic_add), contentDescription = "add_posts",
                     modifier = Modifier
                         .padding(10.dp)
-                        .size(32.dp))
+                        .size(32.dp),
+                    tint = Color.White
+                )
+
             }
         },
         isFloatingActionButtonDocked = true,
@@ -293,10 +296,8 @@ fun RDContent(){
                     currentLovePageState = LovePageState.Opening
                     cardOffset = offset
                 })
-
-
-
 }
+
 
 @Composable
 fun LovesArea(onCardSizedChanged: (IntSize) -> Unit,
