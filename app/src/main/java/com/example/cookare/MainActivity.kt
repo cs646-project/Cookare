@@ -33,6 +33,8 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -175,6 +177,8 @@ fun HomeScreenContent(
 @Composable
 fun HomeScreenNavigate() {
     val navController = rememberNavController()
+    val upPress = { upPress(navController) }
+
     NavHost(navController = navController, startDestination = ScreenRoute.HomeScreen.route){
         composable(route = ScreenRoute.HomeScreen.route){
             HomeScreen(navController = navController)
@@ -187,11 +191,29 @@ fun HomeScreenNavigate() {
         }
         composable(route = ScreenRoute.NotificationScreen.route){
 //            NotificationNavigate()
-            NotificationScreen()
+            NotificationScreen(upPress)
         }
         composable(route = ScreenRoute.ProfileScreen.route){
             ProfileScreen()
         }
+        cookareNavGraph(
+            upPress
+        )
+    }
+}
+
+
+fun upPress(navController: NavHostController) {
+    navController.navigateUp()
+}
+
+private fun NavGraphBuilder.cookareNavGraph(
+    upPress: () -> Unit
+) {
+    composable(
+        "notification_screen"
+    ) {
+        NotificationScreen(upPress)
     }
 }
 
@@ -461,6 +483,8 @@ private fun NavigationRailContent(
         )
     }
 }
+
+
 
 @OptIn(ExperimentalAnimationApi::class,
     ExperimentalFoundationApi::class,

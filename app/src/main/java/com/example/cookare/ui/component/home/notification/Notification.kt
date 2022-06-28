@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
@@ -37,12 +38,17 @@ import com.example.cookare.ui.component.home.HomeScreen
 import com.example.cookare.ui.component.home.collection.CollectionAndLikeScreen
 import com.example.cookare.ui.component.home.collection.TabPage
 import com.example.cookare.ui.theme.CookareTheme
+import com.example.cookare.ui.theme.Neutral0
+import com.example.cookare.ui.theme.Neutral8
 import com.example.cookare.ui.theme.green100
 import com.example.cookare.ui.utils.ScreenRoute
+import com.example.cookare.ui.utils.mirroringBackIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationScreen() {
+fun NotificationScreen(
+    upPress: () -> Unit
+) {
     val notification1 = Notification(
         "Karina",
         "liked",
@@ -79,22 +85,7 @@ fun NotificationScreen() {
 //            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            OutlinedButton(
-                onClick = {},
-                modifier = Modifier.size(60.dp).padding(12.dp),
-                shape = CircleShape,
-                border = BorderStroke(1.5.dp, Color.White),
-                contentPadding = PaddingValues(0.dp),
-            ) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = "go back",
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .size(30.dp),
-                    tint = Color.White
-                )
-            }
+            Up(upPress)
 
             Text(
                 buildAnnotatedString {
@@ -148,6 +139,27 @@ fun NotificationScreen() {
                 NotificationItem(notification = notification3)
             }
         }
+    }
+}
+
+@Composable
+private fun Up(upPress: () -> Unit) {
+    androidx.compose.material.IconButton(
+        onClick = upPress,
+        modifier = Modifier
+            .statusBarsPadding()
+            .padding(horizontal = 16.dp, vertical = 10.dp)
+            .size(36.dp)
+            .background(
+                color = Neutral8.copy(alpha = 0.32f),
+                shape = CircleShape
+            )
+    ) {
+        androidx.compose.material.Icon(
+            imageVector = mirroringBackIcon(),
+            tint = Neutral0,
+            contentDescription = stringResource(R.string.label_back)
+        )
     }
 }
 
