@@ -54,7 +54,6 @@ import com.example.cookare.ui.utils.TestTags
     ExperimentalMaterialApi::class)
 @Composable
 fun LoginScreen(onLoginSuccess: () -> Unit) {
-    Text(text = "in LoginScreen")
     Scaffold() {
         var email by remember { mutableStateOf(TextFieldValue("")) }
         var password by remember { mutableStateOf(TextFieldValue("")) }
@@ -73,6 +72,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
                 .fillMaxSize()
                 .padding(horizontal = 16.dp)
         ){
+
             item { Spacer(modifier = Modifier.height(20.dp)) }
             item {
                 Text(
