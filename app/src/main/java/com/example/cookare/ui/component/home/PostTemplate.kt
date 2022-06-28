@@ -69,7 +69,6 @@ fun PostTemplate(navController:NavController) {
             }
         }
     }
-    // TextInputs()
 }
 
 @Composable
@@ -134,7 +133,6 @@ fun TextInputs(navController: NavController){
             .fillMaxWidth(),
         label = { Text(text = "Title") },
         placeholder = { Text(text = "") },
-        // visualTransformation = PasswordVisualTransformation(),
         onValueChange = {
             title = it
         }
