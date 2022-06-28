@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -291,7 +292,11 @@ fun TabIndicator(
 }
 
 @Composable
-fun RecipeItem(recipe: Recipe) {
+fun RecipeItem(
+    recipe: Recipe,
+    isCollected: Int,
+    isLiked: Int
+) {
     Column(Modifier.padding(start = 24.dp, top = 6.dp, end = 24.dp)) {
         Surface(
             Modifier
@@ -301,7 +306,11 @@ fun RecipeItem(recipe: Recipe) {
                 .background(Color.White)
                 .padding(8.dp),
         ) {
-            Row(Modifier.height(IntrinsicSize.Max)) {
+            Row(
+                Modifier.height(IntrinsicSize.Max),
+//                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 recipe.featuredImage?.let { url ->
                     val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
                     image?.let { img ->
@@ -319,12 +328,14 @@ fun RecipeItem(recipe: Recipe) {
                 Column(
                     Modifier
                         .padding(12.dp, 0.dp)
-                        .fillMaxHeight(), verticalArrangement = Arrangement.SpaceEvenly
+                        .fillMaxHeight()
+                        .width(190.dp)
+                    ,
+                    verticalArrangement = Arrangement.SpaceEvenly
                 ) {
                     recipe.title?.let {
                         Text(recipe.title, fontSize = 16.sp)
                     }
-
                     recipe.publisher?.let {
                         Text(
                             buildAnnotatedString {
@@ -357,6 +368,20 @@ fun RecipeItem(recipe: Recipe) {
 //                        )
 //                    }
                 }
+
+                if(isCollected == 1){
+                    Icon(
+                        imageVector = Icons.Default.Star,
+                        contentDescription = "collection",
+                        tint = green000
+                    )
+                }else if(isLiked == 1){
+                    Icon(
+                        imageVector = Icons.Default.Favorite,
+                        contentDescription = "like",
+                        tint = green000
+                    )
+                }
             }
         }
     }
@@ -367,7 +392,7 @@ fun LikeRecipes(viewModel: FoodScreenViewModel) {
     val recipes = viewModel.recipes1.value
 
     for (recipe in recipes) {
-        RecipeItem(recipe)
+        RecipeItem(recipe, 0,1)
     }
 }
 
@@ -376,7 +401,7 @@ fun CollectionRecipes(viewModel: FoodScreenViewModel) {
     val recipes = viewModel.recipes2.value
 
     for (recipe in recipes) {
-        RecipeItem(recipe)
+        RecipeItem(recipe,1, 0)
     }
 }
 
