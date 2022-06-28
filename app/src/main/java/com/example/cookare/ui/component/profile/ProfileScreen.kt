@@ -128,9 +128,9 @@ private fun Body(
                     )
 
                      */
-                    Spacer(Modifier.height(25.dp))
+                    // Spacer(Modifier.height(25.dp))
 
-
+                    /*
                     var seeMore by remember { mutableStateOf(true) }
                     Text(
                         text = stringResource(R.string.detail_placeholder),
@@ -158,8 +158,11 @@ private fun Body(
                                 seeMore = !seeMore
                             }
                     )
-                    Spacer(Modifier.height(16.dp))
-                    CookareDivider()
+
+                     */
+
+                    // Spacer(Modifier.height(16.dp))
+                    // CookareDivider()
                     RecipeArea(recipe = recipe1)
                     RecipeArea(recipe = recipe2)
                     RecipeArea(recipe = recipe3)
