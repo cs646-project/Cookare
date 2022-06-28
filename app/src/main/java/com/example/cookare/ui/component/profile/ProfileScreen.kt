@@ -1,6 +1,7 @@
 package com.example.cookare.ui.component.profile
 
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,13 +9,18 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,9 +32,12 @@ import com.example.cookare.model.User
 import com.example.cookare.ui.component.components.CookareDivider
 import com.example.cookare.ui.component.components.CookareSurface
 import com.example.cookare.ui.component.components.UserImage
+import com.example.cookare.ui.component.home.Love
 import com.example.cookare.ui.theme.*
 import kotlin.math.max
 import kotlin.math.min
+import com.example.cookare.ui.component.home.LovePageState
+
 
 
 private val BottomBarHeight = 56.dp
@@ -147,7 +156,9 @@ private fun Body(
                     )
                     Spacer(Modifier.height(16.dp))
                     CookareDivider()
-
+                    PlaceArea(place=place)
+                    PlaceArea(place=place2)
+                    PlaceArea(place=place3)
                     Spacer(
                         modifier = Modifier
                             .padding(bottom = BottomBarHeight)
@@ -159,6 +170,44 @@ private fun Body(
         }
     }
 }
+@Composable
+fun PlaceArea(place:Place) {
+
+    Column(Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)) {
+        Surface(
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.White)
+                .padding(8.dp),
+        ) {
+            Row(Modifier.height(IntrinsicSize.Max)) {
+                Image(
+                    painterResource(place.imageId),
+                    "图像",
+                    Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .size(80.dp),
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                )
+                Column(
+                    Modifier
+                        .padding(12.dp, 0.dp)
+                        .fillMaxHeight(), verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    androidx.compose.material3.Text(place.time, fontSize = 14.sp, color = Color(0xffb4b4b4))
+                    androidx.compose.material3.Text(place.name, fontSize = 16.sp)
+                    androidx.compose.material3.Text(place.city, fontSize = 14.sp, color = Color(0xffb4b4b4))
+                }
+            }
+        }
+    }
+}
+val place = Place("university of waterloo", "waterloo", "5 minutes age", R.drawable.ic_pic1)
+val place2 = Place("university of ", "waterloo", "5 minutes age", R.drawable.ic_pic1)
+val place3 = Place("university waterloo", "waterloo", "5 minutes age", R.drawable.ic_pic1)
 
 @Composable
 private fun Title(user: User, scrollProvider: () -> Int) {
@@ -279,6 +328,13 @@ private fun CollapsingImageLayout(
         }
     }
 }
+
+data class Place(
+    val name: String,
+    val city: String,
+    val time: String,
+    @DrawableRes val imageId: Int
+)
 
 @Preview(showBackground = true)
 @Composable
