@@ -275,16 +275,16 @@ fun CommunityContent(
         // the different pages
             page ->
         when (page) {
-            0 -> RDContent()
-            1 -> LikeContent()
-            2 -> RDContent()
-            3 -> LikeContent()
+            0 -> RDContent(loves)
+            1 -> RDContent(loves1)
+            2 -> RDContent(loves2)
+            3 -> RDContent(loves3)
         }
     }
 }
 
 @Composable
-fun RDContent(){
+fun RDContent(loves:List<Love>){
 
     LovesArea(
                 { cardSize = it },
@@ -292,7 +292,8 @@ fun RDContent(){
                     currentLove = love
                     currentLovePageState = LovePageState.Opening
                     cardOffset = offset
-                })
+                },
+    loves=loves)
 
 
 
@@ -300,7 +301,7 @@ fun RDContent(){
 
 @Composable
 fun LovesArea(onCardSizedChanged: (IntSize) -> Unit,
-              onCardClicked: (love: Love, offset: IntOffset) -> Unit) {
+              onCardClicked: (love: Love, offset: IntOffset) -> Unit,loves:List<Love>) {
     LazyVerticalGrid(columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
@@ -603,7 +604,51 @@ val loves = mutableStateListOf(
     """.trimIndent()
     )
 )
-
+val loves1 = mutableStateListOf(
+    Love("Tomato fish1", "recommendation", 4.4f, "favorite", R.drawable.ic_pic1, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
+    Love("Green egg", "recommendation", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+    Love(
+        "Fish Soup",
+        "recommendation",
+        5f,
+        "favorite",
+        R.drawable.ic_pic2,
+        """
+     This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days.
+     
+    """.trimIndent()
+    )
+)
+val loves2 = mutableStateListOf(
+    Love("Tomato fish2", "recommendation", 4.4f, "favorite", R.drawable.ic_pic1, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
+    Love("Green egg", "recommendation", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+    Love(
+        "Fish Soup",
+        "recommendation",
+        5f,
+        "favorite",
+        R.drawable.ic_pic2,
+        """
+     This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days.
+     
+    """.trimIndent()
+    )
+)
+val loves3 = mutableStateListOf(
+    Love("Tomato fish3", "recommendation", 4.4f, "favorite", R.drawable.ic_pic1, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
+    Love("Green egg", "recommendation", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
+    Love(
+        "Fish Soup",
+        "recommendation",
+        5f,
+        "favorite",
+        R.drawable.ic_pic2,
+        """
+     This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days.
+     
+    """.trimIndent()
+    )
+)
 enum class LovePageState {
     Closing, Closed, Opening, Open
 }

@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -31,13 +32,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.cookare.R
 import com.example.cookare.model.Recipe
 import com.example.cookare.ui.component.food.FoodScreenViewModel
 import com.example.cookare.ui.component.home.fullSize
 import com.example.cookare.ui.theme.BackgroundWhite
 import com.example.cookare.ui.theme.CookareTheme
+import com.example.cookare.ui.theme.green000
 import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
+import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.ui.utils.loadPicture
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -54,13 +58,13 @@ enum class TabPage {
  */
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun CollectionAndLikeScreen(defaultPage: TabPage){
+fun CollectionAndLikeScreen(defaultPage: TabPage, navController: NavController) {
 
     // cur selected tab (default page)
     var tabPage by remember { mutableStateOf(defaultPage) }
     val pagerState = rememberPagerState(
         pageCount = 2,
-        initialPageOffset = if(defaultPage == TabPage.Collection) 1f else 0f
+        initialPageOffset = if (defaultPage == TabPage.Collection) 1f else 0f
     )
     Scaffold(
         topBar = {
@@ -70,7 +74,23 @@ fun CollectionAndLikeScreen(defaultPage: TabPage){
                 onTabSelected = { tabPage = it },
                 pagerState = pagerState
             )
-        }
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                backgroundColor = green000,
+
+                onClick = {navController.navigate(ScreenRoute.HomeScreen.route) }) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "go back",
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .size(30.dp),
+                    tint = Color.White
+                )
+            }
+        },
+        isFloatingActionButtonDocked = true,
     ) {
         TabsContent(pagerState = pagerState)
     }
@@ -97,7 +117,7 @@ fun TabsContent(
 }
 
 @Composable
-fun LikeContent(){
+fun LikeContent() {
     Column() {
         Column(
             Modifier
@@ -153,14 +173,14 @@ fun Tab(
     ) {
         Icon(
             imageVector = icon,
-            tint = if(selected) Color.White else colorResource(id = R.color.unselected_color),
+            tint = if (selected) Color.White else colorResource(id = R.color.unselected_color),
             contentDescription = null
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = title,
-            color = if(selected) Color.White else colorResource(id = R.color.unselected_color),
-            fontWeight = if(selected) FontWeight.Bold else FontWeight.Normal
+            color = if (selected) Color.White else colorResource(id = R.color.unselected_color),
+            fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal
         )
     }
 }
@@ -193,22 +213,23 @@ fun TabBar(
         list.forEachIndexed { index, _ ->
             Tab(
                 icon =
-                if(list[index] == TabPage.Collection){
+                if (list[index] == TabPage.Collection) {
                     // if collection selected, solid, otherwise border
-                    if(index == pagerState.currentPage) Icons.Default.Star else Icons.Default.StarBorder
-                }
-                else {
-                    if(index == pagerState.currentPage) Icons.Default.Favorite else Icons.Default.FavoriteBorder
+                    if (index == pagerState.currentPage) Icons.Default.Star else Icons.Default.StarBorder
+                } else {
+                    if (index == pagerState.currentPage) Icons.Default.Favorite else Icons.Default.FavoriteBorder
                 },
 
                 // use list[index] to tell from two pages
-                title = if(list[index] == TabPage.Collection) stringResource(id = R.string.collection) else stringResource(id = R.string.like),
+                title = if (list[index] == TabPage.Collection) stringResource(id = R.string.collection) else stringResource(
+                    id = R.string.like
+                ),
                 selected = index == pagerState.currentPage,
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(index)
                     }
-                    onTabSelected( if(list[index] == TabPage.Collection) TabPage.Collection else TabPage.Like)
+                    onTabSelected(if (list[index] == TabPage.Collection) TabPage.Collection else TabPage.Like)
                 }
             )
         }
@@ -252,7 +273,7 @@ fun TabIndicator(
         },
         label = "indicator right"
     ) {
-            tabPositions[pagerState.currentPage].right
+        tabPositions[pagerState.currentPage].right
     }
 
     Box(
@@ -342,19 +363,19 @@ fun RecipeItem(recipe: Recipe) {
 }
 
 @Composable
-fun LikeRecipes(viewModel: FoodScreenViewModel){
+fun LikeRecipes(viewModel: FoodScreenViewModel) {
     val recipes = viewModel.recipes.value
 
-    for(recipe in recipes){
+    for (recipe in recipes) {
         RecipeItem(recipe)
     }
 }
 
 @Composable
-fun CollectionRecipes(viewModel: FoodScreenViewModel){
+fun CollectionRecipes(viewModel: FoodScreenViewModel) {
     val recipes = viewModel.recipes.value
 
-    for(recipe in recipes){
+    for (recipe in recipes) {
         RecipeItem(recipe)
     }
 }
@@ -390,8 +411,8 @@ private fun PreviewTab() {
 
 @Preview
 @Composable
-private fun PreviewShowTabBar(){
+private fun PreviewShowTabBar() {
     CookareTheme {
-        CollectionAndLikeScreen(TabPage.Like)
+//        CollectionAndLikeScreen(TabPage.Like)
     }
 }

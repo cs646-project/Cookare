@@ -77,6 +77,7 @@ fun LoginScreen(onLoginSuccess: () -> Unit) {
             verticalArrangement = Arrangement.Center
 
         ){
+
             item { Spacer(modifier = Modifier.height(20.dp)) }
             item {
                 Text(
