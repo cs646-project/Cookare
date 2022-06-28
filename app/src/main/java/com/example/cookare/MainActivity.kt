@@ -46,6 +46,7 @@ import com.example.cookare.ui.component.home.*
 import com.example.cookare.ui.component.list.ListScreen
 import com.example.cookare.ui.component.home.collection.CollectionAndLikeScreen
 import com.example.cookare.ui.component.home.collection.TabPage
+//import com.example.cookare.ui.component.home.notification.NotificationNavigate
 import com.example.cookare.ui.component.home.notification.NotificationScreen
 import com.example.cookare.ui.component.setting.SettingScreen
 import com.example.cookare.ui.utils.ScreenRoute
@@ -186,6 +187,7 @@ fun HomeScreenNavigate() {
             CollectionAndLikeScreen(TabPage.Like)
         }
         composable(route = ScreenRoute.NotificationScreen.route){
+//            NotificationNavigate()
             NotificationScreen()
         }
     }

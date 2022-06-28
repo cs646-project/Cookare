@@ -60,7 +60,7 @@ fun CollectionAndLikeScreen(defaultPage: TabPage){
     var tabPage by remember { mutableStateOf(defaultPage) }
     val pagerState = rememberPagerState(
         pageCount = 2,
-        initialPageOffset = if(defaultPage == TabPage.Collection) 0.0f else 1.0f
+        initialPageOffset = if(defaultPage == TabPage.Collection) 1f else 0f
     )
     Scaffold(
         topBar = {
@@ -90,8 +90,8 @@ fun TabsContent(
         // the different pages
             page ->
         when (page) {
-            0 -> CollectionContent()
-            1 -> LikeContent()
+            0 -> LikeContent()
+            1 -> CollectionContent()
         }
     }
 }
@@ -180,14 +180,14 @@ fun TabBar(
     onTabSelected: (tabPage: TabPage) -> Unit,
     pagerState: PagerState
 ) {
-    val list = listOf(TabPage.Collection, TabPage.Like)
+    val list = listOf(TabPage.Like, TabPage.Collection)
     val scope = rememberCoroutineScope()
     TabRow(
         selectedTabIndex = tabPage.ordinal,
         backgroundColor = backgroundColor,
         // this indicator will be forced to fill up the entire TabRow
         indicator = { tabPositions ->
-            TabIndicator(tabPositions, tabPage)
+            TabIndicator(tabPositions, tabPage, pagerState)
         }
     ) {
         list.forEachIndexed { index, _ ->
@@ -195,15 +195,15 @@ fun TabBar(
                 icon =
                 if(list[index] == TabPage.Collection){
                     // if collection selected, solid, otherwise border
-                    if(list[index] == tabPage) Icons.Default.Star else Icons.Default.StarBorder
+                    if(index == pagerState.currentPage) Icons.Default.Star else Icons.Default.StarBorder
                 }
                 else {
-                    if(list[index] == tabPage) Icons.Default.Favorite else Icons.Default.FavoriteBorder
+                    if(index == pagerState.currentPage) Icons.Default.Favorite else Icons.Default.FavoriteBorder
                 },
 
                 // use list[index] to tell from two pages
                 title = if(list[index] == TabPage.Collection) stringResource(id = R.string.collection) else stringResource(id = R.string.like),
-                selected = list[index] == tabPage,
+                selected = index == pagerState.currentPage,
                 onClick = {
                     scope.launch {
                         pagerState.animateScrollToPage(index)
@@ -227,10 +227,11 @@ fun TabBar(
 @Composable
 fun TabIndicator(
     tabPositions: List<TabPosition>,
-    tabPage: TabPage
+    tabPage: TabPage,
+    pagerState: PagerState
 ) {
     val transition = updateTransition(
-        targetState = tabPage,
+        targetState = tabPage.ordinal,
         label = "Tab indicator"
     )
 
@@ -241,7 +242,7 @@ fun TabIndicator(
         },
         label = "indicator left"
     ) {
-        tabPositions[(tabPage.ordinal+1)%2].left
+        tabPositions[pagerState.currentPage].left
     }
 
     // indicatorRight is the horizontal position of the right edge of the indicator
@@ -251,7 +252,7 @@ fun TabIndicator(
         },
         label = "indicator right"
     ) {
-            tabPositions[(tabPage.ordinal+1)%2].right
+            tabPositions[pagerState.currentPage].right
     }
 
     Box(

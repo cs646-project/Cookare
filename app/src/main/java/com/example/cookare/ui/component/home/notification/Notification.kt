@@ -1,15 +1,17 @@
 package com.example.cookare.ui.component.home.notification
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material3.*
+import androidx.compose.material3.IconButtonDefaults.iconButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,28 +21,102 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.cookare.HomeScreenNavigate
 import com.example.cookare.R
+import com.example.cookare.ui.component.home.HomeScreen
+import com.example.cookare.ui.component.home.collection.CollectionAndLikeScreen
+import com.example.cookare.ui.component.home.collection.TabPage
 import com.example.cookare.ui.theme.CookareTheme
+import com.example.cookare.ui.theme.green100
+import com.example.cookare.ui.utils.ScreenRoute
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NotificationScreen(){
-    val notification = Notification("User1",
+fun NotificationScreen() {
+    val notification1 = Notification(
+        "Karina",
         "liked",
         "photo",
         "2 minutes ago",
         R.drawable.avatar_lia,
         R.drawable.ic_pic1
     )
-    Column(
-        Modifier.padding(0.dp, 15.dp, 15.dp, 0.dp)
-    ) {
-        Text(text = "Notification")
-        Column(Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)){
+
+    val notification2 = Notification(
+        "Steven",
+        "liked",
+        "photo",
+        "5 minutes ago",
+        R.drawable.ic_user2,
+        R.drawable.ic_pic2
+    )
+
+    val notification3 = Notification(
+        "Steven",
+        "liked",
+        "photo",
+        "7 minutes ago",
+        R.drawable.ic_user2,
+        R.drawable.ic_pic3
+    )
+
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(60.dp)
+                .background(color = MaterialTheme.colorScheme.onPrimaryContainer),
+//            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            OutlinedButton(
+                onClick = {},
+                modifier = Modifier.size(60.dp).padding(12.dp),
+                shape = CircleShape,
+                border = BorderStroke(1.5.dp, Color.White),
+                contentPadding = PaddingValues(0.dp),
+            ) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "go back",
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(30.dp),
+                    tint = Color.White
+                )
+            }
+
+            Text(
+                buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight.Medium,
+                            color = Color.White,
+                        )
+                    ) {
+                        append(" Notification")
+                    }
+                }
+            )
+        }
+
+        Column(Modifier.padding(
+            start = 24.dp,
+            top = 0.dp,
+            bottom = 24.dp,
+            end = 24.dp)
+        ) {
             Surface(
                 Modifier
                     .fillMaxWidth()
@@ -48,8 +124,8 @@ fun NotificationScreen(){
                     .clip(RoundedCornerShape(5.dp))
                     .background(Color.White)
                     .padding(8.dp),
-            ){
-                NotificationItem(notification = notification)
+            ) {
+                NotificationItem(notification = notification1)
             }
             Surface(
                 Modifier
@@ -58,8 +134,8 @@ fun NotificationScreen(){
                     .clip(RoundedCornerShape(5.dp))
                     .background(Color.White)
                     .padding(8.dp),
-            ){
-                NotificationItem(notification = notification)
+            ) {
+                NotificationItem(notification = notification2)
             }
             Surface(
                 Modifier
@@ -68,18 +144,18 @@ fun NotificationScreen(){
                     .clip(RoundedCornerShape(5.dp))
                     .background(Color.White)
                     .padding(8.dp),
-            ){
-                NotificationItem(notification = notification)
+            ) {
+                NotificationItem(notification = notification3)
             }
         }
     }
 }
 
 @Composable
-fun NotificationItem(notification: Notification){
+fun NotificationItem(notification: Notification) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement  =  Arrangement.SpaceBetween,
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -110,6 +186,19 @@ fun NotificationItem(notification: Notification){
         )
     }
 }
+//
+//@Composable
+//fun NotificationNavigate() {
+//    val navController = rememberNavController()
+//    NavHost(navController = navController, startDestination = ScreenRoute.NotificationScreen.route){
+//        composable(route = ScreenRoute.NotificationScreen.route){
+//            NotificationScreen(navController = navController)
+//        }
+//        composable(route = ScreenRoute.HomeScreen.route){
+//            HomeScreenNavigate()
+//        }
+//    }
+//}
 
 data class Notification(
     val guestName: String,
@@ -122,8 +211,8 @@ data class Notification(
 
 @Preview
 @Composable
-private fun PreviewNotificationScreen(){
+private fun PreviewNotificationScreen() {
     CookareTheme {
-        NotificationScreen()
+//        NotificationScreen()
     }
 }
