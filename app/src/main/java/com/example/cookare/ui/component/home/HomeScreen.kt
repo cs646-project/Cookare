@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
+import com.example.cookare.BottomNavType
 import com.example.cookare.ui.component.home.collection.LikeContent
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -65,7 +66,10 @@ var cardOffset by mutableStateOf(IntOffset(0, 0))
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen(navController:NavController) {
+fun HomeScreen(
+    navController:NavController,
+    homeScreenState: MutableState<BottomNavType>
+) {
     val pagerState = rememberPagerState(pageCount = 4)
     Scaffold(
         floatingActionButton = {
@@ -93,7 +97,7 @@ fun HomeScreen(navController:NavController) {
                     .background(BackgroundWhite)
 
             ) {
-                TopBar(navController)
+                TopBar(navController, homeScreenState)
                 SearchBar()
 
                 NamesBar(
@@ -115,7 +119,10 @@ fun HomeScreen(navController:NavController) {
 }
 
 @Composable
-fun TopBar(navController:NavController) {
+fun TopBar(
+    navController:NavController,
+    homeScreenState: MutableState<BottomNavType>
+) {
     Row(
         Modifier
             .fillMaxWidth()
@@ -123,7 +130,8 @@ fun TopBar(navController:NavController) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedButton(
-            onClick = { navController.navigate(ScreenRoute.ProfileScreen.route) },
+            onClick = { homeScreenState.value = BottomNavType.PROFILE
+                navController.navigate(ScreenRoute.ProfileScreen.route) },
             modifier= Modifier.size(64.dp),
             shape = CircleShape,
             contentPadding = PaddingValues(0.dp),

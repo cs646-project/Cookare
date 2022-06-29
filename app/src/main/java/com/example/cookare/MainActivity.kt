@@ -153,6 +153,7 @@ fun BaseView(
 @Composable
 fun HomeScreenContent(
     homeScreen: BottomNavType,
+    homeScreenState: MutableState<BottomNavType>,
     appThemeState: MutableState<AppThemeState>,
     chooseColorBottomModalState: ModalBottomSheetState, //use for a11y
     modifier: Modifier
@@ -163,7 +164,7 @@ fun HomeScreenContent(
             androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background) {
                 when (screen) {
                     BottomNavType.HOME -> {
-                        if(userStateVM.isLoggedIn) HomeScreenNavigate()
+                        if(userStateVM.isLoggedIn) HomeScreenNavigate(homeScreenState)
                         else LoginOnboarding()
                     }
                     BottomNavType.FOOD -> FoodScreen()
@@ -176,13 +177,15 @@ fun HomeScreenContent(
 }
 
 @Composable
-fun HomeScreenNavigate() {
+fun HomeScreenNavigate(
+    homeScreenState: MutableState<BottomNavType>
+) {
     val navController = rememberNavController()
     val upPress = { upPress(navController) }
 
     NavHost(navController = navController, startDestination = ScreenRoute.HomeScreen.route){
         composable(route = ScreenRoute.HomeScreen.route){
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, homeScreenState)
         }
         composable(route = ScreenRoute.CollectionScreen.route){
             CollectionAndLikeScreen(TabPage.Collection, navController = navController)
@@ -254,6 +257,7 @@ fun MainAppContent(appThemeState: MutableState<AppThemeState>) {
             Column{
                 HomeScreenContent(
                     homeScreen = homeScreenState.value,
+                    homeScreenState = homeScreenState,
                     appThemeState = appThemeState,
                     chooseColorBottomModalState = chooseColorBottomModalState,
                     modifier = Modifier.weight(1f)
@@ -275,6 +279,7 @@ fun MainAppContent(appThemeState: MutableState<AppThemeState>) {
                 )
                 HomeScreenContent(
                     homeScreen = homeScreenState.value,
+                    homeScreenState = homeScreenState,
                     appThemeState = appThemeState,
                     chooseColorBottomModalState = chooseColorBottomModalState,
                     modifier = Modifier.weight(1f)

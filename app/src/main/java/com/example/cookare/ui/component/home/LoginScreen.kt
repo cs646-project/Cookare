@@ -287,7 +287,7 @@ fun LoginOnboarding() {
     Crossfade(targetState = userStateVM.isLoggedIn) {
         if (userStateVM.isLoggedIn) {
             // Text(text = "in LoginOnboaring function")
-            HomeScreenNavigate()
+            HomeScreenNavigate(homeScreenState)
         } else {
             LoginScreen {
                 coroutineScope.launch {
