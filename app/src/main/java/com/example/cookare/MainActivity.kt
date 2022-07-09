@@ -169,7 +169,7 @@ fun HomeScreenContent(
                     }
                     BottomNavType.FOOD -> FoodScreen()
                     BottomNavType.LIST -> ListScreen()
-                    BottomNavType.PROFILE -> ProfileScreen()
+//                    BottomNavType.PROFILE -> ProfileScreen()
                 }
             }
         }
@@ -200,9 +200,9 @@ fun HomeScreenNavigate(
         composable(route = ScreenRoute.PostTemplates.route){
             PostTemplate(navController = navController)
         }
-        composable(route = ScreenRoute.ProfileScreen.route){
-            ProfileScreen()
-        }
+//        composable(route = ScreenRoute.ProfileScreen.route){
+//            ProfileScreen()
+//        }
         cookareNavGraph(
             upPress
         )
@@ -365,29 +365,29 @@ fun BottomNavigationContent(
             },
             modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
         )
-        NavigationBarItem(
-            icon = {
-                FaIcon(
-                    faIcon = FaIcons.Compass, tint = androidx.compose.material3.LocalContentColor
-                        .current.copy(
-                            alpha =
-                            LocalContentAlpha.current
-                        )
-                )
-            },
-            selected = homeScreenState.value == BottomNavType.PROFILE,
-            onClick = {
-                homeScreenState.value = BottomNavType.PROFILE
-                animate = false
-            },
-            label = {
-                androidx.compose.material3.Text(
-                    text = stringResource(id = R.string.navigation_item_profile),
-                    style = TextStyle(fontSize = 12.sp)
-                )
-            },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
-        )
+//        NavigationBarItem(
+//            icon = {
+//                FaIcon(
+//                    faIcon = FaIcons.Compass, tint = androidx.compose.material3.LocalContentColor
+//                        .current.copy(
+//                            alpha =
+//                            LocalContentAlpha.current
+//                        )
+//                )
+//            },
+//            selected = homeScreenState.value == BottomNavType.PROFILE,
+//            onClick = {
+//                homeScreenState.value = BottomNavType.PROFILE
+//                animate = false
+//            },
+//            label = {
+//                androidx.compose.material3.Text(
+//                    text = stringResource(id = R.string.navigation_item_profile),
+//                    style = TextStyle(fontSize = 12.sp)
+//                )
+//            },
+//            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
+//        )
     }
 }
 
@@ -467,29 +467,29 @@ private fun NavigationRailContent(
             },
             modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
         )
-        NavigationRailItem(
-            icon = {
-                FaIcon(
-                    faIcon = FaIcons.Compass, tint = androidx.compose.material3.LocalContentColor
-                        .current.copy(
-                            alpha =
-                            LocalContentAlpha.current
-                        )
-                )
-            },
-            selected = homeScreenState.value == BottomNavType.PROFILE,
-            onClick = {
-                homeScreenState.value = BottomNavType.PROFILE
-                animate = false
-            },
-            label = {
-                Text(
-                    text = stringResource(id = R.string.navigation_item_profile),
-                    style = TextStyle(fontSize = 12.sp)
-                )
-            },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
-        )
+//        NavigationRailItem(
+//            icon = {
+//                FaIcon(
+//                    faIcon = FaIcons.Compass, tint = androidx.compose.material3.LocalContentColor
+//                        .current.copy(
+//                            alpha =
+//                            LocalContentAlpha.current
+//                        )
+//                )
+//            },
+//            selected = homeScreenState.value == BottomNavType.PROFILE,
+//            onClick = {
+//                homeScreenState.value = BottomNavType.PROFILE
+//                animate = false
+//            },
+//            label = {
+//                Text(
+//                    text = stringResource(id = R.string.navigation_item_profile),
+//                    style = TextStyle(fontSize = 12.sp)
+//                )
+//            },
+//            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
+//        )
     }
 }
 

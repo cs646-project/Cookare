@@ -130,8 +130,9 @@ fun TopBar(
         verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedButton(
-            onClick = { homeScreenState.value = BottomNavType.PROFILE
-                navController.navigate(ScreenRoute.ProfileScreen.route) },
+            onClick = {},
+//            onClick = { homeScreenState.value = BottomNavType.PROFILE
+//                navController.navigate(ScreenRoute.ProfileScreen.route) },
             modifier= Modifier.size(64.dp),
             shape = CircleShape,
             contentPadding = PaddingValues(0.dp),
