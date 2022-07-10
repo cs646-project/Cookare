@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
-import com.example.cookare.MainActivity
+import com.example.cookare.ui.MainActivity
 import com.example.cookare.R
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.green000
