@@ -2,6 +2,11 @@
     <string name="app_name">cookare</string>
     <string name="label_back">Back</string>
 
+    <!-- Home Tabs -->
+    <string name="home_feed">Home</string>
+    <string name="home_food">Food</string>
+    <string name="home_list">List</string>
+
     <!-- Accessibility strings -->
     <string name="a11y_bottom_navigation_bar">Bottom navigation bar with Having actions </string>
     <string name="navigation_item_home">Home</string>
