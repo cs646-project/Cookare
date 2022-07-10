@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.list
+package com.example.cookare.ui.list
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,9 +25,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cookare.ui.component.home.HomeScreen
-import com.example.cookare.ui.component.home.HorizontalDottedProgressBar
-import com.example.cookare.ui.component.home.invalidInput
+import com.example.cookare.ui.home.HomeScreen
+import com.example.cookare.ui.home.HorizontalDottedProgressBar
+import com.example.cookare.ui.home.invalidInput
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 

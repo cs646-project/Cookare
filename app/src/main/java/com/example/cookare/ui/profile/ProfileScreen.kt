@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.profile
+package com.example.cookare.ui.profile
 
 
 import androidx.annotation.DrawableRes
@@ -29,14 +29,14 @@ import androidx.compose.ui.util.lerp
 import coil.compose.AsyncImage
 import com.example.cookare.R
 import com.example.cookare.model.User
-import com.example.cookare.ui.component.components.CookareDivider
-import com.example.cookare.ui.component.components.CookareSurface
-import com.example.cookare.ui.component.components.UserImage
-import com.example.cookare.ui.component.home.Love
+import com.example.cookare.ui.components.CookareDivider
+import com.example.cookare.ui.components.CookareSurface
+import com.example.cookare.ui.components.UserImage
+import com.example.cookare.ui.home.Love
 import com.example.cookare.ui.theme.*
 import kotlin.math.max
 import kotlin.math.min
-import com.example.cookare.ui.component.home.LovePageState
+import com.example.cookare.ui.home.LovePageState
 
 
 
@@ -178,7 +178,7 @@ private fun Body(
     }
 }
 @Composable
-fun RecipeArea(recipe:Recipe) {
+fun RecipeArea(recipe: Recipe) {
 
     Column(Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)) {
         Surface(

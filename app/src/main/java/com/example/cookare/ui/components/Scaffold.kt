@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.cookare.ui.component.components
+package com.example.cookare.ui.components
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues

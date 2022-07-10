@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.home.notification
+package com.example.cookare.ui.home.notification
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
@@ -34,9 +34,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cookare.HomeScreenNavigate
 import com.example.cookare.R
-import com.example.cookare.ui.component.home.HomeScreen
-import com.example.cookare.ui.component.home.collection.CollectionAndLikeScreen
-import com.example.cookare.ui.component.home.collection.TabPage
+import com.example.cookare.ui.home.HomeScreen
+import com.example.cookare.ui.home.collection.CollectionAndLikeScreen
+import com.example.cookare.ui.home.collection.TabPage
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.Neutral0
 import com.example.cookare.ui.theme.Neutral8

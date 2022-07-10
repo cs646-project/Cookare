@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.home.collection
+package com.example.cookare.ui.home.collection
 
 import android.annotation.SuppressLint
 import androidx.compose.animation.core.Spring
@@ -36,8 +36,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.cookare.R
 import com.example.cookare.model.Recipe
-import com.example.cookare.ui.component.food.FoodScreenViewModel
-import com.example.cookare.ui.component.home.fullSize
+import com.example.cookare.ui.food.FoodScreenViewModel
+import com.example.cookare.ui.home.fullSize
 import com.example.cookare.ui.theme.BackgroundWhite
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.green000
@@ -70,7 +70,7 @@ fun CollectionAndLikeScreen(defaultPage: TabPage, navController: NavController) 
     Scaffold(
         topBar = {
             TabBar(
-                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
+                backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer,
                 tabPage = tabPage,
                 onTabSelected = { tabPage = it },
                 pagerState = pagerState

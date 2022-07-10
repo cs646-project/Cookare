@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.home
+package com.example.cookare.ui.home
 
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue

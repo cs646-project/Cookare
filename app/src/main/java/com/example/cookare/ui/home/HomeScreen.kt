@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.home
+package com.example.cookare.ui.home
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.layout.*
@@ -46,7 +46,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import com.example.cookare.BottomNavType
-import com.example.cookare.ui.component.home.collection.LikeContent
+import com.example.cookare.ui.home.collection.LikeContent
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -311,7 +311,7 @@ fun RDContent(loves:List<Love>){
 
 @Composable
 fun LovesArea(onCardSizedChanged: (IntSize) -> Unit,
-              onCardClicked: (love: Love, offset: IntOffset) -> Unit,loves:List<Love>) {
+              onCardClicked: (love: Love, offset: IntOffset) -> Unit, loves:List<Love>) {
     LazyVerticalGrid(columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),

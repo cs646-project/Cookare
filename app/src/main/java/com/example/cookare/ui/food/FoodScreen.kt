@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.food
+package com.example.cookare.ui.food
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material3.ExperimentalMaterial3Api

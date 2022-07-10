@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.example.cookare.ui.component.components
+package com.example.cookare.ui.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box

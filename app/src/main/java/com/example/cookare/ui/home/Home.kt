@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.home
+package com.example.cookare.ui.home
 
 import androidx.annotation.FloatRange
 import androidx.annotation.StringRes

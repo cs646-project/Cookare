@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.food
+package com.example.cookare.ui.food
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

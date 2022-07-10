@@ -1,4 +1,4 @@
-package com.example.cookare.ui.component.home
+package com.example.cookare.ui.home
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -41,7 +41,7 @@ import com.guru.fontawesomecomposelib.FaIcon
 import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.example.cookare.ui.component.home.HomeScreen
+import com.example.cookare.ui.home.HomeScreen
 import com.example.cookare.BottomNavigationContent
 import com.example.cookare.HomeScreenNavigate
 import com.example.cookare.R
