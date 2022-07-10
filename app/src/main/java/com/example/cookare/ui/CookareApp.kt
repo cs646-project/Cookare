@@ -67,28 +67,6 @@ fun CookareApp() {
 }
 
 @Composable
-fun HomeScreenContent(
-    homeScreen: BottomNavType,
-    modifier: Modifier
-) {
-    val userStateVM = UserState.current
-    Column(modifier = modifier) {
-        Crossfade(homeScreen) { screen ->
-            androidx.compose.material3.Surface(color = androidx.compose.material3.MaterialTheme.colorScheme.background) {
-                when (screen) {
-                    BottomNavType.HOME -> {
-                        if(userStateVM.isLoggedIn) HomeScreenNavigate()
-                        else LoginOnboarding()
-                    }
-                    BottomNavType.FOOD -> FoodScreen()
-                    BottomNavType.LIST -> ListScreen()
-                }
-            }
-        }
-    }
-}
-
-@Composable
 fun HomeScreenNavigate() {
     val navController = rememberNavController()
     val upPress = { upPress(navController) }
@@ -115,7 +93,6 @@ fun HomeScreenNavigate() {
     }
 }
 
-
 fun upPress(navController: NavHostController) {
     navController.navigateUp()
 }
@@ -129,86 +106,6 @@ private fun NavGraphBuilder.cookareNavGraph(
         NotificationScreen(upPress)
     }
 }
-
-@Composable
-fun BottomNavigationContent(
-    modifier: Modifier = Modifier,
-    homeScreenState: MutableState<BottomNavType>
-) {
-    var animate by remember { mutableStateOf(false) }
-    NavigationBar(
-        modifier = modifier,
-    ){
-        NavigationBarItem(
-            icon = {
-                FaIcon(
-                    faIcon = FaIcons.Home,
-                    tint = androidx.compose.material3.LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
-                )
-            },
-            selected = homeScreenState.value == BottomNavType.HOME,
-            onClick = {
-                homeScreenState.value = BottomNavType.HOME
-                animate = false
-            },
-            label = {
-                Text(
-                    text = stringResource(id = R.string.navigation_item_home),
-                    style = TextStyle(fontSize = 12.sp)
-                )
-            },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_HOME_TEST_TAG)
-        )
-        NavigationBarItem(
-            icon = {
-                FaIcon(
-                    faIcon = FaIcons.Cheese,
-                    tint = androidx.compose.material3.LocalContentColor
-                        .current.copy(
-                            alpha =
-                            LocalContentAlpha.current
-                        )
-                )
-            },
-            selected = homeScreenState.value == BottomNavType.FOOD,
-            onClick = {
-                homeScreenState.value = BottomNavType.FOOD
-                animate = false
-            },
-            label = {
-                Text(
-                    text = stringResource(id = R.string.navigation_item_food),
-                    style = TextStyle(fontSize = 12.sp)
-                )
-            },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
-        )
-        NavigationBarItem(
-            icon = {
-                FaIcon(
-                    faIcon = FaIcons.Book, tint = androidx.compose.material3.LocalContentColor
-                        .current.copy(
-                            alpha =
-                            LocalContentAlpha.current
-                        )
-                )
-            },
-            selected = homeScreenState.value == BottomNavType.LIST,
-            onClick = {
-                homeScreenState.value = BottomNavType.LIST
-                animate = false
-            },
-            label = {
-                Text(
-                    text = stringResource(id = R.string.navigation_item_list),
-                    style = TextStyle(fontSize = 12.sp)
-                )
-            },
-            modifier = Modifier.testTag(TestTags.BOTTOM_NAV_TEMPLATE_TEST_TAG)
-        )
-    }
-}
-
 
 private fun NavGraphBuilder.cookareNavGraph(
     onSnackSelected: (Long, NavBackStackEntry) -> Unit,
