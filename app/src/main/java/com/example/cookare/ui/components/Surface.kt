@@ -33,7 +33,6 @@ import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
-import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.Neutral0
 import com.example.cookare.ui.theme.Neutral7
 import kotlin.math.ln
@@ -69,8 +68,8 @@ fun CookareSurface(
 @Composable
 private fun getBackgroundColorForElevation(color: Color, elevation: Dp): Color {
     return if (elevation > 0.dp // && https://issuetracker.google.com/issues/161429530
-        // CookareTheme.colors.isDark //&&
-        // color == CookareTheme.colors.uiBackground
+    // CookareTheme.colors.isDark //&&
+    // color == CookareTheme.colors.uiBackground
     ) {
         color.withElevation(elevation)
     } else {

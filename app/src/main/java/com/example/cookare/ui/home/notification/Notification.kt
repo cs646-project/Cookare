@@ -3,15 +3,9 @@ package com.example.cookare.ui.home.notification
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ButtonDefaults
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material3.*
-import androidx.compose.material3.IconButtonDefaults.iconButtonColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,26 +16,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.cookare.HomeScreenNavigate
 import com.example.cookare.R
-import com.example.cookare.ui.home.HomeScreen
-import com.example.cookare.ui.home.collection.CollectionAndLikeScreen
-import com.example.cookare.ui.home.collection.TabPage
-import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.Neutral0
 import com.example.cookare.ui.theme.Neutral8
-import com.example.cookare.ui.theme.green100
-import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.ui.utils.mirroringBackIcon
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -198,19 +179,6 @@ fun NotificationItem(notification: Notification) {
         )
     }
 }
-//
-//@Composable
-//fun NotificationNavigate() {
-//    val navController = rememberNavController()
-//    NavHost(navController = navController, startDestination = ScreenRoute.NotificationScreen.route){
-//        composable(route = ScreenRoute.NotificationScreen.route){
-//            NotificationScreen(navController = navController)
-//        }
-//        composable(route = ScreenRoute.HomeScreen.route){
-//            HomeScreenNavigate()
-//        }
-//    }
-//}
 
 data class Notification(
     val guestName: String,
@@ -220,14 +188,3 @@ data class Notification(
     @DrawableRes val guestAvatar: Int,
     @DrawableRes val postId: Int
 )
-
-/*
-@Preview
-@Composable
-private fun PreviewNotificationScreen() {
-    CookareTheme {
-        NotificationScreen()
-    }
-}
-
- */

@@ -19,25 +19,25 @@ class FoodScreenViewModel
 constructor(
     private val repository: RecipeRepository,
     private @Named("auth_token") val token: String,
-    ): ViewModel()
- {
-     val recipes1: MutableState<List<Recipe>> = mutableStateOf(listOf())
-     val recipes2: MutableState<List<Recipe>> = mutableStateOf(listOf())
-     init {
-         viewModelScope.launch {
-             val result1 = repository.search(
-                 token = token,
-                 page = 1,
-                 query = "beef"
-             )
+): ViewModel()
+{
+    val recipes1: MutableState<List<Recipe>> = mutableStateOf(listOf())
+    val recipes2: MutableState<List<Recipe>> = mutableStateOf(listOf())
+    init {
+        viewModelScope.launch {
+            val result1 = repository.search(
+                token = token,
+                page = 1,
+                query = "beef"
+            )
 
-             val result2 = repository.search(
-                 token = token,
-                 page = 1,
-                 query = "chicken"
-             )
-             recipes1.value = result1
-             recipes2.value = result2
-         }
-     }
+            val result2 = repository.search(
+                token = token,
+                page = 1,
+                query = "chicken"
+            )
+            recipes1.value = result1
+            recipes2.value = result2
+        }
+    }
 }

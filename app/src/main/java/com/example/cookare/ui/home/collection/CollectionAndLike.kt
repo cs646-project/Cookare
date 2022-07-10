@@ -11,7 +11,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,9 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -37,7 +34,6 @@ import androidx.navigation.NavController
 import com.example.cookare.R
 import com.example.cookare.model.Recipe
 import com.example.cookare.ui.food.FoodScreenViewModel
-import com.example.cookare.ui.home.fullSize
 import com.example.cookare.ui.theme.BackgroundWhite
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.green000
@@ -70,7 +66,7 @@ fun CollectionAndLikeScreen(defaultPage: TabPage, navController: NavController) 
     Scaffold(
         topBar = {
             TabBar(
-                backgroundColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
                 tabPage = tabPage,
                 onTabSelected = { tabPage = it },
                 pagerState = pagerState

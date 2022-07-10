@@ -19,10 +19,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.util.lerp
@@ -32,12 +28,9 @@ import com.example.cookare.model.User
 import com.example.cookare.ui.components.CookareDivider
 import com.example.cookare.ui.components.CookareSurface
 import com.example.cookare.ui.components.UserImage
-import com.example.cookare.ui.home.Love
 import com.example.cookare.ui.theme.*
 import kotlin.math.max
 import kotlin.math.min
-import com.example.cookare.ui.home.LovePageState
-
 
 
 private val BottomBarHeight = 56.dp
@@ -178,7 +171,7 @@ private fun Body(
     }
 }
 @Composable
-fun RecipeArea(recipe: Recipe) {
+fun RecipeArea(recipe:Recipe) {
 
     Column(Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)) {
         Surface(
