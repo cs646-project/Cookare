@@ -1,62 +1,46 @@
 package com.example.cookare.ui.home
 
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.icons.Icons
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.unit.dp
-import com.example.cookare.ui.theme.*
-
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.material.*
+import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
+import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.FavoriteBorder
+import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.cookare.R
-
-import com.example.cookare.ui.theme.BackgroundWhite
-import com.example.cookare.ui.theme.Gray
+import com.example.cookare.ui.theme.*
 import com.example.cookare.ui.utils.ScreenRoute
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material.*
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
-import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
-import com.example.cookare.BottomNavType
-import com.example.cookare.ui.home.collection.LikeContent
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-
-
-@OptIn(
-    ExperimentalMaterialApi::class,
-    ExperimentalAnimationApi::class,
-    ExperimentalMaterialApi::class)
 
 var currentLove: Love? by mutableStateOf(null)
 var currentLovePageState by mutableStateOf(LovePageState.Closed)
@@ -67,8 +51,7 @@ var cardOffset by mutableStateOf(IntOffset(0, 0))
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HomeScreen(
-    navController:NavController,
-    homeScreenState: MutableState<BottomNavType>
+    navController:NavController
 ) {
     val pagerState = rememberPagerState(pageCount = 4)
     Scaffold(
@@ -82,7 +65,7 @@ fun HomeScreen(
                     modifier = Modifier
                         .padding(10.dp)
                         .size(32.dp),
-                tint = BackgroundWhite)
+                    tint = BackgroundWhite)
             }
         },
         isFloatingActionButtonDocked = true,
@@ -97,12 +80,12 @@ fun HomeScreen(
                     .background(BackgroundWhite)
 
             ) {
-                TopBar(navController, homeScreenState)
+                TopBar(navController)
                 SearchBar()
 
                 NamesBar(
-                            pagerState = pagerState,
-                        )
+                    pagerState = pagerState,
+                )
                 CommunityContent(pagerState = pagerState)
 
 
@@ -120,8 +103,7 @@ fun HomeScreen(
 
 @Composable
 fun TopBar(
-    navController:NavController,
-    homeScreenState: MutableState<BottomNavType>
+    navController:NavController
 ) {
     Row(
         Modifier
@@ -131,8 +113,6 @@ fun TopBar(
     ) {
         OutlinedButton(
             onClick = {},
-//            onClick = { homeScreenState.value = BottomNavType.PROFILE
-//                navController.navigate(ScreenRoute.ProfileScreen.route) },
             modifier= Modifier.size(64.dp),
             shape = CircleShape,
             contentPadding = PaddingValues(0.dp),
@@ -242,14 +222,14 @@ fun NamesBar(pagerState: PagerState) {
         indicator ={ positions ->
             TabRowDefaults.Indicator(
                 Modifier.tabIndicatorOffset(positions[pagerState.currentPage])
-                    ,
+                ,
                 color = green000
             )
-           },
+        },
         divider = {}
-                ) {
+    ) {
         names.forEachIndexed{
-            index, _ ->
+                index, _ ->
             Column(
                 Modifier
                     .background(BackgroundWhite)
@@ -260,16 +240,16 @@ fun NamesBar(pagerState: PagerState) {
                 Text(names[index], fontSize = 15.sp,
                     color = if (index == pagerState.currentPage) green000 else Gray
                 )
-    //                Box(
-    //                    Modifier
-    //                        .fillMaxWidth()
-    //                        .padding(top = 4.dp)
-    //                        .height(2.dp)
-    //                        .clip(RoundedCornerShape(1.dp))
-    //                        .background(
-    //                            if (index == pagerState.currentPage) green000 else Color.Transparent
-    //                        )
-    //                )
+                //                Box(
+                //                    Modifier
+                //                        .fillMaxWidth()
+                //                        .padding(top = 4.dp)
+                //                        .height(2.dp)
+                //                        .clip(RoundedCornerShape(1.dp))
+                //                        .background(
+                //                            if (index == pagerState.currentPage) green000 else Color.Transparent
+                //                        )
+                //                )
             }
         }
     }
@@ -297,13 +277,13 @@ fun CommunityContent(
 fun RDContent(loves:List<Love>){
 
     LovesArea(
-                { cardSize = it },
-                { love, offset ->
-                    currentLove = love
-                    currentLovePageState = LovePageState.Opening
-                    cardOffset = offset
-                },
-    loves=loves)
+        { cardSize = it },
+        { love, offset ->
+            currentLove = love
+            currentLovePageState = LovePageState.Opening
+            cardOffset = offset
+        },
+        loves=loves)
 
 
 
@@ -311,7 +291,7 @@ fun RDContent(loves:List<Love>){
 
 @Composable
 fun LovesArea(onCardSizedChanged: (IntSize) -> Unit,
-              onCardClicked: (love: Love, offset: IntOffset) -> Unit, loves:List<Love>) {
+              onCardClicked: (love: Love, offset: IntOffset) -> Unit,loves:List<Love>) {
     LazyVerticalGrid(columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
