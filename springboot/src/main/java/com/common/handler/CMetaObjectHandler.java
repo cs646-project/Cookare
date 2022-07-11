@@ -35,6 +35,7 @@ public class CMetaObjectHandler implements com.baomidou.mybatisplus.core.handler
             userId = StpUtil.getLoginIdAsInt();
         }
         this.strictInsertFill(metaObject, CREAT_USER, Integer.class, userId);
+        this.strictUpdateFill(metaObject, UPDATE_USER, Integer.class, userId);
         this.strictInsertFill(metaObject, CREAT_TIME, Date.class, DateUtils.currentDate());
         this.strictUpdateFill(metaObject, UPDATE_USER, Integer.class, userId);
         this.strictUpdateFill(metaObject, UPDATE_TIME, Date.class, DateUtils.currentDate());

@@ -21,19 +21,30 @@ delete_flg, INTEGER
 ```
 id, INTEGER, KEY, AUTO
 title, VARCHAR
-author, INTEGER, FOREIGN KEY OF USER
+update_user, INTEGER, FOREIGN KEY OF USER @rename to update_user
 content, VARCHAR
-tags, VARCHAR
+tags, VARCHAR @changeToInt
 create_time, TIMESTAMP
 update_time, TIMESTAMP
-delete_flg, INTEGER
-likes_num, INTEGER
-collect_num, INTEGER
-comment_num, INTEGER
+delete_flg, INTEGER 
+likes_num, INTEGER @drop
+collect_num, INTEGER @drop
+comment_num, INTEGER @drop
 cover_url, VARCHAR
+ingredients, VARCHAR @add
 ```
 
-#### USER_RECIPE_REL
+#### INGREDIENTS
+
+```
+id, INTEGER, KEY, AUTO
+name, VARCHAR
+recipe_id, INTEGER, FOREIGN KEY OF RECIPE
+num, INTEGER
+quantifier, VARCHAR
+```
+
+#### USER_RECIPE_REL @Dropped
 
 ```
 id, INTEGER, KEY, AUTO
@@ -45,11 +56,12 @@ update_time, TIMESTAMP
 delete_flg, INTEGER
 ```
 
-#### COMMENT
+#### COMMENT@Dropped
 
 ```
 id, INTEGER, KEY, AUTO
-user_id, INTEGER, FOREIGN KEY OF USER
+update_user, INTEGER, FOREIGN KEY OF USER
+recipe_id, INTEGER, FOREIGN KEY OF RECIPE
 content, VARCHAR
 create_time, TIMESTAMP
 update_time, TIMESTAMP

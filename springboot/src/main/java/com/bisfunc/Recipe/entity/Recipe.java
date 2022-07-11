@@ -18,7 +18,7 @@ public class Recipe {
 
     private String content;
 
-    private String tags;
+    private Integer tags;
 
     @TableField(fill = FieldFill.INSERT)
     private Date createTime;
@@ -27,12 +27,6 @@ public class Recipe {
     private Date updateTime;
 
     private Integer deleteFlg;
-
-    private Integer likesNum;
-
-    private Integer collectNum;
-
-    private Integer commentNum;
 
     private String coverUrl;
 }

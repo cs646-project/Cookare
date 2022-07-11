@@ -2,6 +2,8 @@ package com.bisfunc.Recipe.entity;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class RecipeDto {
     private Integer id;
@@ -10,11 +12,13 @@ public class RecipeDto {
 
     private String content;
 
-    private String tags;
+    private Integer tags;
 
     private Integer updateUser;
 
     private String coverUrl;
+
+    private List<Ingredients> ingredients;
 
     public static void SynDtoToRecipe(RecipeDto recipeDto, Recipe recipe) {
         if (recipeDto.getTitle() != null) recipe.setTitle(recipeDto.getTitle());

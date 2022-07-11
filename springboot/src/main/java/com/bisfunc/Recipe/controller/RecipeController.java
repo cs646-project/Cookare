@@ -1,10 +1,16 @@
 package com.bisfunc.Recipe.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.bisfunc.Recipe.Mapper.IngredientsMapper;
 import com.bisfunc.Recipe.Mapper.RecipeMapper;
+import com.bisfunc.Recipe.Service.IIngredientsService;
 import com.bisfunc.Recipe.Service.IRecipeService;
+import com.bisfunc.Recipe.entity.Ingredients;
 import com.bisfunc.Recipe.entity.Recipe;
 import com.bisfunc.Recipe.entity.RecipeDto;
+import com.bisfunc.Recipe.entity.RecipeVo;
 import com.common.constants.Constants;
 import com.common.constants.MsgConstants;
 import com.common.domain.vo.Result;
@@ -14,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +38,12 @@ public class RecipeController {
     @Resource
     RecipeMapper recipeMapper;
 
+    @Resource
+    IngredientsMapper ingredientsMapper;
+
+    @Resource
+    IIngredientsService ingredientsService;
+
     @SaCheckLogin
     @PostMapping("/updateRecipe")
     @ResponseBody
@@ -40,11 +53,11 @@ public class RecipeController {
         if (!recipeService.isNecessaryRecipeInfo(recipeDto)) {
             return Result.error(MsgConstants.ERROR.MISSING_INFO);
         }
-        if ((recipeDto.getUpdateUser() != loginService.getCurrentUserId()) || (old_recipe != null && (recipeDto.getUpdateUser() != old_recipe.getUpdateUser()))) {
+        if (recipeDto.getUpdateUser() != loginService.getCurrentUserId()) {
             return Result.error(MsgConstants.ERROR.WRONG_USER);
         }
 
-        //if is update an existing recipe, check if is author
+        //if is update an existing recipe, check if is the author
         if (recipeDto.getId() != null) {
             old_recipe = recipeMapper.selectById(recipeDto.getId());
             if (old_recipe == null) {
@@ -64,7 +77,18 @@ public class RecipeController {
             RecipeDto.SynDtoToRecipe(recipeDto, old_recipe);
             recipeMapper.updateById(old_recipe);
         }
-        return Result.success(old_recipe);
+        if (recipeDto.getIngredients() != null) {
+            ingredientsMapper.delete(new LambdaQueryWrapper<Ingredients>().eq(Ingredients::getRecipeId, old_recipe.getId()));
+            for(Ingredients ingredients: recipeDto.getIngredients()){
+                ingredients.setRecipeId(old_recipe.getId());
+            }
+            ingredientsService.saveBatch(recipeDto.getIngredients());
+        }
+        RecipeVo recipeVo = new RecipeVo();
+        recipeVo.setRecipe(old_recipe);
+//        recipeVo.setIngredients(ingredientsMapper.selectList(new LambdaQueryWrapper<Ingredients>().eq(Ingredients::getRecipeId, old_recipe.getId())));
+        recipeVo.setIngredients(recipeDto.getIngredients());
+        return Result.success(recipeVo);
     }
 
     @SaCheckLogin
@@ -83,6 +107,7 @@ public class RecipeController {
 
         //delete
         recipeMapper.deleteById(recipe);
+        ingredientsMapper.delete(new LambdaUpdateWrapper<Ingredients>().eq(Ingredients::getRecipeId, recipeId));
         return Result.success(Constants.SUCCESS);
     }
 
@@ -95,10 +120,15 @@ public class RecipeController {
         if (recipeList == null) {
             return Result.error(MsgConstants.ERROR.NOT_EXIST);
         }
-        for(Recipe recipe: recipeList){
+        List<RecipeVo> recipeVoList = new ArrayList<>();
+        for (Recipe recipe : recipeList) {
             recipeService.htmlTransUNEscape(recipe);
+            RecipeVo recipeVo = new RecipeVo();
+            recipeVo.setRecipe(recipe);
+            ingredientsService.synRecipeVoIngredients(recipeVo, recipe.getId());
+            recipeVoList.add(recipeVo);
         }
-        return Result.success(recipeList);
+        return Result.success(recipeVoList);
     }
 
     @PostMapping("/searchRecipeByTitle")

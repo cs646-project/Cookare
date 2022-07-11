@@ -5,7 +5,9 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-     
+    url: jdbc:mysql://sh-cynosdbmysql-grp-p0taec8i.sql.tencentcdb.com:28503/db_Cookare?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: Rootroot651
   servlet:
     multipart:
       max-file-size: -1  #??????
