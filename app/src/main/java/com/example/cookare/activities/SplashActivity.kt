@@ -45,14 +45,14 @@ class SplashActivity : ComponentActivity() {
         )
 
         Handler().postDelayed({
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             finish()
         }, 2500)
     }
 }
 
 @Composable
-fun LogoScreen(){
+fun LogoScreen() {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,9 +60,11 @@ fun LogoScreen(){
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Image(painterResource(R.drawable.logo), "logo",
+        Image(
+            painterResource(R.drawable.logo), "logo",
             Modifier
                 .clip(CircleShape)
-                .fillMaxWidth())
+                .fillMaxWidth()
+        )
     }
 }

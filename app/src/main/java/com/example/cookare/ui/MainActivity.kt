@@ -26,7 +26,6 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             // val appState = rememberCookareAppState()
-
             CompositionLocalProvider(UserState provides userState) {
                 val systemUiController = remember { SystemUiController(window) }
                 val appTheme = remember { mutableStateOf(AppThemeState()) }

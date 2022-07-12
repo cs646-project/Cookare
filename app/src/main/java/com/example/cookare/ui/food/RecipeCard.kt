@@ -47,19 +47,19 @@ fun RecipeCard(
                 end = 20.dp
             )
         ) {
-            recipe.featuredImage?.let { url ->
-                val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
-                image?.let { img ->
-                    Image(
-                        bitmap = img.asImageBitmap(),
-                        contentDescription = "Recipe Featured Image",
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(225.dp),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
-            }
+//            recipe.featuredImage?.let { url ->
+//                val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
+//                image?.let { img ->
+//                    Image(
+//                        bitmap = img.asImageBitmap(),
+//                        contentDescription = "Recipe Featured Image",
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(225.dp),
+//                        contentScale = ContentScale.Crop,
+//                    )
+//                }
+//            }
 
             recipe.title?.let { title ->
                 Row(
@@ -91,23 +91,23 @@ fun RecipeCard(
                 }
             }
 
-            recipe.publisher?.let{  publisher ->
-                Column{
-                    Text(
-                        buildAnnotatedString {
-                            withStyle(
-                                style = SpanStyle(
-                                    fontStyle = FontStyle.Italic,
-                                    fontSize = 16.sp,
-                                )
-                            ) {
-                                append("Publisher: ")
-                                append(publisher)
-                            }
-                        }
-                    )
-                }
-            }
+//            recipe.publisher?.let{  publisher ->
+//                Column{
+//                    Text(
+//                        buildAnnotatedString {
+//                            withStyle(
+//                                style = SpanStyle(
+//                                    fontStyle = FontStyle.Italic,
+//                                    fontSize = 16.sp,
+//                                )
+//                            ) {
+//                                append("Publisher: ")
+//                                append(publisher)
+//                            }
+//                        }
+//                    )
+//                }
+//            }
         }
     }
 }

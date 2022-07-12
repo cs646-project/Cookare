@@ -4,36 +4,25 @@ import com.example.cookare.model.Recipe
 import com.example.cookare.network.RecipeNetWorkEntity
 
 class RecipeNetworkMapper: EntityMapper<RecipeNetWorkEntity, Recipe> {
-
     override fun mapToModel(entity: RecipeNetWorkEntity): Recipe {
         return Recipe(
-            id = entity.pk,
+            id = entity.id,
             title = entity.title,
-            featuredImage = entity.featuredImage,
-            rating = entity.rating,
-            publisher = entity.publisher,
-            sourceUrl = entity.sourceUrl,
-            description = entity.description,
-            cookingInstructions = entity.cookingInstructions,
-            ingredients = entity.ingredients.orEmpty(),
-            dateAdded = entity.dateAdded,
-            dateUpdated = entity.dateUpdated,
+            content = entity.content,
+            tags = entity.tags,
+            updateUser = entity.updateUser,
+            coverUrl = entity.coverUrl,
         )
     }
 
     override fun mapFromModel(model: Recipe): RecipeNetWorkEntity {
         return RecipeNetWorkEntity(
-            pk = model.id,
+            id = model.id,
             title = model.title,
-            featuredImage = model.featuredImage,
-            rating = model.rating,
-            publisher = model.publisher,
-            sourceUrl = model.sourceUrl,
-            description = model.description,
-            cookingInstructions = model.cookingInstructions,
-            ingredients = model.ingredients,
-            dateAdded = model.dateAdded,
-            dateUpdated = model.dateUpdated,
+            content = model.content,
+            tags = model.tags,
+            updateUser = model.updateUser,
+            coverUrl = model.coverUrl,
         )
     }
 
