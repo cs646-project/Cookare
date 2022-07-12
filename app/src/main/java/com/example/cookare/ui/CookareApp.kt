@@ -1,36 +1,19 @@
 package com.example.cookare.ui
 
-import FaIcons
-import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cookare.BottomNavType
-import com.example.cookare.R
 import com.example.cookare.ui.components.CookareScaffold
-import com.example.cookare.ui.food.FoodScreen
 import com.example.cookare.ui.home.*
 import com.example.cookare.ui.home.collection.CollectionAndLikeScreen
 import com.example.cookare.ui.home.collection.TabPage
 import com.example.cookare.ui.home.notification.NotificationScreen
-import com.example.cookare.ui.list.ListScreen
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.utils.ScreenRoute
-import com.example.cookare.ui.utils.TestTags
-import com.guru.fontawesomecomposelib.FaIcon
 
 @Composable
 fun CookareApp() {
