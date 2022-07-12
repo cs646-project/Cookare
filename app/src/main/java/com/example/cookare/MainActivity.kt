@@ -56,6 +56,7 @@ import com.guru.fontawesomecomposelib.FaIcon
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import com.example.cookare.ui.component.home.PostTemplate
+import com.example.cookare.ui.component.list.TodoNavHost
 
 
 @AndroidEntryPoint
@@ -168,7 +169,7 @@ fun HomeScreenContent(
                         else LoginOnboarding()
                     }
                     BottomNavType.FOOD -> FoodScreen()
-                    BottomNavType.LIST -> ListScreen()
+                    BottomNavType.LIST -> TodoNavHost()
 //                    BottomNavType.PROFILE -> ProfileScreen()
                 }
             }
