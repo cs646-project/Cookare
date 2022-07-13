@@ -68,6 +68,15 @@ constructor(
             resRecipeByIdList.value = res
         }
     }
+
+    fun deletdById(recipeId: Int) {
+        viewModelScope.launch {
+            val res = repository.deleteRecipeById(
+                token = token,
+                recipeId = recipeId
+            )
+        }
+    }
 //
 //    fun getAllRecipes(){
 //        viewModelScope.launch {

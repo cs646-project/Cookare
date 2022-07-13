@@ -31,4 +31,8 @@ class RecipeRepositoryImpl(
         val result = recipeService.searchRecipeById(token, recipeIdList).data
         return result.map { mapper.mapToModel(it.recipe) }
     }
+
+    override suspend fun deleteRecipeById(token: String, recipeId: Int) {
+        recipeService.deleteRecipeById(token, recipeId)
+    }
 }

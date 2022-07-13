@@ -1,5 +1,6 @@
 package com.example.cookare.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -23,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -32,9 +34,22 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.cookare.model.Recipe
+import com.example.cookare.ui.MainActivity
+import com.example.cookare.ui.food.RecipeDetail
+import com.example.cookare.ui.home.HomeScreen
+import com.example.cookare.ui.home.PostTemplate
+import com.example.cookare.ui.home.collection.CollectionAndLikeScreen
+import com.example.cookare.ui.home.collection.TabPage
+import com.example.cookare.ui.home.notification.NotificationScreen
 import com.example.cookare.ui.theme.CookareTheme
+import com.example.cookare.ui.upPress
+import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.viewModels.PostRecipeViewModel
+import com.google.android.material.internal.ContextUtils.getActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -126,7 +141,7 @@ fun EditRecipeScreen(
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth(),
-        //                label = { Text(text = "Title") },
+                        label = { Text(text = "Title") },
         //                placeholder = { (if(recipe != null) recipe.title else "")?.let { Text(text = it) } },
                     placeholder = { Text(text = "") },
                     onValueChange = {
@@ -141,7 +156,7 @@ fun EditRecipeScreen(
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth(),
-        //                label = { Text(text = "Content") },
+                        label = { Text(text = "Content") },
         //                placeholder = { (if(recipe != null) recipe.content else "")?.let { Text(text = it) }  },
                     onValueChange = {
                         content = it
@@ -154,7 +169,7 @@ fun EditRecipeScreen(
                 modifier = Modifier
                     .padding(8.dp)
                     .fillMaxWidth(),
-//                label = { Text(text = "Tags") },
+                label = { Text(text = "Tags") },
 //                placeholder = { Text(text = recipe?.tags?.toString() ?: "")  },
                 onValueChange = {
                     tags = it
@@ -167,7 +182,7 @@ fun EditRecipeScreen(
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth(),
-        //                label = { Text(text = "Image url") },
+                        label = { Text(text = "Image url") },
         //                placeholder = { (if(recipe != null) recipe.coverUrl else "")?.let { Text(text = it) } },
                     onValueChange = {
                         coverUrl = it
@@ -244,8 +259,6 @@ fun EditRecipeScreen(
                             null
                         )
                     )
-
-//                    navController.navigate(ScreenRoute.HomeScreen.route)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

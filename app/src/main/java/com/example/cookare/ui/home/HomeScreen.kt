@@ -60,6 +60,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.delay
 
 var currentLove: Recipe? by mutableStateOf(null)
 var currentLovePageState by mutableStateOf(LovePageState.Closed)
@@ -663,7 +664,11 @@ fun LoveDetailsPage(
                 fontWeight = FontWeight.Bold
             )
             Surface(
-                { onPageClosing() },
+                {
+                    recipe.id?.let { viewModel.deletdById(recipeId = it) }
+                    onPageClosing()
+                    navController.navigate(ScreenRoute.HomeScreen.route)
+                },
                 Modifier
                     .align(Alignment.TopEnd)
                     .padding(14.dp, 32.dp),
