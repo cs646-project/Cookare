@@ -17,6 +17,7 @@ import com.example.cookare.ui.home.*
 import com.example.cookare.ui.home.collection.CollectionAndLikeScreen
 import com.example.cookare.ui.home.collection.TabPage
 import com.example.cookare.ui.home.notification.NotificationScreen
+import com.example.cookare.ui.profile.ProfileScreen
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.utils.ScreenRoute
 import com.google.android.material.internal.ContextUtils.getActivity
@@ -63,6 +64,9 @@ fun HomeScreenNavigate() {
     NavHost(navController = navController, startDestination = ScreenRoute.HomeScreen.route){
         composable(route = ScreenRoute.HomeScreen.route){
             HomeScreen(navController = navController, hiltViewModel())
+        }
+        composable(route = ScreenRoute.ProfileScreen.route){
+            ProfileScreen(navController = navController)
         }
         composable(route = ScreenRoute.CollectionScreen.route){
             CollectionAndLikeScreen(TabPage.Collection, navController = navController)

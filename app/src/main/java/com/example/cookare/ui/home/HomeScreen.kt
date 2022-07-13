@@ -19,8 +19,10 @@ import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.RestoreFromTrash
+import androidx.compose.material.icons.outlined.AirplaneTicket
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
+import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
@@ -44,11 +46,13 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.cookare.R
 import com.example.cookare.activities.EditPostActivity
-import com.example.cookare.model.Recipe
+import com.example.cookare.model.*
+import com.example.cookare.ui.components.TopBar
 import com.example.cookare.ui.food.RecipeCard
 import com.example.cookare.ui.food.RecipeDetail
 import com.example.cookare.ui.theme.*
@@ -60,7 +64,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 var currentLove: Recipe? by mutableStateOf(null)
 var currentLovePageState by mutableStateOf(LovePageState.Closed)
@@ -75,24 +79,46 @@ fun HomeScreen(
     viewModel: PostRecipeViewModel
 ) {
     val pagerState = rememberPagerState(pageCount = 4)
-    val recipes = viewModel.resRecipeList.value
+
     Scaffold(
         floatingActionButton = {
-            FloatingActionButton(
-                backgroundColor = green000,
+            if (currentLovePageState==LovePageState.Closed ) {
+                FloatingActionButton(
+                    backgroundColor = green000,
 
-                onClick = { navController.navigate(ScreenRoute.PostTemplates.route) }) {
+                    onClick = { navController.navigate(ScreenRoute.PostTemplates.route) }) {
 //                onClick = {
 //                    context.startActivity(Intent(context, AddPostActivity::class.java))
 //                }) {
-                /* FAB content */
-                Icon(
-                    painter = painterResource(R.drawable.ic_add), contentDescription = "add_posts",
-                    modifier = Modifier
-                        .padding(10.dp)
-                        .size(32.dp),
-                    tint = BackgroundWhite
-                )
+                    /* FAB content */
+                    Icon(
+                        painter = painterResource(R.drawable.ic_add),
+                        contentDescription = "add_posts",
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(32.dp),
+                        tint = BackgroundWhite
+                    )
+                }
+            }
+            else{
+                FloatingActionButton(
+                    backgroundColor = green000,
+
+                    onClick = { }) {
+//                onClick = {
+//                    context.startActivity(Intent(context, AddPostActivity::class.java))
+//                }) {
+                    /* FAB content */
+                    Icon(
+                        painter = painterResource(R.drawable.ic_cart),
+                        contentDescription = "add_cart",
+                        modifier = Modifier
+                            .padding(10.dp)
+                            .size(32.dp),
+                        tint = BackgroundWhite
+                    )
+                }
             }
         },
         isFloatingActionButtonDocked = true,
@@ -107,10 +133,16 @@ fun HomeScreen(
                     .background(BackgroundWhite)
 
             ) {
-                TopBar(navController)
-                SearchBar()
-
-                RDContent(recipes = recipes)
+                TopBar(users,navController)
+                Divider()
+                Row(modifier = Modifier.padding(start = 20.dp), verticalAlignment = Alignment.CenterVertically){
+                    Text("Recipe", fontSize = 18.sp, color = Gray100, fontWeight = FontWeight.Bold)
+                    NamesBar(
+                        pagerState = pagerState,
+                    )
+                }
+                CommunityContent(pagerState = pagerState, hiltViewModel())
+                //RDContent(recipes = recipes)
 //                LazyColumn {
 //                    items(recipes) { recipe ->
 //                        RecipeCard(recipe,
@@ -140,7 +172,7 @@ fun HomeScreen(
     }
 
 }
-
+/*
 @Composable
 fun TopBar(
     navController: NavController
@@ -253,75 +285,63 @@ fun SearchBar() {
         }
     }
 }
-
+*/
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun NamesBar(pagerState: PagerState) {
-    val names = listOf("New for you", "Vegetarian", "Lactose free", "Gluten free")
+    val names = listOf("All", "Veggie","Meat","Sweet")
 
     TabRow(
 
-        modifier = Modifier.padding(12.dp, 8.dp),
+        modifier = Modifier.padding(12.dp,0.dp),
         backgroundColor = BackgroundWhite,
         selectedTabIndex = pagerState.currentPage,
-        indicator = { positions ->
+        indicator ={ positions ->
             TabRowDefaults.Indicator(
-                Modifier.tabIndicatorOffset(positions[pagerState.currentPage]),
+                Modifier.tabIndicatorOffset(positions[pagerState.currentPage])
+                ,
                 color = green000
             )
         },
         divider = {}
     ) {
-        names.forEachIndexed { index, _ ->
-            Column(
-                Modifier
-                    .background(BackgroundWhite)
-                    .width(IntrinsicSize.Max)
-                    .padding(bottom = 4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Text(
-                    names[index], fontSize = 15.sp,
+        val scope = rememberCoroutineScope()
+        names.forEachIndexed{
+                index, _ ->
+            Tab(selected = index == pagerState.currentPage,
+                onClick = {scope.launch {pagerState.scrollToPage(index)}},
+                text = {Text(
+                    names[index], fontSize = 12.sp,
                     color = if (index == pagerState.currentPage) green000 else Gray
-                )
-                //                Box(
-                //                    Modifier
-                //                        .fillMaxWidth()
-                //                        .padding(top = 4.dp)
-                //                        .height(2.dp)
-                //                        .clip(RoundedCornerShape(1.dp))
-                //                        .background(
-                //                            if (index == pagerState.currentPage) green000 else Color.Transparent
-                //                        )
-                //                )
-            }
+                )}
+            )
         }
     }
 }
 
-//@ExperimentalPagerApi
-//@Composable
-//fun CommunityContent(
-//    pagerState: PagerState,
-//) {
-//    // horizontal pager for our tab layout
-//    HorizontalPager(state = pagerState) {
-//        // the different pages
-//            page ->
-//        when (page) {
-//            0 -> RDContent(loves)
-//            1 -> RDContent(loves1)
-//            2 -> RDContent(loves2)
-//            3 -> RDContent(loves3)
-//        }
-//    }
-//}
+@ExperimentalPagerApi
+@Composable
+fun CommunityContent(
+    pagerState: PagerState,viewModel: PostRecipeViewModel
+) {
+    // horizontal pager for our tab layout
+    val recipes = viewModel.resRecipeList.value
+    HorizontalPager(state = pagerState) {
+        // the different pages
+            page ->
+        when (page) {
+            0 -> RDContent(recipes = recipes)
+            1 -> RDContent(recipes = recipes)
+            2 -> RDContent(recipes = recipes)
+            3 -> RDContent(recipes = recipes)
+        }
+    }
+}
 
 @Composable
 //fun RDContent(loves:List<Love>){
 fun RDContent(recipes: List<Recipe>) {
-//
+//  val recipes = viewModel.resRecipeList.value
 //    LovesArea(
 //        { cardSize = it },
 //        { love, offset ->
@@ -414,20 +434,20 @@ fun LovesArea(
 //                                fontSize = 14.sp
 //                            )
                         }
-//                        Spacer(Modifier.weight(1f))
-//                        Row(
-//                            Modifier
-//                                .clip(RoundedCornerShape(10.dp))
-//                                .background(green100)
-//                                .padding(6.dp, 11.dp, 8.dp, 8.dp),
-//                            verticalAlignment = Alignment.CenterVertically
-//                        ) {
-//                            androidx.compose.material3.Icon(
-//                                painterResource(R.drawable.ic_star), "", Modifier.size(24.dp),
-//                                tint = green000
-//                            )
-//
-//                        }
+                        Spacer(Modifier.weight(1f))
+                        Row(
+                            Modifier
+                                .clip(RoundedCornerShape(10.dp))
+                                .background(green100)
+                                .padding(6.dp, 11.dp, 8.dp, 8.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            androidx.compose.material3.Icon(
+                                painterResource(R.drawable.ic_star), "", Modifier.size(24.dp),
+                                tint = green000
+                            )
+
+                        }
                     }
                 }
             }
@@ -564,32 +584,37 @@ fun LoveDetailsPage(
                         )
                     }
                     Spacer(Modifier.weight(1f))
-                    OutlinedButton(
-                        onClick = {
+
+                        OutlinedButton(
+                            onClick = {
 //                            val searchList: List<Int> = listOf(recipe.id) as List<Int>
 //                            Log.d("searchList", "recipeId ${searchList[0]}" )
 //                            viewModel.searchById(searchList)
 //                            navController.navigate(ScreenRoute.PostDetails.route)
 
-                            val intent = Intent(context, EditPostActivity::class.java)
-                            intent.putExtra("id",recipe.id.toString())
-                            context.startActivity(intent)
-                        },
-                        modifier = Modifier.size(50.dp),
-                        shape = CircleShape,
-                        contentPadding = PaddingValues(0.dp),
+                                val intent = Intent(context, EditPostActivity::class.java)
+                                intent.putExtra("id",recipe.id.toString())
+                                context.startActivity(intent)
+                            },
+                            modifier = Modifier.size(50.dp),
+                            shape = CircleShape,
+                            contentPadding = PaddingValues(0.dp),
 //                        border = BorderStroke(5.dp, green100),
 //                        colors = ButtonDefaults.buttonColors(green100)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Edit,
-                            contentDescription = "edit",
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .size(22.dp),
-                            tint = Color.Black
-                        )
-                    }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Edit,
+                                contentDescription = "edit",
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .size(22.dp),
+                                tint = Color.Black
+                            )
+
+                        }
+
+
+
 //                    Box(
 //                        Modifier
 //                            .width(badgeWidth)
@@ -660,7 +685,7 @@ fun LoveDetailsPage(
                     .align(Alignment.TopCenter)
                     .padding(44.dp),
                 color = Color.White,
-                fontSize = 16.sp,
+                fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
             Surface(
