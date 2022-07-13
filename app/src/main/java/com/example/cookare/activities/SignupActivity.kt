@@ -297,6 +297,14 @@ fun SignupSreen(){
     }
 }
 
+fun invalidInput(username: String, email: String, password: String, repassword: String) =
+    username.isBlank() || email.isBlank() || password.isBlank() || repassword.isBlank()
+
+fun matchPassword(password: String, repassword: String) =
+    password == repassword
+
+
+
 @OptIn(ExperimentalAnimationApi::class,
     ExperimentalFoundationApi::class,
     ExperimentalMaterialApi::class)
