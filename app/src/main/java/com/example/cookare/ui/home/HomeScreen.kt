@@ -390,32 +390,24 @@ fun LoveDetailsPage(
                         )
                     }
                     Spacer(Modifier.weight(1f))
-                    Box(
-                        Modifier
-                            .width(badgeWidth)
-                            .height(badgeHeight)
-                            .clip(RoundedCornerShape(badgeCornerSize))
-                            .background(badgeBackground)
-                            .padding(6.dp, 11.dp, 8.dp, 8.dp)
+
+                    androidx.compose.material3.Button(
+                        onClick = { },
+
+
                     ) {
                         androidx.compose.material3.Text(
-                            "Add into",
-                            Modifier.align(Alignment.TopCenter),
+                            "Add into ",
+
                             color = badgeContentColor,
                             fontSize = 14.sp
                         )
-                        Row(
-                            Modifier.align(Alignment.BottomCenter),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            androidx.compose.material3.Icon(
-                                painterResource(R.drawable.ic_cart),
-                                "",
-                                Modifier.size(24.dp),
-                                tint = badgeContentColor
-                            )
-
-                        }
+                        androidx.compose.material3.Icon(
+                            painterResource(R.drawable.ic_cart),
+                            "",
+                            Modifier.size(24.dp),
+                            tint = badgeContentColor
+                        )
                     }
 
 
