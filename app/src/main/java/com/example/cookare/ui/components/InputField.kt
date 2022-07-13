@@ -14,10 +14,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-<<<<<<< HEAD
 import com.example.cookare.ui.theme.CardWhite
-=======
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
 import com.example.cookare.ui.theme.Gray
 import com.example.cookare.ui.theme.green100
 
@@ -43,11 +40,7 @@ fun InputField (cata:String,input_item:String ){
         TextField(value = pwd,
             placeholder = { Text(text = input_item) },
             onValueChange = { str -> pwd = str },
-<<<<<<< HEAD
             modifier = Modifier.scale(scaleY = 0.9F, scaleX = 0.9F).background(CardWhite),
-=======
-            modifier = Modifier.scale(scaleY = 0.8F, scaleX = 0.8F),
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
             colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = green100)
 
         )

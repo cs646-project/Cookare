@@ -1,11 +1,8 @@
 package com.example.cookare.ui.home
 
-<<<<<<< HEAD
 import android.content.Intent
 import android.util.Log
 import androidx.annotation.DrawableRes
-=======
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -16,9 +13,9 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
-<<<<<<< HEAD
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.RestoreFromTrash
@@ -27,8 +24,6 @@ import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.material.icons.rounded.FavoriteBorder
-=======
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -43,6 +38,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
@@ -52,7 +48,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-<<<<<<< HEAD
 import androidx.navigation.compose.rememberNavController
 import com.example.cookare.R
 import com.example.cookare.activities.EditPostActivity
@@ -60,11 +55,6 @@ import com.example.cookare.model.*
 import com.example.cookare.ui.components.TopBar
 import com.example.cookare.ui.food.RecipeCard
 import com.example.cookare.ui.food.RecipeDetail
-=======
-import coil.compose.AsyncImage
-import com.example.cookare.R
-import com.example.cookare.model.*
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
 import com.example.cookare.ui.theme.*
 import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
 import com.example.cookare.ui.utils.ScreenRoute
@@ -74,11 +64,6 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-<<<<<<< HEAD
-=======
-import com.example.cookare.ui.components.TopBar
-import com.example.cookare.ui.components.CookareDivider
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
 import kotlinx.coroutines.launch
 
 var currentLove: Recipe? by mutableStateOf(null)
@@ -86,9 +71,6 @@ var currentLovePageState by mutableStateOf(LovePageState.Closed)
 var cardSize by mutableStateOf(IntSize(0, 0))
 var fullSize by mutableStateOf(IntSize(0, 0))
 var cardOffset by mutableStateOf(IntOffset(0, 0))
-enum class LovePageState {
-    Closing, Closed, Opening, Open
-}
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -99,22 +81,15 @@ fun HomeScreen(
     val pagerState = rememberPagerState(pageCount = 4)
 
     Scaffold(
-<<<<<<< HEAD
-=======
-
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
         floatingActionButton = {
             if (currentLovePageState==LovePageState.Closed ) {
                 FloatingActionButton(
                     backgroundColor = green000,
 
                     onClick = { navController.navigate(ScreenRoute.PostTemplates.route) }) {
-<<<<<<< HEAD
 //                onClick = {
 //                    context.startActivity(Intent(context, AddPostActivity::class.java))
 //                }) {
-=======
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
                     /* FAB content */
                     Icon(
                         painter = painterResource(R.drawable.ic_add),
@@ -125,7 +100,6 @@ fun HomeScreen(
                         tint = BackgroundWhite
                     )
                 }
-<<<<<<< HEAD
             }
             else{
                 FloatingActionButton(
@@ -145,8 +119,6 @@ fun HomeScreen(
                         tint = BackgroundWhite
                     )
                 }
-=======
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
             }
         },
         isFloatingActionButtonDocked = true,
@@ -161,21 +133,14 @@ fun HomeScreen(
                     .background(BackgroundWhite)
 
             ) {
-<<<<<<< HEAD
                 TopBar(users,navController)
                 Divider()
-=======
-                TopBar(users =users,navController=navController)
-                //SearchBar()
-                CookareDivider()
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
                 Row(modifier = Modifier.padding(start = 20.dp), verticalAlignment = Alignment.CenterVertically){
                     Text("Recipe", fontSize = 18.sp, color = Gray100, fontWeight = FontWeight.Bold)
                     NamesBar(
                         pagerState = pagerState,
                     )
                 }
-<<<<<<< HEAD
                 CommunityContent(pagerState = pagerState, hiltViewModel())
                 //RDContent(recipes = recipes)
 //                LazyColumn {
@@ -191,12 +156,6 @@ fun HomeScreen(
 //                        )
 //                    }
 //                }
-=======
-
-                CommunityContent(pagerState = pagerState)
-
-
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
             }
 
         }
@@ -213,7 +172,6 @@ fun HomeScreen(
     }
 
 }
-<<<<<<< HEAD
 /*
 @Composable
 fun TopBar(
@@ -328,9 +286,6 @@ fun SearchBar() {
     }
 }
 */
-=======
-
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun NamesBar(pagerState: PagerState) {
@@ -402,13 +357,8 @@ fun RDContent(recipes: List<Recipe>) {
             currentLovePageState = LovePageState.Opening
             cardOffset = offset
         },
-<<<<<<< HEAD
         recipes = recipes
     )
-=======
-        loves=loves)
-
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
 }
 
 
@@ -449,7 +399,6 @@ fun LovesArea(
                 )
             ) {
                 Column {
-<<<<<<< HEAD
                     recipes[index].coverUrl?.let { url ->
                         val image =
                             loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
@@ -466,33 +415,11 @@ fun LovesArea(
                             )
                         }
                     }
-=======
-                  /*  Image(
-                        painterResource(loves[index].cover_url), "图像",
-                        Modifier
-                            .clip(RoundedCornerShape(16.dp))
-                            .fillMaxWidth()
-                            .aspectRatio(1.35f),
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    )*/
-                    AsyncImage(
-                        model = loves[index].cover_url,
-                        contentDescription = "cover",
-                        modifier = Modifier
-                            .clip(RoundedCornerShape(16.dp))
-                            .fillMaxWidth()
-                            .aspectRatio(1.35f),
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    )
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
                     Row(
                         Modifier.padding(8.dp, 12.dp, 8.dp, 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column() {
-<<<<<<< HEAD
                             recipes[index].title?.let {
                                 androidx.compose.material3.Text(
                                     it,
@@ -506,19 +433,6 @@ fun LovesArea(
 //                                color =Gray,
 //                                fontSize = 14.sp
 //                            )
-=======
-                            androidx.compose.material3.Text(
-                                loves[index].title,
-                                color = Color.Black,
-                                fontSize = 15.sp
-                            )
-                            Spacer(Modifier.height(4.dp))
-                            androidx.compose.material3.Text(
-                                loves[index].tags,
-                                color =Gray,
-                                fontSize = 14.sp
-                            )
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
                         }
                         Spacer(Modifier.weight(1f))
                         Row(
@@ -623,7 +537,6 @@ fun LoveDetailsPage(
                 .padding(paddingSize)
         ) {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-<<<<<<< HEAD
                 recipe.coverUrl?.let { url ->
                     val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
                     image?.let { img ->
@@ -639,28 +552,6 @@ fun LoveDetailsPage(
                         )
                     }
                 }
-=======
-                /*Image(
-                    painterResource(love!!.imageId),
-                    "image",
-                    Modifier
-                        .clip(RoundedCornerShape(imageCornerSize))
-                        .fillMaxWidth()
-                        .aspectRatio(imageRatio),
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center
-                )*/
-                AsyncImage(
-                    model = love!!.cover_url,
-                    contentDescription = "cover",
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(imageCornerSize))
-                        .fillMaxWidth()
-                        .aspectRatio(imageRatio),
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center
-                )
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
                 Row(
                     Modifier
                         .offset(0.dp, titleOffsetY)
@@ -676,7 +567,6 @@ fun LoveDetailsPage(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column() {
-<<<<<<< HEAD
                         recipe.title?.let {
                             androidx.compose.material3.Text(
                                 it,
@@ -690,23 +580,10 @@ fun LoveDetailsPage(
                         androidx.compose.material3.Text(
                             recipe.tags.toString(),
                             color = Gray,
-=======
-                        androidx.compose.material3.Text(
-                            love.title,
-                            color = Color.Black,
-                            fontSize = titleFontSize.sp,
-                            fontWeight = FontWeight(titleFontWeight)
-                        )
-                        Spacer(Modifier.height(titleSpacing))
-                        androidx.compose.material3.Text(
-                            love.tags,
-                            color =Gray,
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
                             fontSize = subtitleFontSize.sp
                         )
                     }
                     Spacer(Modifier.weight(1f))
-<<<<<<< HEAD
 
                         OutlinedButton(
                             onClick = {
@@ -770,48 +647,14 @@ fun LoveDetailsPage(
 //                }
 //            }
                 }
-=======
-                    Box(
-                        Modifier
-                            .width(badgeWidth)
-                            .height(badgeHeight)
-                            .clip(RoundedCornerShape(badgeCornerSize))
-                            .background(badgeBackground)
-                            .padding(6.dp, 11.dp, 8.dp, 8.dp)
-                    ) {
-                        androidx.compose.material3.Text(
-                            "Add into",
-                            Modifier.align(Alignment.TopCenter),
-                            color = badgeContentColor,
-                            fontSize = 14.sp
-                        )
-                        Row(
-                            Modifier.align(Alignment.BottomCenter),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            androidx.compose.material3.Icon(
-                                painterResource(R.drawable.ic_cart),
-                                "",
-                                Modifier.size(24.dp),
-                                tint = badgeContentColor
-                            )
-
-                        }
-                    }
-
-
-
-                   }
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
                 androidx.compose.material3.Text(
-                    "Ingredients",
+                    "The detail ",
                     Modifier
                         .offset(0.dp, titleOffsetY)
                         .padding(14.dp, 24.dp, 14.dp, 14.dp),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
-<<<<<<< HEAD
                 recipe.content?.let {
                     androidx.compose.material3.Text(
                         it,
@@ -820,31 +663,6 @@ fun LoveDetailsPage(
                             .padding(14.dp, 0.dp), fontSize = 15.sp, color = Gray
                     )
                 }
-=======
-
-                androidx.compose.material3.Text(
-                    love.ingredients,
-                    Modifier
-                        .offset(0.dp, titleOffsetY)
-                        .padding(14.dp, 0.dp), fontSize = 15.sp, color = Gray
-                )
-                androidx.compose.material3.Text(
-                    "Some Tips",
-                    Modifier
-                        .offset(0.dp, titleOffsetY)
-                        .padding(14.dp, 24.dp, 14.dp, 14.dp),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-
-                androidx.compose.material3.Text(
-                    love.description,
-                    Modifier
-                        .offset(0.dp, titleOffsetY)
-                        .padding(14.dp, 0.dp), fontSize = 15.sp, color = Gray
-                )
-
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
             }
             Surface(
                 { onPageClosing() },
@@ -855,11 +673,7 @@ fun LoveDetailsPage(
             ) {
                 androidx.compose.material3.Icon(
                     painterResource(R.drawable.ic_back),
-<<<<<<< HEAD
                     "go back",
-=======
-                    "return",
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
                     Modifier
                         .padding(8.dp)
                         .size(26.dp), tint = Color.Black
@@ -871,11 +685,7 @@ fun LoveDetailsPage(
                     .align(Alignment.TopCenter)
                     .padding(44.dp),
                 color = Color.White,
-<<<<<<< HEAD
                 fontSize = 20.sp,
-=======
-                fontSize = 26.sp,
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
                 fontWeight = FontWeight.Bold
             )
             Surface(
@@ -891,15 +701,9 @@ fun LoveDetailsPage(
                 shape = CircleShape,
                 indication = rememberRipple()
             ) {
-<<<<<<< HEAD
                 Icon(
                     imageVector = Icons.Outlined.Delete,
                     contentDescription = "Delete",
-=======
-                androidx.compose.material3.Icon(
-                    painterResource(R.drawable.ic_delete),
-                    "delete",
->>>>>>> de27e5411309de705b394f1008e6563376c3621a
                     Modifier
                         .padding(8.dp)
                         .size(26.dp), tint = Color.Black
@@ -910,120 +714,6 @@ fun LoveDetailsPage(
 }
 
 
-<<<<<<< HEAD
 enum class LovePageState {
     Closing, Closed, Opening, Open
 }
-=======
-
-
-/*
-@Composable
-fun TopBar(
-    navController:NavController
-) {
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(28.dp, 28.dp, 28.dp, 16.dp),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        OutlinedButton(
-            onClick = {},
-            modifier= Modifier.size(64.dp),
-            shape = CircleShape,
-            contentPadding = PaddingValues(0.dp),
-        ) {
-            Image(painterResource(R.drawable.avatar_lia), "avatar",
-                Modifier
-                    .clip(CircleShape)
-                    .fillMaxWidth())
-        }
-        Column(
-            Modifier
-                .padding(start = 14.dp)
-                .weight(1f)) {
-            Text("Welcome back！", fontSize = 18.sp, color = Gray100)
-            Text("Karina", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-        }
-        OutlinedButton(
-            onClick = { navController.navigate(ScreenRoute.NotificationScreen.route) },
-            modifier= Modifier.size(50.dp),
-            shape = CircleShape,
-            border= BorderStroke(5.dp, green100),
-            contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(green100)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_notification_new),
-                contentDescription = "notification",
-                modifier = Modifier
-                    .padding(10.dp)
-                    .size(32.dp),
-                tint = Color.Black
-            )
-        }
-        Spacer(modifier = Modifier.padding(8.dp))
-        OutlinedButton(
-            onClick = {
-                navController.navigate(ScreenRoute.LikeScreen.route)
-            },
-            modifier= Modifier.size(50.dp),
-            shape = CircleShape,
-            border= BorderStroke(5.dp, green100),
-            contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(green100)
-        ) {
-            Icon(
-                imageVector = Icons.Rounded.FavoriteBorder,
-                contentDescription = "like",
-                modifier = Modifier
-                    .padding(10.dp)
-                    .size(22.dp),
-                tint = Color.Black
-            )
-        }
-    }
-}*/
-
-/*@Composable
-fun SearchBar() {
-    Row(
-        Modifier
-            .padding(24.dp, 2.dp, 24.dp, 6.dp)
-            .fillMaxWidth()
-            .height(56.dp)
-            .clip(RoundedCornerShape(28.dp))
-            .background(Color.White),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        var searchText by remember { mutableStateOf("") }
-        BasicTextField(searchText, { searchText = it },
-            Modifier
-                .padding(start = 24.dp)
-                .weight(1f),
-            textStyle = TextStyle(fontSize = 15.sp)
-        ) {
-            if (searchText.isEmpty()) {
-                Text("Search", color = Gray, fontSize = 15.sp)
-            }
-            it()
-        }
-        Box(
-            Modifier
-                .padding(6.dp)
-                .fillMaxHeight()
-                .aspectRatio(1f)
-                .clip(CircleShape)
-                .background(green000)
-        ) {
-            Icon(painterResource(R.drawable.ic_search), "Search",
-                Modifier
-                    .size(24.dp)
-                    .align(Alignment.Center), tint = Color.White
-            )
-        }
-    }
-}*/
-
->>>>>>> de27e5411309de705b394f1008e6563376c3621a

@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 val Gray = Color(0xffb4b4b4)
 val Gray100 = Color(0xFF696969)
 val BackgroundWhite = Color(0xfff8f8f8)
-val CardWhite=Color(0xFFE2E2E2)
+val CardWhite=Color(0xfffef1e6)
 
 val green100 = Color(0xFFDFF0D4)
 val green000 = Color(0xFF9FC088)
