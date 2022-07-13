@@ -21,11 +21,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cookare.R
-import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.Neutral0
 import com.example.cookare.ui.theme.Neutral8
 import com.example.cookare.ui.utils.mirroringBackIcon
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NotificationScreen(
     upPress: () -> Unit
@@ -62,7 +62,7 @@ fun NotificationScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(60.dp)
-                .background(color = CookareTheme.colors.onPrimaryContainer),
+                .background(color = MaterialTheme.colorScheme.onPrimaryContainer),
 //            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {

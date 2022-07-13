@@ -17,11 +17,7 @@ import com.example.cookare.PickPicture
 @Composable
 fun FoodScreen() {
 
-    /*
     Scaffold() {
         PickPicture()
     }
-
-     */
-    PickPicture()
 }

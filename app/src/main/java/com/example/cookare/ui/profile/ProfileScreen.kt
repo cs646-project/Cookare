@@ -1,36 +1,37 @@
 package com.example.cookare.ui.profile
 
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material3.Surface
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
 import androidx.compose.ui.util.lerp
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
-import com.example.cookare.R
 import com.example.cookare.model.User
+import com.example.cookare.model.users
 import com.example.cookare.ui.components.CookareDivider
 import com.example.cookare.ui.components.CookareSurface
+import com.example.cookare.ui.components.InputField
 import com.example.cookare.ui.components.UserImage
 import com.example.cookare.ui.theme.*
+import com.example.cookare.ui.utils.ScreenRoute
 import kotlin.math.max
 import kotlin.math.min
+
 
 
 private val BottomBarHeight = 56.dp
@@ -44,39 +45,29 @@ private val ExpandedImageSize = 300.dp
 private val CollapsedImageSize = 150.dp
 private val HzPadding = Modifier.padding(horizontal = 24.dp)
 
-private val recipe1 = Recipe("Tomato Fish", "waterloo", "5 minutes ago", R.drawable.ic_pic1)
-private val recipe2 = Recipe("Fish Soup ", "waterloo", "yesterday", R.drawable.ic_pic2)
-private val recipe3 = Recipe("Green Egg", "waterloo", "yesterday", R.drawable.ic_pic3)
 
 @Composable
-fun ProfileScreen() {
+fun ProfileScreen(navController: NavController) {
     Box(Modifier.fillMaxSize()) {
-        Profile()
+        Profile(navController,user= users)
+
+
     }
 }
-
 @Composable
-fun Profile() {
-    val user = User(
-        id = 1L,
-        name = "Karina",
-        tagline = "I eat an apple a day",
-        imageUrl = "https://source.unsplash.com/pGM4sjt_BdQ",
-        following = 299,
-        follower = 299
-    )
+fun Profile(navController:NavController,user:User) {
 
     Box(Modifier.fillMaxSize()) {
         val scroll = rememberScrollState(0)
-        Header()
+
+        Header(navController)
         Body(scroll)
-        Title(user) { scroll.value }
-        Image(user.imageUrl) { scroll.value }
+        Title() { scroll.value }
+        Image(user.avatar_url) { scroll.value }
     }
 }
-
 @Composable
-private fun Header() {
+private fun Header(navController: NavController) {
 
     AsyncImage(
         model = "https://img.lookvin.com/editor/201809/04/13434993.jpg",
@@ -84,11 +75,26 @@ private fun Header() {
         modifier = Modifier
             .fillMaxWidth()
     )
-
-
+    OutlinedButton(
+        onClick = {navController.navigate(ScreenRoute.HomeScreen.route)},
+        modifier = Modifier
+            .size(60.dp)
+            .padding(12.dp),
+        shape = CircleShape,
+        border = BorderStroke(1.5.dp, Color.White),
+        contentPadding = PaddingValues(0.dp),
+    ) {
+        Icon(
+            imageVector = Icons.Default.ArrowBack,
+            contentDescription = "go back",
+            modifier = Modifier
+                .padding(8.dp)
+                .size(30.dp),
+            tint = Color.White
+        )
+    }
 
 }
-
 
 @Composable
 private fun Body(
@@ -103,117 +109,68 @@ private fun Body(
         )
         Column(
             modifier = Modifier.verticalScroll(scroll)
+
         ) {
+
             Spacer(Modifier.height(GradientScroll))
             CookareSurface(Modifier.fillMaxWidth()) {
-                Column {
+                Column() {
                     Spacer(Modifier.height(ImageOverlap))
                     Spacer(Modifier.height(TitleHeight))
-
                     Spacer(Modifier.height(16.dp))
+                    Column(modifier = Modifier.padding(horizontal = 20.dp)) {
+                        InputField(cata = "User Name", input_item = users.username )
+                        InputField(cata = "Email", input_item = users.email )
+                        InputField(cata = "Password", input_item = users.password)
+                        InputField(cata = "Signature", input_item = users.tags )
 
-                    /*
-                    Text(
-                        text = stringResource(R.string.detail_header),
-                        style = MaterialTheme.typography.overline,
-                        color = Neutral6,
-                        modifier = HzPadding
-                    )
 
-                     */
-                    // Spacer(Modifier.height(25.dp))
+                        Spacer(Modifier.height(4.dp))
+                        Row(modifier = Modifier.fillMaxWidth()) {
+                            Button(
+                                onClick = {
 
-                    /*
-                    var seeMore by remember { mutableStateOf(true) }
-                    Text(
-                        text = stringResource(R.string.detail_placeholder),
-                        style = MaterialTheme.typography.body1,
-                        color = Neutral6,
-                        maxLines = if (seeMore) 5 else Int.MAX_VALUE,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = HzPadding
-                    )
-                    val textButton = if (seeMore) {
-                        stringResource(id = R.string.see_more)
-                    } else {
-                        stringResource(id = R.string.see_less)
-                    }
-                    Text(
-                        text = textButton,
-                        style = MaterialTheme.typography.button,
-                        textAlign = TextAlign.Center,
-                        color = Ocean11,
-                        modifier = Modifier
-                            .heightIn(20.dp)
-                            .fillMaxWidth()
-                            .padding(top = 15.dp)
-                            .clickable {
-                                seeMore = !seeMore
+                                },
+                                modifier = Modifier
+
+                                    .padding(vertical = 30.dp, horizontal = 40.dp)
+                                    .height(50.dp)
+                                    .clip(CircleShape)
+                            ) {
+
+                                androidx.compose.material3.Text(text = "Update")
+
                             }
-                    )
+                            Button(
+                                onClick = {
 
-                     */
+                                },
+                                modifier = Modifier
 
-                    // Spacer(Modifier.height(16.dp))
-                    // CookareDivider()
-                    RecipeArea(recipe = recipe1)
-                    RecipeArea(recipe = recipe2)
-                    RecipeArea(recipe = recipe3)
-                    Spacer(
-                        modifier = Modifier
-                            .padding(bottom = BottomBarHeight)
-                            .navigationBarsPadding()
-                            .height(8.dp)
-                    )
-                }
-            }
-        }
-    }
-}
-@Composable
-fun RecipeArea(recipe:Recipe) {
+                                    .padding(vertical = 30.dp, horizontal = 30.dp)
+                                    .height(50.dp)
+                                    .clip(CircleShape)
+                            ) {
 
-    Column(Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)) {
-        Surface(
-            Modifier
-                .fillMaxWidth()
-                .padding(top = 12.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(Color.White)
-                .padding(8.dp),
-        ) {
-            Row(Modifier.height(IntrinsicSize.Max)) {
-                Image(
-                    painterResource(recipe.imageId),
-                    "图像",
-                    Modifier
-                        .clip(RoundedCornerShape(16.dp))
-                        .size(80.dp),
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center
-                )
-                Column(
-                    Modifier
-                        .padding(12.dp, 0.dp)
-                        .fillMaxHeight(), verticalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    androidx.compose.material3.Text(recipe.time, fontSize = 14.sp, color = Color(0xffb4b4b4))
-                    androidx.compose.material3.Text(recipe.name, fontSize = 16.sp)
-                    androidx.compose.material3.Text(recipe.city, fontSize = 14.sp, color = Color(0xffb4b4b4))
+                                androidx.compose.material3.Text(text = "Log Out")
+
+                            }
+                        }
+                    }
+
                 }
             }
         }
     }
 }
 
-
 @Composable
-private fun Title(user: User, scrollProvider: () -> Int) {
+private fun Title(scrollProvider: () -> Int) {
     val maxOffset = with(LocalDensity.current) { MaxTitleOffset.toPx() }
     val minOffset = with(LocalDensity.current) { MinTitleOffset.toPx() }
 
-    val names = listOf("Posts", "Followers", "Following")
-    var selected by remember { mutableStateOf(0) }
+    /*val names = listOf("Posts", "Followers", "Following")
+    var selected by remember { mutableStateOf(0) }*/
 
 
     Column(
@@ -221,6 +178,7 @@ private fun Title(user: User, scrollProvider: () -> Int) {
         modifier = Modifier
             .heightIn(min = TitleHeight)
             .statusBarsPadding()
+
             .offset {
                 val scroll = scrollProvider()
                 val offset = (maxOffset - scroll).coerceAtLeast(minOffset)
@@ -230,44 +188,14 @@ private fun Title(user: User, scrollProvider: () -> Int) {
     ) {
         Spacer(Modifier.height(16.dp))
         Text(
-            text = user.name,
-            style = MaterialTheme.typography.h4,
-            color = Neutral7,
-            modifier = HzPadding
+            text = "Profile",
+            style = MaterialTheme.typography.h2,
+            color = Color.Black,
+            modifier = Modifier.padding(bottom = 6.dp, start = 20.dp)
         )
-        Text(
-            text = user.tagline,
-            style = MaterialTheme.typography.subtitle2,
-            fontSize = 20.sp,
-            color = Neutral6,
-            modifier = HzPadding
-        )
-        Spacer(Modifier.height(4.dp))
-        LazyRow(Modifier.padding(0.dp, 8.dp), contentPadding = PaddingValues(12.dp, 0.dp)) {
-            itemsIndexed(names) { index, name ->
-                Column(
-                    Modifier
-                        .padding(12.dp, 4.dp)
-                        .width(IntrinsicSize.Max)) {
-                    Text(name, fontSize = 15.sp,
-                        color = if (index == selected) green000 else Gray
-                    )
-                    Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(top = 4.dp)
-                            .height(2.dp)
-                            .clip(RoundedCornerShape(1.dp))
-                            .background(
-                                if (index == selected) green000 else Color.Transparent
-                            )
-                    )
-                }
-            }
-        }
-
-        Spacer(Modifier.height(8.dp))
         CookareDivider()
+
+
     }
 }
 
@@ -326,13 +254,73 @@ private fun CollapsingImageLayout(
         }
     }
 }
+/*@Composable
+fun RecipeArea(recipe:Recipe) {
 
-data class Recipe(
+    Column(Modifier.padding(24.dp, 24.dp, 24.dp, 0.dp)) {
+        Surface(
+            Modifier
+                .fillMaxWidth()
+                .padding(top = 12.dp)
+                .clip(RoundedCornerShape(16.dp))
+                .background(Color.White)
+                .padding(8.dp),
+        ) {
+            Row(Modifier.height(IntrinsicSize.Max)) {
+                Image(
+                    painterResource(recipe.imageId),
+                    "图像",
+                    Modifier
+                        .clip(RoundedCornerShape(16.dp))
+                        .size(80.dp),
+                    contentScale = ContentScale.Crop,
+                    alignment = Alignment.Center
+                )
+                Column(
+                    Modifier
+                        .padding(12.dp, 0.dp)
+                        .fillMaxHeight(), verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    androidx.compose.material3.Text(recipe.time, fontSize = 14.sp, color = Color(0xffb4b4b4))
+                    androidx.compose.material3.Text(recipe.name, fontSize = 16.sp)
+                    androidx.compose.material3.Text(recipe.city, fontSize = 14.sp, color = Color(0xffb4b4b4))
+                }
+            }
+        }
+    }
+}
+*/
+
+
+/*@Composable
+fun Profile(navController:NavController,user:User) {
+    /*val user = User(
+        id = 1L,
+        username = "Karina",
+        tags = "I eat an apple a day",
+        avatar_url = "https://source.unsplash.com/pGM4sjt_BdQ",
+        password = "123"
+
+    )*/
+
+    Box(Modifier.fillMaxSize()) {
+        val scroll = rememberScrollState(0)
+        Header()
+        Body(scroll,navController)
+        Title(user) { scroll.value }
+        Image(user.avatar_url) { scroll.value }
+    }
+}*/
+/*data class Recipe(
     val name: String,
     val city: String,
     val time: String,
     @DrawableRes val imageId: Int
 )
+/*private val recipe1 = Recipe("Tomato Fish", "waterloo", "5 minutes ago", R.drawable.ic_pic1)
+private val recipe2 = Recipe("Fish Soup ", "waterloo", "yesterday", R.drawable.ic_pic2)
+private val recipe3 = Recipe("Green Egg", "waterloo", "yesterday", R.drawable.ic_pic3)
+*/
 
 @Preview(showBackground = true)
 @Composable
@@ -340,4 +328,4 @@ fun DefaultPreview() {
 
 
 
-}
+}*/
