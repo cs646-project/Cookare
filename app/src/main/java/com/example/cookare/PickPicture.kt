@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
-import com.example.cookare.ui.theme.CookareTheme
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
@@ -88,7 +87,7 @@ fun PickPicture() {
             modifier = Modifier
                 .fillMaxWidth()
                 .wrapContentHeight()
-                .background(CookareTheme.colors.primary.copy(0.08f))
+                .background(MaterialTheme.colors.primary.copy(0.08f))
         ){
             Column(
                 verticalArrangement = Arrangement.SpaceEvenly,
@@ -99,14 +98,14 @@ fun PickPicture() {
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(15.dp),
-                    color = CookareTheme.colors.primary,
+                    color = MaterialTheme.colors.primary,
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
                     fontFamily = FontFamily.SansSerif
                 )
                 Divider(modifier = Modifier
                     .height(1.dp)
-                    .background(CookareTheme.colors.primary)
+                    .background(MaterialTheme.colors.primary)
                 )
                 Text(
                     text = "Take Photo",
@@ -187,7 +186,7 @@ fun PickPicture() {
     },
         sheetState = bottomSheetModalState,
         sheetShape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
-        modifier = Modifier.background(CookareTheme.colors.background)
+        modifier = Modifier.background(MaterialTheme.colors.background)
     ) {
         Box(
             modifier = Modifier.fillMaxSize()

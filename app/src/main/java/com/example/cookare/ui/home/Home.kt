@@ -94,9 +94,7 @@ fun CookareBottomBar(
     tabs: Array<HomeSections>,
     currentRoute: String,
     navigateToRoute: (String) -> Unit,
-    //color: Color = CookareTheme.colors.iconPrimary,
-
-    color: Color = CookareTheme.colors.onPrimaryContainer,
+    color: Color = CookareTheme.colors.iconPrimary,
     contentColor: Color = CookareTheme.colors.iconInteractive
 ) {
     val routes = remember { tabs.map { it.route } }
