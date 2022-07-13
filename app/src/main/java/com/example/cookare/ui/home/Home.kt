@@ -19,9 +19,6 @@ import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,10 +48,11 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.cookare.R
-import com.example.cookare.mapper.RecipeNetworkMapper
 import com.example.cookare.ui.HomeScreenNavigate
 import com.example.cookare.ui.components.CookareSurface
-import com.example.cookare.ui.food.FoodScreen
+
+
+import com.example.cookare.ui.food.TodoNavHost
 import com.example.cookare.ui.list.ListScreen
 import com.example.cookare.ui.theme.CookareTheme
 import com.guru.fontawesomecomposelib.FaIcon
@@ -72,7 +70,7 @@ fun NavGraphBuilder.addHomeGraph(
         else LoginOnboarding()
     }
     composable(HomeSections.FOOD.route) {
-        FoodScreen()
+        TodoNavHost()
     }
     composable(HomeSections.LIST.route) {
         ListScreen(hiltViewModel())

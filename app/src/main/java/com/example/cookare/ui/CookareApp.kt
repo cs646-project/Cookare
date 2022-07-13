@@ -14,8 +14,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.cookare.ui.components.CookareScaffold
 import com.example.cookare.ui.food.RecipeDetail
 import com.example.cookare.ui.home.*
-import com.example.cookare.ui.home.collection.CollectionAndLikeScreen
-import com.example.cookare.ui.home.collection.TabPage
+
 import com.example.cookare.ui.home.notification.NotificationScreen
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.utils.ScreenRoute
@@ -64,12 +63,7 @@ fun HomeScreenNavigate() {
         composable(route = ScreenRoute.HomeScreen.route){
             HomeScreen(navController = navController, hiltViewModel())
         }
-        composable(route = ScreenRoute.CollectionScreen.route){
-            CollectionAndLikeScreen(TabPage.Collection, navController = navController)
-        }
-        composable(route = ScreenRoute.LikeScreen.route){
-            CollectionAndLikeScreen(TabPage.Like, navController = navController)
-        }
+
         composable(route = ScreenRoute.NotificationScreen.route){
             NotificationScreen(upPress)
         }
