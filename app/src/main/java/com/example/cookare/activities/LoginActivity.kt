@@ -213,7 +213,7 @@ fun LoginSreen(){
                         HorizontalDottedProgressBar()
                         val context = LocalContext.current
                         context.startActivity(Intent(context, MainActivity::class.java))
-                        loading_login = false
+                        // loading_login = false
                     } else {
                         Text(text = "Log In")
                     }
@@ -256,7 +256,7 @@ fun LoginSreen(){
                         HorizontalDottedProgressBar()
                         val context = LocalContext.current
                         context.startActivity(Intent(context, SignupActivity::class.java))
-                        loading_login = false
+                        // loading_login = false
                     } else {
                         Text(text = "Sign Up")
                     }
@@ -277,7 +277,7 @@ fun HorizontalDottedProgressBar() {
         targetValue = 6f,
         animationSpec = infiniteRepeatable(
             animation = tween(
-                durationMillis = 700,
+                durationMillis = 800,
                 easing = LinearEasing
             ),
             repeatMode = RepeatMode.Reverse
@@ -285,7 +285,6 @@ fun HorizontalDottedProgressBar() {
     )
 
     DrawCanvas(state = state, color = color)
-
 }
 
 @Composable

@@ -238,7 +238,7 @@ fun SignupSreen(){
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Done
                     ),
-                    label = { Text(text = "Re-entered Password") },
+                    label = { Text(text = "Re-entered password") },
                     placeholder = { Text(text = "") },
                     onValueChange = {
                         re_password = it
@@ -250,9 +250,24 @@ fun SignupSreen(){
             item {
                 var loading_signup by remember { mutableStateOf(false) }
                 var loading_back by remember { mutableStateOf(false) }
+                // 0: none; 1: empty; 2: mismatch
+                var hasError by remember { mutableStateOf(0) }
+                // var is_match by remember { mutableStateOf(false) }
+                // var is_empty by remember { mutableStateOf(false) }
 
                 Button(
                     onClick = {
+
+
+                        println("password.text == re_password.text" + password.text == re_password.text)
+
+                        if(matchPassword(password.text, re_password.text)){
+                            hasError = 2
+                        }
+
+                        if(isEmpty(username.text, email.text, password.text, re_password.text)){
+                            hasError = 1
+                        }
 
                     },
                     colors = ButtonDefaults.buttonColors(green500),
@@ -266,9 +281,53 @@ fun SignupSreen(){
                         HorizontalDottedProgressBar()
                         val context = LocalContext.current
                         context.startActivity(Intent(context, MainActivity::class.java))
-                        loading_signup = false
+                        // loading_signup = false
                     }else{
                         Text(text = "Sign Up")
+                        println("hasError: " + hasError)
+                        if(hasError == 1){
+                            AlertDialog(
+                                onDismissRequest = {
+                                    hasError = 0
+                                },
+                                title = {
+                                    Text(text = "Error")
+                                },
+                                text = {
+                                    Text("Please fill out all the black fields.")
+                                },
+                                confirmButton = {
+                                    Button(
+                                        onClick = {
+                                            hasError = 0
+                                        }) {
+                                        Text("OK")
+                                    }
+                                }
+                            )
+                        }
+
+                        if(hasError == 2){
+                            AlertDialog(
+                                onDismissRequest = {
+                                    hasError = 0
+                                },
+                                title = {
+                                    Text(text = "Error")
+                                },
+                                text = {
+                                    Text("Please check your re-entered password.")
+                                },
+                                confirmButton = {
+                                    Button(
+                                        onClick = {
+                                            hasError = 0
+                                        }) {
+                                        Text("OK")
+                                    }
+                                }
+                            )
+                        }
                     }
                 }
 
@@ -287,7 +346,7 @@ fun SignupSreen(){
                         HorizontalDottedProgressBar()
                         val context = LocalContext.current
                         context.startActivity(Intent(context, LoginActivity::class.java))
-                        loading_back = false
+                        // loading_back = false
                     }else{
                         Text(text = "Back")
                     }
@@ -297,11 +356,13 @@ fun SignupSreen(){
     }
 }
 
-fun invalidInput(username: String, email: String, password: String, repassword: String) =
-    username.isBlank() || email.isBlank() || password.isBlank() || repassword.isBlank()
+fun isEmpty(username: String, email: String, password: String, re_password: String) =
+    username.isBlank() || email.isBlank() || password.isBlank() || re_password.isBlank()
 
-fun matchPassword(password: String, repassword: String) =
-    password == repassword
+fun matchPassword(password: String, re_password: String) =
+    password != re_password
+
+
 
 
 
