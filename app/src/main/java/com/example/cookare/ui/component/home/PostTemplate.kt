@@ -1,6 +1,7 @@
 package com.example.cookare.ui.component.home
 
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -29,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cookare.ui.component.home.HomeScreen
 import com.example.cookare.ui.component.home.HorizontalDottedProgressBar
-import com.example.cookare.ui.component.home.invalidInput
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,6 +38,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.withStyle
 import androidx.navigation.NavController
+import com.example.cookare.activities.DrawCanvas
 import com.example.cookare.ui.utils.ScreenRoute
 
 @OptIn(
@@ -242,4 +243,28 @@ fun TextInputs(navController: NavController){
 @Composable
 fun PreviewInputs() {
     // PostTemplate()
+}
+
+fun invalidInput(email: String, password: String) =
+    email.isBlank() || password.isBlank()
+
+
+@Composable
+fun HorizontalDottedProgressBar() {
+    val color = androidx.compose.material.MaterialTheme.colors.onPrimary
+    val transition = rememberInfiniteTransition()
+    val state by transition.animateFloat(
+        initialValue = 0f,
+        targetValue = 6f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 700,
+                easing = LinearEasing
+            ),
+            repeatMode = RepeatMode.Reverse
+        )
+    )
+
+    DrawCanvas(state = state, color = color)
+
 }
