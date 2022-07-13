@@ -51,7 +51,7 @@ fun DetailScreenComponent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.size(16.dp))
-        PickPicture()
+//        PickPicture()
         OutlinedTextField(
             value = todoText,
             onValueChange = { onTodoTextChange(it) },

@@ -42,8 +42,6 @@ import com.example.cookare.ui.MainActivity
 import com.example.cookare.ui.food.RecipeDetail
 import com.example.cookare.ui.home.HomeScreen
 import com.example.cookare.ui.home.PostTemplate
-import com.example.cookare.ui.home.collection.CollectionAndLikeScreen
-import com.example.cookare.ui.home.collection.TabPage
 import com.example.cookare.ui.home.notification.NotificationScreen
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.upPress
