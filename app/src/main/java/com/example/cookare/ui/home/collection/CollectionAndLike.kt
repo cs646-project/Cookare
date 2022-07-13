@@ -66,7 +66,7 @@ fun CollectionAndLikeScreen(defaultPage: TabPage, navController: NavController) 
     Scaffold(
         topBar = {
             TabBar(
-                backgroundColor = CookareTheme.colors.onPrimaryContainer,
+                backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.onPrimaryContainer,
                 tabPage = tabPage,
                 onTabSelected = { tabPage = it },
                 pagerState = pagerState

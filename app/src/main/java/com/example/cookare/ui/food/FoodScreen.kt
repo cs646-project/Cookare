@@ -19,11 +19,7 @@ import com.example.cookare.viewModels.PostRecipeViewModel
 @Composable
 fun FoodScreen() {
 
-    /*
     Scaffold() {
         PickPicture()
     }
-
-     */
-    PickPicture()
 }

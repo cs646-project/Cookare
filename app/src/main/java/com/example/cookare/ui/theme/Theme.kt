@@ -18,30 +18,14 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 
 enum class ColorPallet {
-    GREEN
+    PURPLE, GREEN, ORANGE, BLUE, WALLPAPER
 }
 
 private val LightColorPalette = CookareColors(
-    primary = green500,
-    primaryContainer = green200,
-    onPrimaryContainer = green700,
-    secondary = teal200,
-    secondaryContainer = green700,
-    onSecondaryContainer = Color.White,
-    background = Color.White,
-    surface = Color.White,
-    surfaceVariant = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    onSurfaceVariant = Color.Black,
-
-
-
-
-
+    primary = purple500,
     primaryVariant = purple700,
+    secondary = teal200,
+
     brand = Shadow5,
     brandSecondary = Ocean3,
     uiBackground = Neutral0,
@@ -67,27 +51,10 @@ private val LightColorPalette = CookareColors(
 )
 
 private val DarkColorPalette = CookareColors(
-    primary = green500,
-    primaryContainer = green200,
-    onPrimaryContainer = green700,
-    secondary = teal200,
-    secondaryContainer = green700,
-    onSecondaryContainer = Color.Black,
-    background = Color.Black,
-    surface = Color.Black,
-    surfaceVariant = Color.Black,
-    onPrimary = Color.Black,
-    onSecondary = Color.White,
-    onBackground = Color.White,
-    onSurface = Color.White,
-    onSurfaceVariant = Color.White,
-    error = Color.Red,
-
-
-
-
-
+    primary = purple200,
     primaryVariant = purple700,
+    secondary = teal200,
+
     brand = Shadow1,
     brandSecondary = Ocean2,
     uiBackground = Neutral8,
@@ -102,6 +69,7 @@ private val DarkColorPalette = CookareColors(
     iconSecondary = Neutral0,
     iconInteractive = Neutral7,
     iconInteractiveInactive = Neutral6,
+    error = FunctionalRedDark,
     gradient6_1 = listOf(Shadow5, Ocean7, Shadow9, Ocean7, Shadow5),
     gradient6_2 = listOf(Rose11, Lavender7, Rose8, Lavender7, Rose11),
     gradient3_1 = listOf(Shadow9, Ocean7, Shadow5),
@@ -131,16 +99,14 @@ fun CookareTheme(
         )
     }
 
-
     ProvideCookareColors(colors) {
         MaterialTheme(
-            //colors = debugColors(darkTheme),
+            colors = debugColors(darkTheme),
             typography = Typography,
             shapes = Shapes,
             content = content
         )
     }
-
 }
 
 object CookareTheme {
@@ -163,28 +129,8 @@ class CookareColors(
     gradient2_2: List<Color>,
     gradient2_3: List<Color>,
     primary: Color,
-
-
-
-    primaryContainer: Color,
-    onPrimaryContainer: Color,
-    secondary: Color,
-    secondaryContainer: Color,
-    onSecondaryContainer: Color,
-    background: Color,
-    surface: Color,
-    surfaceVariant: Color,
-    onPrimary: Color,
-    onSecondary: Color,
-    onBackground: Color,
-    onSurface: Color,
-    onSurfaceVariant: Color,
-
-
-
-
-
     primaryVariant: Color,
+    secondary: Color,
     brand: Color,
     brandSecondary: Color,
     uiBackground: Color,
@@ -223,43 +169,9 @@ class CookareColors(
         private set
     var primary by mutableStateOf(primary)
         private set
-
-
-
-
-
-    var primaryContainer by mutableStateOf(primaryContainer)
-        private set
-    var onPrimaryContainer by mutableStateOf(onPrimaryContainer)
+    var primaryVariant by mutableStateOf(primaryVariant)
         private set
     var secondary by mutableStateOf(secondary)
-        private set
-    var secondaryContainer by mutableStateOf(secondaryContainer)
-        private set
-    var onSecondaryContainer by mutableStateOf(onSecondaryContainer)
-        private set
-    var background by mutableStateOf(background)
-        private set
-    var surface by mutableStateOf(surface)
-        private set
-    var surfaceVariant by mutableStateOf(surfaceVariant)
-        private set
-    var onPrimary by mutableStateOf(onPrimary)
-        private set
-    var onSecondary by mutableStateOf(onSecondary)
-        private set
-    var onBackground by mutableStateOf(onBackground)
-        private set
-    var onSurface by mutableStateOf(onSurface)
-        private set
-    var onSurfaceVariant by mutableStateOf(onSurfaceVariant)
-        private set
-
-
-
-
-
-    var primaryVariant by mutableStateOf(primaryVariant)
         private set
     var brand by mutableStateOf(brand)
         private set
@@ -312,31 +224,9 @@ class CookareColors(
         gradient2_1 = other.gradient2_1
         gradient2_2 = other.gradient2_2
         gradient2_3 = other.gradient2_3
-        primary = other.primary
-
-
-
-
-
-        primaryContainer = other.primaryContainer
-        onPrimaryContainer = other.onPrimaryContainer
-        secondary = other.secondary
-        secondaryContainer = other.secondaryContainer
-        onSecondaryContainer = other.onSecondaryContainer
-        background = other.background
-        surface = other.surface
-        surfaceVariant = other.surfaceVariant
-        onPrimary = other.onPrimary
-        onSecondary = other.onSecondary
-        onBackground = other.onBackground
-        onSurface = other.onSurface
-        onSurfaceVariant = other.onSurfaceVariant
-
-
-
-
-
-        primaryVariant = other.primaryVariant
+        primary = other.brand
+        primaryVariant = other.brand
+        secondary = other.brand
         brand = other.brand
         brandSecondary = other.brandSecondary
         uiBackground = other.uiBackground
@@ -369,30 +259,8 @@ class CookareColors(
         gradient2_2 = gradient2_2,
         gradient2_3 = gradient2_3,
         primary =  primary,
-
-
-
-
-
-        primaryContainer = primaryContainer,
-        onPrimaryContainer = onPrimaryContainer,
-        secondary = secondary,
-        secondaryContainer = secondaryContainer,
-        onSecondaryContainer = onSecondaryContainer,
-        background = background,
-        surface = surface,
-        surfaceVariant = surfaceVariant,
-        onPrimary = onPrimary,
-        onSecondary = onSecondary,
-        onBackground = onBackground,
-        onSurface = onSurface,
-        onSurfaceVariant = onSurfaceVariant,
-
-
-
-
-
         primaryVariant = primaryVariant,
+        secondary =  secondary,
         brand = brand,
         brandSecondary = brandSecondary,
         uiBackground = uiBackground,
@@ -441,8 +309,7 @@ private val LocalCookareColors = staticCompositionLocalOf<CookareColors> {
  */
 fun debugColors(
     darkTheme: Boolean,
-    debugColor: Color = green500
-    // debugColor: Color = Color.Magenta
+    debugColor: Color = Color.Magenta
 ) = Colors(
     primary = debugColor,
     primaryVariant = debugColor,
@@ -457,16 +324,4 @@ fun debugColors(
     onSurface = debugColor,
     onError = debugColor,
     isLight = !darkTheme
-    /*
-    primary = green500,
-    secondary = teal200,
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    primaryVariant = purple700,
-    error = FunctionalRed
-     */
 )

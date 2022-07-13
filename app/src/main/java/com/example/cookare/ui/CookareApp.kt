@@ -1,6 +1,10 @@
 package com.example.cookare.ui
 
+<<<<<<< HEAD
 import android.content.Intent
+=======
+
+>>>>>>> de27e5411309de705b394f1008e6563376c3621a
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -17,6 +21,10 @@ import com.example.cookare.ui.home.*
 import com.example.cookare.ui.home.collection.CollectionAndLikeScreen
 import com.example.cookare.ui.home.collection.TabPage
 import com.example.cookare.ui.home.notification.NotificationScreen
+<<<<<<< HEAD
+=======
+import com.example.cookare.ui.list.ListScreen
+>>>>>>> de27e5411309de705b394f1008e6563376c3621a
 import com.example.cookare.ui.profile.ProfileScreen
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.utils.ScreenRoute
@@ -64,6 +72,9 @@ fun HomeScreenNavigate() {
     NavHost(navController = navController, startDestination = ScreenRoute.HomeScreen.route){
         composable(route = ScreenRoute.HomeScreen.route){
             HomeScreen(navController = navController, hiltViewModel())
+        }
+        composable(route = ScreenRoute.ProfileScreen.route){
+            ProfileScreen(navController = navController)
         }
         composable(route = ScreenRoute.ProfileScreen.route){
             ProfileScreen(navController = navController)
