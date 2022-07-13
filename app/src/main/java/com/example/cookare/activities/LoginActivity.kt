@@ -337,7 +337,7 @@ fun matchInput(email: String, password: String):Boolean{
     jsonObject.put("password", password)
     val payload = jsonObject.toString()
 
-    val okHttpClient = OkHttpClient()
+
     val requestBody = payload.toRequestBody()
     val request = Request.Builder()
         .url("http://101.43.180.143:9090/login/login")

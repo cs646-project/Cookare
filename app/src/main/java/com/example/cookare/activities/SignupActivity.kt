@@ -34,7 +34,14 @@ import com.example.cookare.R
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
 import com.example.cookare.ui.theme.green500
+import com.google.gson.GsonBuilder
 import com.guru.fontawesomecomposelib.FaIcon
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody.Companion.toRequestBody
+import org.json.JSONObject
+import kotlin.concurrent.thread
+import kotlin.math.sign
 
 class SignupActivity : ComponentActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -250,25 +257,30 @@ fun SignupSreen(){
             item {
                 var loading_signup by remember { mutableStateOf(false) }
                 var loading_back by remember { mutableStateOf(false) }
-                // 0: none; 1: empty; 2: mismatch
+                // 0: none; 1: empty; 2: mismatch; 3: user exists
                 var hasError by remember { mutableStateOf(0) }
-                // var is_match by remember { mutableStateOf(false) }
-                // var is_empty by remember { mutableStateOf(false) }
+                var signupCheck by remember { mutableStateOf(false) }
 
                 Button(
                     onClick = {
-
-
-                        println("password.text == re_password.text" + password.text == re_password.text)
-
-                        if(matchPassword(password.text, re_password.text)){
-                            hasError = 2
+                        val thread = thread {
+                            signupCheck = signUp(username.text, password.text, email.text)
                         }
+
+                        thread.join()
 
                         if(isEmpty(username.text, email.text, password.text, re_password.text)){
                             hasError = 1
+                            loading_signup = false
+                        }else if(matchPassword(password.text, re_password.text)){
+                            hasError = 2
+                            loading_signup = false
+                        }else if(!signupCheck){
+                            hasError = 3
+                            loading_signup = false
+                        }else{
+                            loading_signup = true
                         }
-
                     },
                     colors = ButtonDefaults.buttonColors(green500),
                     modifier = Modifier
@@ -284,7 +296,6 @@ fun SignupSreen(){
                         // loading_signup = false
                     }else{
                         Text(text = "Sign Up")
-                        println("hasError: " + hasError)
                         if(hasError == 1){
                             AlertDialog(
                                 onDismissRequest = {
@@ -305,9 +316,7 @@ fun SignupSreen(){
                                     }
                                 }
                             )
-                        }
-
-                        if(hasError == 2){
+                        }else if(hasError == 2){
                             AlertDialog(
                                 onDismissRequest = {
                                     hasError = 0
@@ -317,6 +326,26 @@ fun SignupSreen(){
                                 },
                                 text = {
                                     Text("Please check your re-entered password.")
+                                },
+                                confirmButton = {
+                                    Button(
+                                        onClick = {
+                                            hasError = 0
+                                        }) {
+                                        Text("OK")
+                                    }
+                                }
+                            )
+                        }else if(hasError == 3){
+                            AlertDialog(
+                                onDismissRequest = {
+                                    hasError = 0
+                                },
+                                title = {
+                                    Text(text = "Error")
+                                },
+                                text = {
+                                    Text("The user has already existed.")
                                 },
                                 confirmButton = {
                                     Button(
@@ -362,7 +391,36 @@ fun isEmpty(username: String, email: String, password: String, re_password: Stri
 fun matchPassword(password: String, re_password: String) =
     password != re_password
 
+fun signUp(username: String, password: String, email: String):Boolean{
+    val jsonObject = JSONObject()
+    jsonObject.put("username", username)
+    jsonObject.put("password", password)
+    jsonObject.put("email", email)
+    val payload = jsonObject.toString()
 
+    val requestBody = payload.toRequestBody()
+    val request = Request.Builder()
+        .url("http://101.43.180.143:9090/user/createUser")
+        .addHeader("Content-Type", "application/json")
+        .addHeader("Accept", "*/*")
+        .addHeader("Accept-Encoding", "gzip, deflate, br")
+        .addHeader("Connection", "keep-alive")
+        .post(requestBody)
+        .build()
+
+    val response = OkHttpClient().newCall(request).execute()
+    val body = response?.body?.string()
+    // println("body: " + body)
+    val gson = GsonBuilder().create()
+    val signup = gson.fromJson(body, Signup::class.java)
+
+    // println("signup: " + signup)
+
+    if(signup.code == 1) return true
+    else return false
+}
+
+class Signup(val code: Int, val msg: String, val data: String)
 
 
 
