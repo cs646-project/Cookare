@@ -54,6 +54,8 @@ import com.example.cookare.ui.HomeScreenNavigate
 import com.example.cookare.ui.components.CookareSurface
 import com.example.cookare.ui.food.FoodScreen
 import com.example.cookare.ui.list.ListScreen
+import com.example.cookare.ui.list.TodoNavHost
+
 import com.example.cookare.ui.theme.CookareTheme
 import com.guru.fontawesomecomposelib.FaIcon
 import com.guru.fontawesomecomposelib.FaIconType
@@ -73,7 +75,7 @@ fun NavGraphBuilder.addHomeGraph(
         FoodScreen()
     }
     composable(HomeSections.LIST.route) {
-        ListScreen()
+        TodoNavHost()
     }
 }
 
