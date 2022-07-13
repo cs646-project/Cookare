@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Named
@@ -25,8 +26,9 @@ object NetworkModule {
     @Provides
     fun provideRecipeService(): RecipeService{
         return Retrofit.Builder()
-            .baseUrl("https://food2fork.ca/api/recipe/")
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .baseUrl("http://101.43.180.143:9090/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(OkHttpClient.Builder().build())
             .build()
             .create(RecipeService::class.java)
     }
@@ -35,6 +37,6 @@ object NetworkModule {
     @Provides
     @Named("auth_token")
     fun provideAuthToken(): String{
-        return "Token 9c8b06d329136da358c2d00e76946b0111ce2c48"
+        return "satoken=bcd4a2ee-5a4b-47e8-a9ef-ddb5f5e6efe1"
     }
 }

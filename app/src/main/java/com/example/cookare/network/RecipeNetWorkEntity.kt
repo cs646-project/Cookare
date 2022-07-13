@@ -1,38 +1,33 @@
 package com.example.cookare.network
 
+import com.example.cookare.model.Ingredient
 import com.google.gson.annotations.SerializedName
 
 data class RecipeNetWorkEntity(
-    @SerializedName("pk")
-    var pk: Int? = null,
+    @SerializedName("id")
+    var id: Int? = null,
 
     @SerializedName("title")
     var title: String? = null,
 
-    @SerializedName("publisher")
-    var publisher: String? = null,
+    @SerializedName("content")
+    var content: String? = null,
 
-    @SerializedName("featured_image")
-    var featuredImage: String? = null,
+    @SerializedName("tags")
+    var tags: Int? = null,
 
-    @SerializedName("rating")
-    var rating: Int? = 0,
+    @SerializedName("updateUser")
+    var updateUser: Int? = null,
 
-    @SerializedName("source_url")
-    var sourceUrl: String? = null,
+    @SerializedName("coverUrl")
+    var coverUrl: String? = null,
 
-    @SerializedName("description")
-    var description: String? = null,
+    @SerializedName("createTime")
+    var createTime: String? = null,
 
-    @SerializedName("cooking_instructions")
-    var cookingInstructions: String? = null,
+    @SerializedName("updateTime")
+    var updateTime: String? = null,
 
-    @SerializedName("ingredients")
-    var ingredients: List<String>? = null,
-
-    @SerializedName("date_added")
-    var dateAdded: String? = null,
-
-    @SerializedName("date_updated")
-    var dateUpdated: String? = null,
+    @SerializedName("deleteFlg")
+    var deleteFlg: String? = null,
 )

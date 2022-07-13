@@ -45,11 +45,13 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.core.os.ConfigurationCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import com.example.cookare.R
+import com.example.cookare.mapper.RecipeNetworkMapper
 import com.example.cookare.ui.HomeScreenNavigate
 import com.example.cookare.ui.components.CookareSurface
 import com.example.cookare.ui.food.FoodScreen
@@ -73,7 +75,7 @@ fun NavGraphBuilder.addHomeGraph(
         FoodScreen()
     }
     composable(HomeSections.LIST.route) {
-        ListScreen()
+        ListScreen(hiltViewModel())
     }
 }
 

@@ -1,8 +1,11 @@
 package com.example.cookare.repository
 
+import com.example.cookare.model.GetAllRecipe
 import com.example.cookare.model.Recipe
+import com.example.cookare.model.SearchById
 
 interface RecipeRepository {
-    suspend fun search(token: String, page: Int, query: String): List<Recipe>
-    suspend fun get(token:String, id: Int): Recipe
+    suspend fun postRecipe(token: String, recipe: Recipe) : Recipe
+    suspend fun getAllRecipes(token: String, request: GetAllRecipe) : List<Recipe>
+    suspend fun searchRecipeById(token: String, recipeIdList: SearchById) : List<Recipe>
 }

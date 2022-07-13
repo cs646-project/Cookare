@@ -307,19 +307,19 @@ fun RecipeItem(
 //                horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                recipe.featuredImage?.let { url ->
-                    val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
-                    image?.let { img ->
-                        Image(
-                            bitmap = img.asImageBitmap(),
-                            contentDescription = "Recipe Featured Image",
-                            Modifier
-                                .clip(RoundedCornerShape(16.dp))
-                                .size(80.dp),
-                            contentScale = ContentScale.Crop,
-                            alignment = Alignment.Center
-                        )
-                    }
+//                recipe.featuredImage?.let { url ->
+//                    val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
+//                    image?.let { img ->
+//                        Image(
+//                            bitmap = img.asImageBitmap(),
+//                            contentDescription = "Recipe Featured Image",
+//                            Modifier
+//                                .clip(RoundedCornerShape(16.dp))
+//                                .size(80.dp),
+//                            contentScale = ContentScale.Crop,
+//                            alignment = Alignment.Center
+//                        )
+//                    }
                 }
                 Column(
                     Modifier
@@ -332,22 +332,22 @@ fun RecipeItem(
                     recipe.title?.let {
                         Text(recipe.title, fontSize = 16.sp)
                     }
-                    recipe.publisher?.let {
-                        Text(
-                            buildAnnotatedString {
-                                withStyle(
-                                    style = SpanStyle(
-                                        fontStyle = FontStyle.Italic,
-                                        fontSize = 14.sp,
-                                        color = Color(0xffb4b4b4)
-                                    )
-                                ) {
-                                    append("Publisher: ")
-                                    append(recipe.publisher)
-                                }
-                            }
-                        )
-                    }
+//                    recipe.publisher?.let {
+//                        Text(
+//                            buildAnnotatedString {
+//                                withStyle(
+//                                    style = SpanStyle(
+//                                        fontStyle = FontStyle.Italic,
+//                                        fontSize = 14.sp,
+//                                        color = Color(0xffb4b4b4)
+//                                    )
+//                                ) {
+//                                    append("Publisher: ")
+//                                    append(recipe.publisher)
+//                                }
+//                            }
+//                        )
+//                    }
 //                    recipe.dateAdded?.let {
 //                        Text(
 //                            buildAnnotatedString {
@@ -363,7 +363,7 @@ fun RecipeItem(
 //                            }
 //                        )
 //                    }
-                }
+//                }
 
                 if(isCollected == 1){
                     Icon(

@@ -1,20 +1,28 @@
 package com.example.cookare.network
 
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.Query
+import com.example.cookare.model.GetAllRecipe
+import com.example.cookare.model.Recipe
+import com.example.cookare.model.SearchById
+import retrofit2.Call
+import retrofit2.http.*
 
 interface RecipeService {
-    @GET("search")
-    suspend fun search(
-        @Header("Authorization") token: String,
-        @Query("page") page: Int,
-        @Query("query") query: String
+    @POST("recipe/updateRecipe")
+    suspend fun postRecipe(
+        @Header("Cookie") token:String,
+        @Body recipe: Recipe
     ): RecipeSearchResponse
 
-    @GET("get")
-    suspend fun get(
-        @Header("Authorization") token: String,
-        @Query("id") id: Int
-    ): RecipeNetWorkEntity
+    @POST("recipe/getSelfRecipeList")
+    suspend fun getAllRecipes(
+        @Header("Cookie") token:String,
+        @Body request: GetAllRecipe
+    ): AllRecipeGetResponse
+
+    @POST("recipe/searchRecipeById")
+    @Headers("Content-type: application/json")
+    suspend fun searchRecipeById(
+        @Header("Cookie") token:String,
+        @Body request: SearchById
+    ): AllRecipeGetResponse
 }
