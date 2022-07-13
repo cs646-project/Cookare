@@ -31,11 +31,12 @@ private val DarkGreenColorPalette = darkColorScheme(
 )
 
 private val DarkPurpleColorPalette = darkColorScheme(
-    primary = purple200,
-    primaryContainer = purple700,
+    primary = green500,
+    primaryContainer = green200,
+    onPrimaryContainer = green700,
     secondary = teal200,
-    secondaryContainer = purple700,
-    onSecondaryContainer = Color.White,
+    secondaryContainer = green700,
+    onSecondaryContainer = Color.Black,
     background = Color.Black,
     surface = Color.Black,
     surfaceVariant = Color.Black,
@@ -48,11 +49,12 @@ private val DarkPurpleColorPalette = darkColorScheme(
 )
 
 private val DarkBlueColorPalette = darkColorScheme(
-    primary = blue200,
-    primaryContainer = blue700,
+    primary = green500,
+    primaryContainer = green200,
+    onPrimaryContainer = green700,
     secondary = teal200,
-    secondaryContainer = blue700,
-    onSecondaryContainer = Color.White,
+    secondaryContainer = green700,
+    onSecondaryContainer = Color.Black,
     background = Color.Black,
     surface = Color.Black,
     surfaceVariant = Color.Black,
@@ -65,11 +67,12 @@ private val DarkBlueColorPalette = darkColorScheme(
 )
 
 private val DarkOrangeColorPalette = darkColorScheme(
-    primary = orange200,
-    primaryContainer = orange700,
+    primary = green500,
+    primaryContainer = green200,
+    onPrimaryContainer = green700,
     secondary = teal200,
-    secondaryContainer = orange700,
-    onSecondaryContainer = Color.White,
+    secondaryContainer = green700,
+    onSecondaryContainer = Color.Black,
     background = Color.Black,
     surface = Color.Black,
     surfaceVariant = Color.Black,
@@ -100,10 +103,11 @@ private val LightGreenColorPalette = lightColorScheme(
 )
 
 private val LightPurpleColorPalette = lightColorScheme(
-    primary = purple,
-    primaryContainer = purple700,
+    primary = green500,
+    primaryContainer = green200,
+    onPrimaryContainer = green700,
     secondary = teal200,
-    secondaryContainer = purple700,
+    secondaryContainer = green700,
     onSecondaryContainer = Color.White,
     background = Color.White,
     surface = Color.White,
@@ -112,14 +116,15 @@ private val LightPurpleColorPalette = lightColorScheme(
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
-    onSurfaceVariant = Color.Black,
+    onSurfaceVariant = Color.Black
 )
 
 private val LightBlueColorPalette = lightColorScheme(
-    primary = blue500,
-    primaryContainer = blue700,
+    primary = green500,
+    primaryContainer = green200,
+    onPrimaryContainer = green700,
     secondary = teal200,
-    secondaryContainer = blue700,
+    secondaryContainer = green700,
     onSecondaryContainer = Color.White,
     background = Color.White,
     surface = Color.White,
@@ -128,14 +133,15 @@ private val LightBlueColorPalette = lightColorScheme(
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
-    onSurfaceVariant = Color.Black,
+    onSurfaceVariant = Color.Black
 )
 
 private val LightOrangeColorPalette = lightColorScheme(
-    primary = orange500,
-    primaryContainer = orange700,
+    primary = green500,
+    primaryContainer = green200,
+    onPrimaryContainer = green700,
     secondary = teal200,
-    secondaryContainer = orange700,
+    secondaryContainer = green700,
     onSecondaryContainer = Color.White,
     background = Color.White,
     surface = Color.White,
@@ -144,7 +150,7 @@ private val LightOrangeColorPalette = lightColorScheme(
     onSecondary = Color.Black,
     onBackground = Color.Black,
     onSurface = Color.Black,
-    onSurfaceVariant = Color.Black,
+    onSurfaceVariant = Color.Black
 )
 
 

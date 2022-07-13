@@ -164,8 +164,7 @@ fun HomeScreenContent(
             androidx.compose.material3.Surface(color = MaterialTheme.colorScheme.background) {
                 when (screen) {
                     BottomNavType.HOME -> {
-                        if(userStateVM.isLoggedIn) HomeScreenNavigate(homeScreenState)
-                        else LoginOnboarding()
+                        HomeScreenNavigate(homeScreenState)
                     }
                     BottomNavType.FOOD -> FoodScreen()
                     BottomNavType.LIST -> ListScreen()

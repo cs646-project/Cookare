@@ -23,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.example.cookare.MainActivity
 import com.example.cookare.R
@@ -45,7 +46,7 @@ class SplashActivity : ComponentActivity() {
         )
 
         Handler().postDelayed({
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                startActivity(Intent(this@SplashActivity, LoginActivity::class.java))
             finish()
         }, 2500)
     }
@@ -56,7 +57,7 @@ fun LogoScreen(){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(color = green000),
+            .background(color = Color.White),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
