@@ -111,4 +111,7 @@ dependencies {
 
     def fragment_version = "1.5.0"
     implementation("androidx.fragment:fragment-ktx:$fragment_version")
+
+    // viewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
 }

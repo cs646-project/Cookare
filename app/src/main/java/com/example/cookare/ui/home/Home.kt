@@ -17,12 +17,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.ShoppingCart
 import androidx.compose.runtime.Composable
@@ -36,7 +33,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.layout.MeasureResult
 import androidx.compose.ui.layout.MeasureScope
@@ -61,6 +57,8 @@ import com.example.cookare.ui.components.CookareSurface
 import com.example.cookare.ui.food.FoodScreen
 import com.example.cookare.ui.list.ListScreen
 import com.example.cookare.ui.theme.CookareTheme
+import com.guru.fontawesomecomposelib.FaIcon
+import com.guru.fontawesomecomposelib.FaIconType
 import java.util.*
 
 fun NavGraphBuilder.addHomeGraph(
@@ -83,12 +81,12 @@ fun NavGraphBuilder.addHomeGraph(
 
 enum class HomeSections(
     @StringRes val title: Int,
-    val icon: ImageVector,
+    val icon: FaIconType.SolidIcon,
     val route: String
 ) {
-    FEED(R.string.home_feed, Icons.Outlined.Home, "home/feed"),
-    FOOD(R.string.home_food, Icons.Outlined.Search, "home/food"),
-    LIST(R.string.home_list, Icons.Outlined.ShoppingCart, "home/list"),
+    FEED(R.string.home_feed, FaIcons.Home, "home/feed"),
+    FOOD(R.string.home_food, FaIcons.Cheese, "home/food"),
+    LIST(R.string.home_list, FaIcons.Book, "home/list"),
 }
 
 @Composable
@@ -96,7 +94,9 @@ fun CookareBottomBar(
     tabs: Array<HomeSections>,
     currentRoute: String,
     navigateToRoute: (String) -> Unit,
-    color: Color = CookareTheme.colors.iconPrimary,
+    //color: Color = CookareTheme.colors.iconPrimary,
+
+    color: Color = CookareTheme.colors.onPrimaryContainer,
     contentColor: Color = CookareTheme.colors.iconInteractive
 ) {
     val routes = remember { tabs.map { it.route } }
@@ -136,10 +136,9 @@ fun CookareBottomBar(
 
                 CookareBottomNavigationItem(
                     icon = {
-                        Icon(
-                            imageVector = section.icon,
-                            tint = tint,
-                            contentDescription = text
+                        FaIcon(
+                            faIcon = section.icon,
+                            tint = tint
                         )
                     },
                     text = {

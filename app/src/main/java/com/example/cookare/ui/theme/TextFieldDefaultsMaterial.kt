@@ -5,7 +5,6 @@ import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.TextFieldColors
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -15,29 +14,29 @@ object TextFieldDefaultsMaterial {
     fun textFieldColors(
         textColor: Color = LocalContentColor.current.copy(LocalContentAlpha.current),
         disabledTextColor: Color = textColor.copy(ContentAlpha.disabled),
-        backgroundColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = TextFieldDefaults.BackgroundOpacity),
-        cursorColor: Color = MaterialTheme.colorScheme.primary,
-        errorCursorColor: Color = MaterialTheme.colorScheme.error,
+        backgroundColor: Color = CookareTheme.colors.onSurface.copy(alpha = TextFieldDefaults.BackgroundOpacity),
+        cursorColor: Color = CookareTheme.colors.primary,
+        errorCursorColor: Color = CookareTheme.colors.error,
         focusedIndicatorColor: Color =
-            MaterialTheme.colorScheme.primary.copy(alpha = ContentAlpha.high),
+            CookareTheme.colors.primary.copy(alpha = ContentAlpha.high),
         unfocusedIndicatorColor: Color =
-            MaterialTheme.colorScheme.onSurface.copy(alpha = TextFieldDefaults.UnfocusedIndicatorLineOpacity),
+            CookareTheme.colors.onSurface.copy(alpha = TextFieldDefaults.UnfocusedIndicatorLineOpacity),
         disabledIndicatorColor: Color = unfocusedIndicatorColor.copy(alpha = ContentAlpha.disabled),
-        errorIndicatorColor: Color = MaterialTheme.colorScheme.error,
+        errorIndicatorColor: Color = CookareTheme.colors.error,
         leadingIconColor: Color =
-            MaterialTheme.colorScheme.onSurface.copy(alpha = TextFieldDefaults.IconOpacity),
+            CookareTheme.colors.onSurface.copy(alpha = TextFieldDefaults.IconOpacity),
         disabledLeadingIconColor: Color = leadingIconColor.copy(alpha = ContentAlpha.disabled),
         errorLeadingIconColor: Color = leadingIconColor,
         trailingIconColor: Color =
-            MaterialTheme.colorScheme.onSurface.copy(alpha = TextFieldDefaults.IconOpacity),
+            CookareTheme.colors.onSurface.copy(alpha = TextFieldDefaults.IconOpacity),
         disabledTrailingIconColor: Color = trailingIconColor.copy(alpha = ContentAlpha.disabled),
-        errorTrailingIconColor: Color = MaterialTheme.colorScheme.error,
+        errorTrailingIconColor: Color = CookareTheme.colors.error,
         focusedLabelColor: Color =
-            MaterialTheme.colorScheme.primary.copy(alpha = ContentAlpha.high),
-        unfocusedLabelColor: Color = MaterialTheme.colorScheme.onSurface.copy(ContentAlpha.medium),
+            CookareTheme.colors.primary.copy(alpha = ContentAlpha.high),
+        unfocusedLabelColor: Color =CookareTheme.colors.onSurface.copy(ContentAlpha.medium),
         disabledLabelColor: Color = unfocusedLabelColor.copy(ContentAlpha.disabled),
-        errorLabelColor: Color = MaterialTheme.colorScheme.error,
-        placeholderColor: Color = MaterialTheme.colorScheme.onSurface.copy(ContentAlpha.medium),
+        errorLabelColor: Color = CookareTheme.colors.error,
+        placeholderColor: Color = CookareTheme.colors.onSurface.copy(ContentAlpha.medium),
         disabledPlaceholderColor: Color = placeholderColor.copy(ContentAlpha.disabled)
     ): TextFieldColors = androidx.compose.material.TextFieldDefaults.textFieldColors(textColor, disabledTextColor, backgroundColor, cursorColor, errorCursorColor, focusedIndicatorColor, unfocusedIndicatorColor, disabledIndicatorColor, errorIndicatorColor, leadingIconColor, disabledLeadingIconColor, errorLeadingIconColor, trailingIconColor, disabledTrailingIconColor, errorTrailingIconColor, focusedLabelColor, unfocusedLabelColor, disabledLabelColor, errorLabelColor, placeholderColor, disabledPlaceholderColor)
 
@@ -51,28 +50,28 @@ object TextFieldDefaultsMaterial {
         textColor: Color = LocalContentColor.current.copy(LocalContentAlpha.current),
         disabledTextColor: Color = textColor.copy(ContentAlpha.disabled),
         backgroundColor: Color = Color.Transparent,
-        cursorColor: Color = MaterialTheme.colorScheme.primary,
-        errorCursorColor: Color = MaterialTheme.colorScheme.error,
+        cursorColor: Color = CookareTheme.colors.primary,
+        errorCursorColor: Color = CookareTheme.colors.error,
         focusedBorderColor: Color =
-            MaterialTheme.colorScheme.primary.copy(alpha = ContentAlpha.high),
+            CookareTheme.colors.primary.copy(alpha = ContentAlpha.high),
         unfocusedBorderColor: Color =
-            MaterialTheme.colorScheme.onSurface.copy(alpha = ContentAlpha.disabled),
+            CookareTheme.colors.onSurface.copy(alpha = ContentAlpha.disabled),
         disabledBorderColor: Color = unfocusedBorderColor.copy(alpha = ContentAlpha.disabled),
-        errorBorderColor: Color = MaterialTheme.colorScheme.error,
+        errorBorderColor: Color = CookareTheme.colors.error,
         leadingIconColor: Color =
-            MaterialTheme.colorScheme.onSurface.copy(alpha = TextFieldDefaults.IconOpacity),
+            CookareTheme.colors.onSurface.copy(alpha = TextFieldDefaults.IconOpacity),
         disabledLeadingIconColor: Color = leadingIconColor.copy(alpha = ContentAlpha.disabled),
         errorLeadingIconColor: Color = leadingIconColor,
         trailingIconColor: Color =
-            MaterialTheme.colorScheme.onSurface.copy(alpha = TextFieldDefaults.IconOpacity),
+            CookareTheme.colors.onSurface.copy(alpha = TextFieldDefaults.IconOpacity),
         disabledTrailingIconColor: Color = trailingIconColor.copy(alpha = ContentAlpha.disabled),
-        errorTrailingIconColor: Color = MaterialTheme.colorScheme.error,
+        errorTrailingIconColor: Color = CookareTheme.colors.error,
         focusedLabelColor: Color =
-            MaterialTheme.colorScheme.primary.copy(alpha = ContentAlpha.high),
-        unfocusedLabelColor: Color = MaterialTheme.colorScheme.onSurface.copy(ContentAlpha.medium),
+            CookareTheme.colors.primary.copy(alpha = ContentAlpha.high),
+        unfocusedLabelColor: Color = CookareTheme.colors.onSurface.copy(ContentAlpha.medium),
         disabledLabelColor: Color = unfocusedLabelColor.copy(ContentAlpha.disabled),
-        errorLabelColor: Color = MaterialTheme.colorScheme.error,
-        placeholderColor: Color = MaterialTheme.colorScheme.onSurface.copy(ContentAlpha.medium),
+        errorLabelColor: Color = CookareTheme.colors.error,
+        placeholderColor: Color = CookareTheme.colors.onSurface.copy(ContentAlpha.medium),
         disabledPlaceholderColor: Color = placeholderColor.copy(ContentAlpha.disabled)
     ): TextFieldColors = TextFieldDefaults.outlinedTextFieldColors(textColor, disabledTextColor, backgroundColor, cursorColor, errorCursorColor, focusedBorderColor, unfocusedBorderColor, disabledBorderColor, errorBorderColor, leadingIconColor, disabledLeadingIconColor, errorLeadingIconColor, trailingIconColor, disabledTrailingIconColor, errorTrailingIconColor, focusedLabelColor, unfocusedLabelColor, disabledLabelColor, errorLabelColor, placeholderColor, disabledPlaceholderColor)
 }

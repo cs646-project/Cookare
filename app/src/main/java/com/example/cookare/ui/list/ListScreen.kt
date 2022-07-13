@@ -5,15 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import com.example.cookare.mapper.EntityMapper
-import com.example.cookare.mapper.RecipeNetworkMapper
 import com.example.cookare.model.Ingredient
 import com.example.cookare.model.Recipe
-import com.example.cookare.network.RecipeSearchResponse
 import com.example.cookare.viewModels.PostRecipeViewModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @Composable
 fun ListScreen(viewModel: PostRecipeViewModel) {
@@ -43,11 +37,22 @@ fun ListScreen(viewModel: PostRecipeViewModel) {
 //    Log.d("PostRecipeResult", "ShowResult: ${recipe1.title}")
 //
         Column() {
-            val recipe2 = viewModel.resRecipeList.value
+//            val recipe2 = viewModel.resRecipeList.value
+//            for(r in recipe2){
+//                Log.d("PostRecipeListResult", "ShowResult: ${r.id}")
+//                r.id?.let { Text(text = it.toString()) }
+//            }
+//            val list: List<Int> = listOf(55,10)
+//            viewModel.searchById(list)
+
+            val recipe2 = viewModel.resRecipeByIdList.value
             for(r in recipe2){
                 Log.d("PostRecipeListResult", "ShowResult: ${r.id}")
                 r.id?.let { Text(text = it.toString()) }
+                r.title?.let { Text(text = it) }
             }
+
+
 
             Text(text = "in ListScreen")
         }

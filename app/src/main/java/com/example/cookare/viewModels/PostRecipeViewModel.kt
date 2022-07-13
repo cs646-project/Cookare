@@ -5,7 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cookare.model.GetAllRecipe
-import com.example.cookare.model.Ingredient
 import com.example.cookare.model.Recipe
 import com.example.cookare.model.SearchById
 import com.example.cookare.repository.RecipeRepository
@@ -23,6 +22,7 @@ constructor(
 ) : ViewModel() {
     val resRecipe: MutableState<Recipe> = mutableStateOf(Recipe())
     val resRecipeList: MutableState<List<Recipe>> = mutableStateOf(listOf())
+    val resRecipeByIdList: MutableState<List<Recipe>> = mutableStateOf(listOf())
 
     init {
 //        viewModelScope.launch {
@@ -65,7 +65,7 @@ constructor(
                 token = token,
                 recipeIdList = SearchById(list)
             )
-            resRecipeList.value = res
+            resRecipeByIdList.value = res
         }
     }
 //

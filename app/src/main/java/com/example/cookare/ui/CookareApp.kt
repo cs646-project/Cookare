@@ -1,36 +1,25 @@
 package com.example.cookare.ui
 
-import FaIcons
-import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.layout.Column
+import android.content.Intent
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.cookare.BottomNavType
-import com.example.cookare.R
 import com.example.cookare.ui.components.CookareScaffold
-import com.example.cookare.ui.food.FoodScreen
+import com.example.cookare.ui.food.RecipeDetail
 import com.example.cookare.ui.home.*
 import com.example.cookare.ui.home.collection.CollectionAndLikeScreen
 import com.example.cookare.ui.home.collection.TabPage
 import com.example.cookare.ui.home.notification.NotificationScreen
-import com.example.cookare.ui.list.ListScreen
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.utils.ScreenRoute
-import com.example.cookare.ui.utils.TestTags
-import com.guru.fontawesomecomposelib.FaIcon
+import com.google.android.material.internal.ContextUtils.getActivity
 
 @Composable
 fun CookareApp() {
@@ -73,7 +62,7 @@ fun HomeScreenNavigate() {
 
     NavHost(navController = navController, startDestination = ScreenRoute.HomeScreen.route){
         composable(route = ScreenRoute.HomeScreen.route){
-            HomeScreen(navController = navController)
+            HomeScreen(navController = navController, hiltViewModel())
         }
         composable(route = ScreenRoute.CollectionScreen.route){
             CollectionAndLikeScreen(TabPage.Collection, navController = navController)
@@ -85,7 +74,10 @@ fun HomeScreenNavigate() {
             NotificationScreen(upPress)
         }
         composable(route = ScreenRoute.PostTemplates.route){
-            PostTemplate(navController = navController)
+            PostTemplate(navController = navController, hiltViewModel())
+        }
+        composable(route = ScreenRoute.PostDetails.route){
+            RecipeDetail(navController = navController, hiltViewModel())
         }
         cookareNavGraph(
             upPress

@@ -16,7 +16,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -27,13 +26,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.*
 import androidx.compose.ui.unit.dp
-import com.example.cookare.BottomNavType
 import com.guru.fontawesomecomposelib.FaIcon
 import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import com.example.cookare.ui.HomeScreenNavigate
 import com.example.cookare.R
+import com.example.cookare.ui.theme.CookareTheme
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -207,7 +206,7 @@ fun invalidInput(email: String, password: String) =
 
 @Composable
 fun HorizontalDottedProgressBar() {
-    val color = androidx.compose.material.MaterialTheme.colors.onPrimary
+    val color = CookareTheme.colors.onPrimary
     val transition = rememberInfiniteTransition()
     val state by transition.animateFloat(
         initialValue = 0f,

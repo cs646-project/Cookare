@@ -1,18 +1,26 @@
 package com.example.cookare.ui.home
 
+import android.content.Intent
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.RestoreFromTrash
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.*
@@ -21,9 +29,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -33,16 +43,25 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.cookare.R
+import com.example.cookare.activities.EditPostActivity
+import com.example.cookare.model.Recipe
+import com.example.cookare.ui.food.RecipeCard
+import com.example.cookare.ui.food.RecipeDetail
 import com.example.cookare.ui.theme.*
+import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
 import com.example.cookare.ui.utils.ScreenRoute
+import com.example.cookare.ui.utils.loadPicture
+import com.example.cookare.viewModels.PostRecipeViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 
-var currentLove: Love? by mutableStateOf(null)
+var currentLove: Recipe? by mutableStateOf(null)
 var currentLovePageState by mutableStateOf(LovePageState.Closed)
 var cardSize by mutableStateOf(IntSize(0, 0))
 var fullSize by mutableStateOf(IntSize(0, 0))
@@ -51,21 +70,28 @@ var cardOffset by mutableStateOf(IntOffset(0, 0))
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun HomeScreen(
-    navController:NavController
+    navController: NavController,
+    viewModel: PostRecipeViewModel
 ) {
     val pagerState = rememberPagerState(pageCount = 4)
+    val recipes = viewModel.resRecipeList.value
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
                 backgroundColor = green000,
 
                 onClick = { navController.navigate(ScreenRoute.PostTemplates.route) }) {
+//                onClick = {
+//                    context.startActivity(Intent(context, AddPostActivity::class.java))
+//                }) {
                 /* FAB content */
-                Icon(painter = painterResource(R.drawable.ic_add), contentDescription = "add_posts",
+                Icon(
+                    painter = painterResource(R.drawable.ic_add), contentDescription = "add_posts",
                     modifier = Modifier
                         .padding(10.dp)
                         .size(32.dp),
-                    tint = BackgroundWhite)
+                    tint = BackgroundWhite
+                )
             }
         },
         isFloatingActionButtonDocked = true,
@@ -83,27 +109,40 @@ fun HomeScreen(
                 TopBar(navController)
                 SearchBar()
 
-                NamesBar(
-                    pagerState = pagerState,
-                )
-                CommunityContent(pagerState = pagerState)
-
-
+                RDContent(recipes = recipes)
+//                LazyColumn {
+//                    items(recipes) { recipe ->
+//                        RecipeCard(recipe,
+////                            navController,
+////                            viewModel
+//                            onClick = { navController.navigate(ScreenRoute.PostDetails.route) }
+////                            onClick = {
+////                                viewModel.searchById(listOf(recipe.id) as List<Int>)
+////                                navController.navigate(ScreenRoute.PostDetails.route)
+////                        }
+//                        )
+//                    }
+//                }
             }
 
         }
-        LoveDetailsPage(currentLove, currentLovePageState, cardSize, fullSize, cardOffset, {
-            currentLovePageState = LovePageState.Closing
-        }, {
-            currentLovePageState = LovePageState.Closed
-        })
+        currentLove?.let { it1 ->
+            LoveDetailsPage(it1, currentLovePageState, cardSize, fullSize, cardOffset, {
+                currentLovePageState = LovePageState.Closing
+            }, {
+                currentLovePageState = LovePageState.Closed
+            },
+                navController,
+                viewModel
+            )
+        }
     }
 
 }
 
 @Composable
 fun TopBar(
-    navController:NavController
+    navController: NavController
 ) {
     Row(
         Modifier
@@ -113,27 +152,30 @@ fun TopBar(
     ) {
         OutlinedButton(
             onClick = {},
-            modifier= Modifier.size(64.dp),
+            modifier = Modifier.size(64.dp),
             shape = CircleShape,
             contentPadding = PaddingValues(0.dp),
         ) {
-            Image(painterResource(R.drawable.avatar_lia), "avatar",
+            Image(
+                painterResource(R.drawable.avatar_lia), "avatar",
                 Modifier
                     .clip(CircleShape)
-                    .fillMaxWidth())
+                    .fillMaxWidth()
+            )
         }
         Column(
             Modifier
                 .padding(start = 14.dp)
-                .weight(1f)) {
+                .weight(1f)
+        ) {
             Text("Welcome back！", fontSize = 18.sp, color = Gray100)
             Text("Karina", fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
         OutlinedButton(
             onClick = { navController.navigate(ScreenRoute.NotificationScreen.route) },
-            modifier= Modifier.size(50.dp),
+            modifier = Modifier.size(50.dp),
             shape = CircleShape,
-            border= BorderStroke(5.dp, green100),
+            border = BorderStroke(5.dp, green100),
             contentPadding = PaddingValues(0.dp),
             colors = ButtonDefaults.buttonColors(green100)
         ) {
@@ -151,9 +193,9 @@ fun TopBar(
             onClick = {
                 navController.navigate(ScreenRoute.LikeScreen.route)
             },
-            modifier= Modifier.size(50.dp),
+            modifier = Modifier.size(50.dp),
             shape = CircleShape,
-            border= BorderStroke(5.dp, green100),
+            border = BorderStroke(5.dp, green100),
             contentPadding = PaddingValues(0.dp),
             colors = ButtonDefaults.buttonColors(green100)
         ) {
@@ -181,7 +223,8 @@ fun SearchBar() {
         verticalAlignment = Alignment.CenterVertically
     ) {
         var searchText by remember { mutableStateOf("") }
-        BasicTextField(searchText, { searchText = it },
+        BasicTextField(
+            searchText, { searchText = it },
             Modifier
                 .padding(start = 24.dp)
                 .weight(1f),
@@ -200,7 +243,8 @@ fun SearchBar() {
                 .clip(CircleShape)
                 .background(green000)
         ) {
-            Icon(painterResource(R.drawable.ic_search), "Search",
+            Icon(
+                painterResource(R.drawable.ic_search), "Search",
                 Modifier
                     .size(24.dp)
                     .align(Alignment.Center), tint = Color.White
@@ -212,32 +256,32 @@ fun SearchBar() {
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun NamesBar(pagerState: PagerState) {
-    val names = listOf("New for you", "Vegetarian","Lactose free","Gluten free")
+    val names = listOf("New for you", "Vegetarian", "Lactose free", "Gluten free")
 
     TabRow(
 
         modifier = Modifier.padding(12.dp, 8.dp),
         backgroundColor = BackgroundWhite,
         selectedTabIndex = pagerState.currentPage,
-        indicator ={ positions ->
+        indicator = { positions ->
             TabRowDefaults.Indicator(
-                Modifier.tabIndicatorOffset(positions[pagerState.currentPage])
-                ,
+                Modifier.tabIndicatorOffset(positions[pagerState.currentPage]),
                 color = green000
             )
         },
         divider = {}
     ) {
-        names.forEachIndexed{
-                index, _ ->
+        names.forEachIndexed { index, _ ->
             Column(
                 Modifier
                     .background(BackgroundWhite)
                     .width(IntrinsicSize.Max)
                     .padding(bottom = 4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,) {
-                Text(names[index], fontSize = 15.sp,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                Text(
+                    names[index], fontSize = 15.sp,
                     color = if (index == pagerState.currentPage) green000 else Gray
                 )
                 //                Box(
@@ -255,54 +299,71 @@ fun NamesBar(pagerState: PagerState) {
     }
 }
 
-@ExperimentalPagerApi
-@Composable
-fun CommunityContent(
-    pagerState: PagerState,
-) {
-    // horizontal pager for our tab layout
-    HorizontalPager(state = pagerState) {
-        // the different pages
-            page ->
-        when (page) {
-            0 -> RDContent(loves)
-            1 -> RDContent(loves1)
-            2 -> RDContent(loves2)
-            3 -> RDContent(loves3)
-        }
-    }
-}
+//@ExperimentalPagerApi
+//@Composable
+//fun CommunityContent(
+//    pagerState: PagerState,
+//) {
+//    // horizontal pager for our tab layout
+//    HorizontalPager(state = pagerState) {
+//        // the different pages
+//            page ->
+//        when (page) {
+//            0 -> RDContent(loves)
+//            1 -> RDContent(loves1)
+//            2 -> RDContent(loves2)
+//            3 -> RDContent(loves3)
+//        }
+//    }
+//}
 
 @Composable
-fun RDContent(loves:List<Love>){
-
+//fun RDContent(loves:List<Love>){
+fun RDContent(recipes: List<Recipe>) {
+//
+//    LovesArea(
+//        { cardSize = it },
+//        { love, offset ->
+//            currentLove = love
+//            currentLovePageState = LovePageState.Opening
+//            cardOffset = offset
+//        },
+//        loves=loves)
     LovesArea(
         { cardSize = it },
-        { love, offset ->
-            currentLove = love
+        { recipe, offset ->
+            currentLove = recipe
             currentLovePageState = LovePageState.Opening
             cardOffset = offset
         },
-        loves=loves)
-
-
-
+        recipes = recipes
+    )
 }
 
+
 @Composable
-fun LovesArea(onCardSizedChanged: (IntSize) -> Unit,
-              onCardClicked: (love: Love, offset: IntOffset) -> Unit,loves:List<Love>) {
-    LazyVerticalGrid(columns = GridCells.Fixed(2),
+fun LovesArea(
+    onCardSizedChanged: (IntSize) -> Unit,
+//    onCardClicked: (love: Love, offset: IntOffset) -> Unit,loves:List<Love>) {
+    onCardClicked: (recipe: Recipe, offset: IntOffset) -> Unit, recipes: List<Recipe>
+) {
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(10.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     )
 
     {
-        items(loves.size) { index ->
+        items(recipes.size) { index ->
 
             var intOffset: IntOffset? by remember { mutableStateOf(null) }
-            androidx.compose.material3.Button(onClick = { onCardClicked(loves[index], intOffset!!) },
+            androidx.compose.material3.Button(onClick = {
+                onCardClicked(
+                    recipes[index],
+                    intOffset!!
+                )
+            },
                 Modifier
                     .width(220.dp)
                     .onSizeChanged { if (index == 0) onCardSizedChanged(it) }
@@ -317,46 +378,55 @@ fun LovesArea(onCardSizedChanged: (IntSize) -> Unit,
                 )
             ) {
                 Column {
-                    Image(
-                        painterResource(loves[index].imageId), "图像",
-                        Modifier
-                            .clip(RoundedCornerShape(16.dp))
-                            .fillMaxWidth()
-                            .aspectRatio(1.35f),
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    )
+                    recipes[index].coverUrl?.let { url ->
+                        val image =
+                            loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
+                        image?.let { img ->
+                            Image(
+                                bitmap = img.asImageBitmap(),
+                                contentDescription = "Recipe Featured Image",
+                                Modifier
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .fillMaxWidth()
+                                    .aspectRatio(1.35f),
+                                contentScale = ContentScale.Crop,
+                                alignment = Alignment.Center
+                            )
+                        }
+                    }
                     Row(
                         Modifier.padding(8.dp, 12.dp, 8.dp, 8.dp),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column() {
-                            androidx.compose.material3.Text(
-                                loves[index].name,
-                                color = Color.Black,
-                                fontSize = 15.sp
-                            )
+                            recipes[index].title?.let {
+                                androidx.compose.material3.Text(
+                                    it,
+                                    color = Color.Black,
+                                    fontSize = 15.sp
+                                )
+                            }
                             Spacer(Modifier.height(4.dp))
-                            androidx.compose.material3.Text(
-                                loves[index].category,
-                                color =Gray,
-                                fontSize = 14.sp
-                            )
+//                            androidx.compose.material3.Text(
+//                                recipes[index].tags.toString(),
+//                                color =Gray,
+//                                fontSize = 14.sp
+//                            )
                         }
-                        Spacer(Modifier.weight(1f))
-                        Row(
-                            Modifier
-                                .clip(RoundedCornerShape(10.dp))
-                                .background(green100)
-                                .padding(6.dp, 11.dp, 8.dp, 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            androidx.compose.material3.Icon(
-                                painterResource(R.drawable.ic_star), "", Modifier.size(24.dp),
-                                tint = green000
-                            )
-
-                        }
+//                        Spacer(Modifier.weight(1f))
+//                        Row(
+//                            Modifier
+//                                .clip(RoundedCornerShape(10.dp))
+//                                .background(green100)
+//                                .padding(6.dp, 11.dp, 8.dp, 8.dp),
+//                            verticalAlignment = Alignment.CenterVertically
+//                        ) {
+//                            androidx.compose.material3.Icon(
+//                                painterResource(R.drawable.ic_star), "", Modifier.size(24.dp),
+//                                tint = green000
+//                            )
+//
+//                        }
                     }
                 }
             }
@@ -366,18 +436,21 @@ fun LovesArea(onCardSizedChanged: (IntSize) -> Unit,
     }
 
 
-
 }
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun LoveDetailsPage(
-    love: Love?,
+//    love: Love?,
+    recipe: Recipe,
     pageState: LovePageState,
     cardSize: IntSize,
     fullSize: IntSize,
     cardOffset: IntOffset,
     onPageClosing: () -> Unit,
-    onPageClosed: () -> Unit
+    onPageClosed: () -> Unit,
+    navController: NavController,
+    viewModel: PostRecipeViewModel
 ) {
     var animReady by remember { mutableStateOf(false) }
     val background by animateColorAsState(
@@ -415,6 +488,9 @@ fun LoveDetailsPage(
     val imageRatio by animateFloatAsState(if (pageState > LovePageState.Closed) 1f else 1.35f)
     val fullOffset = remember { IntOffset(0, 0) }
     val offsetAnimatable = remember { Animatable(IntOffset(0, 0), IntOffset.VectorConverter) }
+
+    val context = LocalContext.current
+
     LaunchedEffect(pageState) {
         when (pageState) {
             LovePageState.Opening -> {
@@ -440,16 +516,21 @@ fun LoveDetailsPage(
                 .padding(paddingSize)
         ) {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-                Image(
-                    painterResource(love!!.imageId),
-                    "image",
-                    Modifier
-                        .clip(RoundedCornerShape(imageCornerSize))
-                        .fillMaxWidth()
-                        .aspectRatio(imageRatio),
-                    contentScale = ContentScale.Crop,
-                    alignment = Alignment.Center
-                )
+                recipe.coverUrl?.let { url ->
+                    val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
+                    image?.let { img ->
+                        Image(
+                            bitmap = img.asImageBitmap(),
+                            contentDescription = "Recipe Featured Image",
+                            Modifier
+                                .clip(RoundedCornerShape(imageCornerSize))
+                                .fillMaxWidth()
+                                .aspectRatio(imageRatio),
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center
+                        )
+                    }
+                }
                 Row(
                     Modifier
                         .offset(0.dp, titleOffsetY)
@@ -465,51 +546,80 @@ fun LoveDetailsPage(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Column() {
-                        androidx.compose.material3.Text(
-                            love.name,
-                            color = Color.Black,
-                            fontSize = titleFontSize.sp,
-                            fontWeight = FontWeight(titleFontWeight)
-                        )
+                        recipe.title?.let {
+                            androidx.compose.material3.Text(
+                                it,
+                                color = Color.Black,
+                                fontSize = titleFontSize.sp,
+                                fontWeight = FontWeight(titleFontWeight),
+                                modifier = Modifier.width(240.dp)
+                            )
+                        }
                         Spacer(Modifier.height(titleSpacing))
                         androidx.compose.material3.Text(
-                            love.category,
-                            color =Gray,
+                            recipe.tags.toString(),
+                            color = Gray,
                             fontSize = subtitleFontSize.sp
                         )
                     }
                     Spacer(Modifier.weight(1f))
-                    Box(
-                        Modifier
-                            .width(badgeWidth)
-                            .height(badgeHeight)
-                            .clip(RoundedCornerShape(badgeCornerSize))
-                            .background(badgeBackground)
-                            .padding(6.dp, 11.dp, 8.dp, 8.dp)
+                    OutlinedButton(
+                        onClick = {
+//                            val searchList: List<Int> = listOf(recipe.id) as List<Int>
+//                            Log.d("searchList", "recipeId ${searchList[0]}" )
+//                            viewModel.searchById(searchList)
+//                            navController.navigate(ScreenRoute.PostDetails.route)
+
+                            val intent = Intent(context, EditPostActivity::class.java)
+                            intent.putExtra("id",recipe.id.toString())
+                            context.startActivity(intent)
+                        },
+                        modifier = Modifier.size(50.dp),
+                        shape = CircleShape,
+                        contentPadding = PaddingValues(0.dp),
+//                        border = BorderStroke(5.dp, green100),
+//                        colors = ButtonDefaults.buttonColors(green100)
                     ) {
-                        androidx.compose.material3.Text(
-                            love.scoreText,
-                            Modifier.align(Alignment.TopCenter),
-                            color = badgeContentColor,
-                            fontSize = 14.sp
+                        Icon(
+                            imageVector = Icons.Outlined.Edit,
+                            contentDescription = "edit",
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .size(22.dp),
+                            tint = Color.Black
                         )
-                        Row(
-                            Modifier.align(Alignment.BottomCenter),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            androidx.compose.material3.Icon(
-                                painterResource(R.drawable.ic_star),
-                                "",
-                                Modifier.size(24.dp),
-                                tint = badgeContentColor
-                            )
-                            androidx.compose.material3.Text(
-                                love.score.toString(),
-                                color = badgeContentColor,
-                                fontSize = 14.sp
-                            )
-                        }
                     }
+//                    Box(
+//                        Modifier
+//                            .width(badgeWidth)
+//                            .height(badgeHeight)
+//                            .clip(RoundedCornerShape(badgeCornerSize))
+//                            .background(badgeBackground)
+//                            .padding(6.dp, 11.dp, 8.dp, 8.dp)
+//                    ) {
+//                        androidx.compose.material3.Text(
+//                            love.scoreText,
+//                            Modifier.align(Alignment.TopCenter),
+//                            color = badgeContentColor,
+//                            fontSize = 14.sp
+//                        )
+//                        Row(
+//                            Modifier.align(Alignment.BottomCenter),
+//                            verticalAlignment = Alignment.CenterVertically
+//                        ) {
+//                            Icon(
+//                                imageVector = Icons.Outlined.Edit,
+//                                contentDescription = "edit",
+//                                Modifier.size(24.dp),
+//                                tint = badgeContentColor
+//                            )
+//                            androidx.compose.material3.Text(
+//                                love.score.toString(),
+//                                color = badgeContentColor,
+//                                fontSize = 14.sp
+//                            )
+//                }
+//            }
                 }
                 androidx.compose.material3.Text(
                     "The detail ",
@@ -519,12 +629,14 @@ fun LoveDetailsPage(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
-                androidx.compose.material3.Text(
-                    love.description,
-                    Modifier
-                        .offset(0.dp, titleOffsetY)
-                        .padding(14.dp, 0.dp), fontSize = 15.sp, color = Gray
-                )
+                recipe.content?.let {
+                    androidx.compose.material3.Text(
+                        it,
+                        Modifier
+                            .offset(0.dp, titleOffsetY)
+                            .padding(14.dp, 0.dp), fontSize = 15.sp, color = Gray
+                    )
+                }
             }
             Surface(
                 { onPageClosing() },
@@ -535,7 +647,7 @@ fun LoveDetailsPage(
             ) {
                 androidx.compose.material3.Icon(
                     painterResource(R.drawable.ic_back),
-                    "返回",
+                    "go back",
                     Modifier
                         .padding(8.dp)
                         .size(26.dp), tint = Color.Black
@@ -551,7 +663,7 @@ fun LoveDetailsPage(
                 fontWeight = FontWeight.Bold
             )
             Surface(
-                { },
+                { onPageClosing() },
                 Modifier
                     .align(Alignment.TopEnd)
                     .padding(14.dp, 32.dp),
@@ -559,9 +671,9 @@ fun LoveDetailsPage(
                 shape = CircleShape,
                 indication = rememberRipple()
             ) {
-                androidx.compose.material3.Icon(
-                    painterResource(R.drawable.ic_more),
-                    "更多",
+                Icon(
+                    imageVector = Icons.Outlined.Delete,
+                    contentDescription = "Delete",
                     Modifier
                         .padding(8.dp)
                         .size(26.dp), tint = Color.Black
@@ -571,87 +683,7 @@ fun LoveDetailsPage(
     }
 }
 
-data class Love(
-    val name: String,
-    val category: String,
-    val score: Float,
-    val scoreText: String,
-    @DrawableRes val imageId: Int,
-    val description: String
-)
-val loves = mutableStateListOf(
-    Love("Roasted Chicken.", "recommendation", 4.4f, "favorite", R.drawable.ic_pic1, "One Pan Garlic Roasted Chicken and Baby Potatoes. One pan garlic roasted chicken and baby potatoes is an easy to make, delicious, and wholesome meal for the entire family. Prep this sheet pan in 10 minutes. and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
-    Love("Green egg", "recommendation", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
-    Love("Tomato fish", "recommendation", 4.8f, "very good", R.drawable.ic_pic2, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
 
-    Love(
-        "Tomato pasta",
-        "recommendation",
-        5f,
-        "favorite",
-        R.drawable.ic_pic31,
-        """
-     This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days.
-     
-    """.trimIndent()
-    )
-)
-val loves1 = mutableStateListOf(
-    Love("Garlic Shrimp", "vegetarian", 4.4f, "favorite", R.drawable.ic_pic_21, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
-    Love("Gluten noodle", "vegetarian", 4.8f, "very good", R.drawable.ic_pic22, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
-    Love("vegetable soup", "vegetarian", 4.8f, "very good", R.drawable.ic_pic24, "Apple cider vinegar, potato, tomato paste, red pepper broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
-    Love(
-        "Fish Soup",
-        "recommendation",
-        5f,
-        "favorite",
-        R.drawable.ic_pic23,
-        """
-     Creamy Garlic Shrimp. Creamy garlic shrimp is a delicious, quick and easy 15-minute meal (including prep!) that you need to include in your weeknight dinner meal plan
-    
-    """.trimIndent()
-    )
-)
-val loves2 = mutableStateListOf(
-    Love("Garlic Shrimp", "Lactose free", 4.4f, "favorite", R.drawable.ic_pic1, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
-    Love("Green egg", "Lactose free", 4.8f, "very good", R.drawable.ic_pic3, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
-    Love(
-        "Fish Soup",
-        "recommendation",
-        5f,
-        "favorite",
-        R.drawable.ic_pic2,
-        """
-    Creamy Tuscan Chicken. Creamy Tuscan chicken with sun-dried tomatoes and spinach is a quick and easy 30 minute Italian chicken dinner that is delicious, flavorful, and comforting.
-    
-    """.trimIndent()
-    )
-)
-val loves3 = mutableStateListOf(
-    Love("Glazed Honey Balsamic Pork Chops", "Gluten free", 4.4f, "favorite", R.drawable.ic_pic31, "Suffice it to say, I’m currently recovering from a fried food hangover! As I type I’m sipping on a green juice and dreaming of this healthy, flavorful pan-seared cod I made last weekend. It took about 40 minutes start-to-finish and is exploding with flavor thanks to fresh basil, juicy tomatoes, plenty of garlic, and a bright kick of white wine. It’s the kind of meal you can look forward to making and eating!"),
-    Love("Tomato egg", "Gluten free", 4.8f, "very good", R.drawable.ic_pic45, "This White Bean Chicken Soup is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
-    Love("Green egg", "Lactose free", 4.8f, "very good", R.drawable.ic_pic44, "It is a slurpable, soothing, chicken broth-based soup, that's filled with white beans, roasted chicken, savory herbs, and hearty root vegetables. It's craveable on cold and rainy days."),
-    Love(
-        "Fish Soup",
-        "recommendation",
-        5f,
-        "favorite",
-        R.drawable.ic_pic2,
-        """
-   Glazed Honey Balsamic Pork Chops. Quick and easy, glazed honey balsamic pork chops are tender and juicy, seared in thyme and coated with a honey balsamic sauce. Make it in under 30 minutes.
-    """.trimIndent()
-    )
-)
 enum class LovePageState {
     Closing, Closed, Opening, Open
-}
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    LoveDetailsPage(currentLove, currentLovePageState, cardSize, fullSize, cardOffset, {
-        currentLovePageState = LovePageState.Opening
-    }, {
-        currentLovePageState = LovePageState.Open
-    })
-
 }
