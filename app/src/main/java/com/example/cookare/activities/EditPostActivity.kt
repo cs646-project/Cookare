@@ -1,11 +1,9 @@
 package com.example.cookare.activities
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -24,7 +22,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -32,22 +29,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.get
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.cookare.model.Recipe
-import com.example.cookare.ui.MainActivity
-import com.example.cookare.ui.food.RecipeDetail
-import com.example.cookare.ui.home.HomeScreen
-import com.example.cookare.ui.home.PostTemplate
-import com.example.cookare.ui.home.notification.NotificationScreen
 import com.example.cookare.ui.theme.CookareTheme
-import com.example.cookare.ui.upPress
-import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.viewModels.PostRecipeViewModel
-import com.google.android.material.internal.ContextUtils.getActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -58,7 +42,7 @@ class EditPostActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         val searchId = Integer.parseInt(intent.getStringExtra("id"))
-        Log.d("searchId", "recipeId $searchId" )
+        Log.d("searchId", "recipeId $searchId")
 
         setContent {
             CookareTheme {
@@ -73,20 +57,21 @@ fun EditRecipeScreen(
     recipeId: Int,
     viewModel: PostRecipeViewModel
 ) {
-    Log.d("EditRecipeScreen", "recipeId---------------- $recipeId" )
     viewModel.searchById(listOf(recipeId))
-    var recipes = viewModel.resRecipeByIdList.value
-    Log.d("EditRecipeScreen", "recipeSize---------------- ${recipes.size}" )
-    var recipe = if(recipes.isNotEmpty())  recipes[0] else null
-    if (recipe != null) {
-        Log.d("EditRecipeScreen", "recipe---------------- ${recipe.title}" )
-    }
+    var data = viewModel.resRecipeByIdList.value
+    val recipes = data.map { it.recipe }
+    val ingredients = data.map { it.ingredients }
+    var recipe = if (recipes.isNotEmpty()) recipes[0] else null
 
-    var title by mutableStateOf(if(recipe != null) recipe.title else "")
+    var title by mutableStateOf(if (recipe != null) recipe.title else "")
     var content by mutableStateOf(if (recipe != null) recipe.content else "")
     var tags by mutableStateOf(recipe?.tags?.toString() ?: "")
-    var updateUser by mutableStateOf(if(recipe != null) recipe.updateUser else "")
-    var coverUrl by mutableStateOf(if(recipe != null) recipe.coverUrl else "")
+    var updateUser by mutableStateOf(if (recipe != null) recipe.updateUser else "")
+    var coverUrl by mutableStateOf(if (recipe != null) recipe.coverUrl else "")
+    var ingredientName1 by mutableStateOf("")
+    var ingredientNum1 by mutableStateOf("")
+    var ingredientName2 by mutableStateOf("")
+    var ingredientNum2 by mutableStateOf("")
 
     LazyColumn(state = rememberLazyListState()) {
         item {
@@ -99,7 +84,7 @@ fun EditRecipeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     OutlinedButton(
-                        onClick = {  },
+                        onClick = { },
                         modifier = Modifier
                             .size(60.dp)
                             .padding(12.dp),
@@ -133,14 +118,21 @@ fun EditRecipeScreen(
                 }
             }
 
+            Text(
+                "Recipe detail ",
+                Modifier
+                    .padding(14.dp, 24.dp, 14.dp, 14.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+
             title?.let { it1 ->
                 OutlinedTextField(
                     value = it1,
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth(),
-                        label = { Text(text = "Title") },
-        //                placeholder = { (if(recipe != null) recipe.title else "")?.let { Text(text = it) } },
+                    label = { Text(text = "Title") },
                     placeholder = { Text(text = "") },
                     onValueChange = {
                         title = it
@@ -154,8 +146,7 @@ fun EditRecipeScreen(
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth(),
-                        label = { Text(text = "Content") },
-        //                placeholder = { (if(recipe != null) recipe.content else "")?.let { Text(text = it) }  },
+                    label = { Text(text = "Content") },
                     onValueChange = {
                         content = it
                     }
@@ -168,7 +159,6 @@ fun EditRecipeScreen(
                     .padding(8.dp)
                     .fillMaxWidth(),
                 label = { Text(text = "Tags") },
-//                placeholder = { Text(text = recipe?.tags?.toString() ?: "")  },
                 onValueChange = {
                     tags = it
                 }
@@ -180,67 +170,51 @@ fun EditRecipeScreen(
                     modifier = Modifier
                         .padding(8.dp)
                         .fillMaxWidth(),
-                        label = { Text(text = "Image url") },
-        //                placeholder = { (if(recipe != null) recipe.coverUrl else "")?.let { Text(text = it) } },
+                    label = { Text(text = "Image url") },
                     onValueChange = {
                         coverUrl = it
                     }
                 )
             }
 
-//            title?.let {
-//                OutlinedTextField(
-//                    value = it,
-//                    modifier = Modifier
-//                        .padding(8.dp)
-//                        .fillMaxWidth(),
-//                    label = { Text(text = "Title") },
-//                    placeholder = { Text(text = "") },
-//                    onValueChange = {
-////                        title = it
-//                    }
-//                )
-//            }
-//
-//            content?.let {
-//                OutlinedTextField(
-//                    value = it,
-//                    modifier = Modifier
-//                        .padding(8.dp)
-//                        .fillMaxWidth(),
-//                    label = { Text(text = "Content") },
-//                    placeholder = { Text(text = "") },
-//                    onValueChange = {
-////                        content = it
-//                    }
-//                )
-//            }
+            Text(
+                "Ingredients",
+                Modifier
+                    .padding(14.dp, 24.dp, 14.dp, 14.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
 
-//            OutlinedTextField(
-//                value = tags,
-//                modifier = Modifier
-//                    .padding(8.dp)
-//                    .fillMaxWidth(),
-//                label = { Text(text = "Tags") },
-//                placeholder = { Text(text = "") },
-//                onValueChange = {
-//                    tags = it
-//                }
-//            )
+            if (ingredients.isNotEmpty()) {
+                for (i in ingredients) {
+                    if (i.isNotEmpty()) {
+                        i.forEachIndexed { index, d ->
+                            d.name?.let {
+                                OutlinedTextField(
+                                    value = it,
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .fillMaxWidth(),
+                                    label = { Text(text = "Ingredient name -- ${index+1}") },
+                                    onValueChange = {
 
-//            coverUrl?.let {
-//                OutlinedTextField(
-//                    value = it,
-//                    modifier = Modifier
-//                        .padding(8.dp)
-//                        .fillMaxWidth(),
-//                    label = { Text(text = "Image url") },
-//                    placeholder = { Text(text = "") },
-//                    onValueChange = {
-////                        coverUrl = it
-//                    }
-//                )
-//            }
+                                    }
+                                )
+
+                                OutlinedTextField(
+                                    value = d.num.toString(),
+                                    modifier = Modifier
+                                        .padding(8.dp)
+                                        .fillMaxWidth(),
+                                    label = { Text(text = "Ingredient number -- ${index+1}") },
+                                    onValueChange = {
+                                    }
+                                )
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         item {
@@ -265,13 +239,6 @@ fun EditRecipeScreen(
                     .clip(CircleShape)
             ) {
                 Text(text = "Edit")
-//                for(r in recipes){
-//                    Log.d("PostRecipeListResult", "ShowResult: ${r.id}")
-//                    r.id?.let { Text(text = it.toString()) }
-//                    r.title?.let { Text(text = it) }
-//                }
-//                Text(text = recipe.id.toString())
-//                recipe.title?.let { Text(text = it) }
             }
         }
     }

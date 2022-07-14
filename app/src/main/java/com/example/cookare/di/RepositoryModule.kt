@@ -1,5 +1,6 @@
 package com.example.cookare.di
 
+import com.example.cookare.mapper.IngredientNetworkMapper
 import com.example.cookare.mapper.RecipeNetworkMapper
 import com.example.cookare.network.RecipeService
 import com.example.cookare.repository.RecipeRepository
@@ -17,8 +18,9 @@ object RepositoryModule {
     @Provides
     fun provideRecipeRepository(
         recipeService: RecipeService,
-        recipeNetworkMapper: RecipeNetworkMapper
+        recipeNetworkMapper: RecipeNetworkMapper,
+        ingredientNetworkMapper: IngredientNetworkMapper
     ): RecipeRepository{
-        return RecipeRepositoryImpl(recipeService, recipeNetworkMapper)
+        return RecipeRepositoryImpl(recipeService, recipeNetworkMapper, ingredientNetworkMapper)
     }
 }

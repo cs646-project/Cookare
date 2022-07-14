@@ -1,5 +1,6 @@
 package com.example.cookare.di
 
+import com.example.cookare.mapper.IngredientNetworkMapper
 import com.example.cookare.mapper.RecipeNetworkMapper
 import com.example.cookare.network.RecipeService
 import com.google.gson.GsonBuilder
@@ -20,6 +21,12 @@ object NetworkModule {
     @Provides
     fun provideRecipeMapper():RecipeNetworkMapper {
         return RecipeNetworkMapper()
+    }
+
+    @Singleton
+    @Provides
+    fun provideIngredientMapper():IngredientNetworkMapper {
+        return IngredientNetworkMapper()
     }
 
     @Singleton

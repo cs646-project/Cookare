@@ -18,11 +18,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.cookare.model.Ingredient
 import com.example.cookare.model.Recipe
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.utils.ScreenRoute
@@ -36,6 +36,10 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
         var tags by mutableStateOf("")
         var updateUser by mutableStateOf("")
         var coverUrl by mutableStateOf("")
+        var ingredientName by mutableStateOf("")
+        var ingredientNum by mutableStateOf("")
+        var ingredientName1 by mutableStateOf("")
+        var ingredientNum1 by mutableStateOf("")
 
         item {
             Column {
@@ -47,7 +51,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     OutlinedButton(
-                        onClick = {navController.navigate(ScreenRoute.HomeScreen.route) },
+                        onClick = { navController.navigate(ScreenRoute.HomeScreen.route) },
                         modifier = Modifier
                             .size(60.dp)
                             .padding(12.dp),
@@ -81,6 +85,13 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                 }
             }
 
+            Text(
+                "Recipe detail ",
+                Modifier
+                    .padding(14.dp, 24.dp, 14.dp, 14.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
 
             OutlinedTextField(
                 value = title,
@@ -129,6 +140,63 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                     coverUrl = it
                 }
             )
+
+            Text(
+                "Ingredients",
+                Modifier
+                    .padding(14.dp, 24.dp, 14.dp, 14.dp),
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            OutlinedTextField(
+                value = ingredientName,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                label = { Text(text = "Ingredient name -- 1") },
+                placeholder = { Text(text = "") },
+                onValueChange = {
+                    ingredientName = it
+                }
+            )
+
+            OutlinedTextField(
+                value = ingredientNum,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                label = { Text(text = "Ingredient number -- 1") },
+                placeholder = { Text(text = "") },
+                onValueChange = {
+                    ingredientNum = it
+                }
+            )
+
+            OutlinedTextField(
+                value = ingredientName1,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                label = { Text(text = "Ingredient name -- 2") },
+                placeholder = { Text(text = "") },
+                onValueChange = {
+                    ingredientName1 = it
+                }
+            )
+
+            OutlinedTextField(
+                value = ingredientNum1,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .fillMaxWidth(),
+                label = { Text(text = "Ingredient number -- 2") },
+                placeholder = { Text(text = "") },
+                onValueChange = {
+                    ingredientNum1 = it
+                }
+            )
+
         }
 
         item {
@@ -142,7 +210,18 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                             Integer.parseInt(tags),
                             1,
                             coverUrl,
-                            null
+                            listOf(
+                                Ingredient(
+                                    if(ingredientName == "") null else ingredientName,
+                                    if(ingredientNum == "") null else Integer.parseInt(ingredientNum),
+                                    null
+                                ),
+                                Ingredient(
+                                    if(ingredientName == "") null else ingredientName1,
+                                    if(ingredientNum == "") null else Integer.parseInt(ingredientNum1),
+                                    null
+                                )
+                            )
                         )
                     )
 

@@ -12,7 +12,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.cookare.ui.components.CookareScaffold
-import com.example.cookare.ui.food.RecipeDetail
 import com.example.cookare.ui.home.*
 
 import com.example.cookare.ui.home.notification.NotificationScreen
@@ -72,9 +71,6 @@ fun HomeScreenNavigate() {
         }
         composable(route = ScreenRoute.PostTemplates.route){
             PostTemplate(navController = navController, hiltViewModel())
-        }
-        composable(route = ScreenRoute.PostDetails.route){
-            RecipeDetail(navController = navController, hiltViewModel())
         }
         cookareNavGraph(
             upPress
