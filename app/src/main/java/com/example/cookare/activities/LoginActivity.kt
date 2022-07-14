@@ -36,6 +36,7 @@ import com.example.cookare.R
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
 import com.example.cookare.ui.theme.green500
+import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.guru.fontawesomecomposelib.FaIcon
 import okhttp3.OkHttpClient
@@ -184,17 +185,17 @@ fun LoginSreen(){
             item {
                 var loading_login by remember { mutableStateOf(false) }
                 var loading_signup by remember { mutableStateOf(false) }
-                var is_match by remember { mutableStateOf(false) }
+                var token by remember { mutableStateOf("") }
 
                 Button(
                     onClick = {
                         val thread = thread {
-                            is_match = matchInput(email.text, password.text)
+                            token = matchInput(email.text, password.text)
                         }
 
                         thread.join()
 
-                        if((!invalidInput(email.text, password.text)) && is_match){
+                        if((!invalidInput(email.text, password.text)) && token.length > 0){
                             loading_login = true
                             hasError = false
                         }else{
@@ -211,8 +212,12 @@ fun LoginSreen(){
                 ){
                     if (loading_login) {
                         HorizontalDottedProgressBar()
+                        // val context = LocalContext.current
+                        // context.startActivity(Intent(context, MainActivity::class.java))
                         val context = LocalContext.current
-                        context.startActivity(Intent(context, MainActivity::class.java))
+                        var intent = Intent(context, MainActivity::class.java)
+                        intent.putExtra("token", token)
+                        context.startActivity(intent)
                         // loading_login = false
                     } else {
                         Text(text = "Log In")
@@ -255,16 +260,16 @@ fun LoginSreen(){
                     if (loading_signup) {
                         HorizontalDottedProgressBar()
                         val context = LocalContext.current
-                        context.startActivity(Intent(context, SignupActivity::class.java))
+                        var intent = Intent(context, SignupActivity::class.java)
+                        // intent.putExtra("token", token)
+                        context.startActivity(intent)
                         // loading_login = false
                     } else {
                         Text(text = "Sign Up")
                     }
                 }
-
             }
         }
-
     }
 }
 
@@ -330,13 +335,12 @@ fun invalidInput(email: String, password: String) =
     email.isBlank() || password.isBlank()
 
 
-fun matchInput(email: String, password: String):Boolean{
+fun matchInput(email: String, password: String):String{
     val jsonObject = JSONObject()
     jsonObject.put("method", 0)
     jsonObject.put("loginCard", email)
     jsonObject.put("password", password)
     val payload = jsonObject.toString()
-
 
     val requestBody = payload.toRequestBody()
     val request = Request.Builder()
@@ -353,12 +357,12 @@ fun matchInput(email: String, password: String):Boolean{
     val body = response?.body?.string()
     // println("body: " + body)
     val gson = GsonBuilder().create()
-    val login = gson.fromJson(body, Login::class.java)
+    val UserObject = gson.fromJson(body, Body::class.java)
 
     // println("login.code" + login.code)
 
-    if(login.code == 1) return true
-    else return false
+    if(UserObject.data != null) return UserObject.data.token
+    else return ""
 
 
     /**
@@ -378,7 +382,8 @@ fun matchInput(email: String, password: String):Boolean{
     })**/
 }
 
-class Login(val code: Int, val msg: String, val data: Data)
+
+class Body(val code: Int, val msg: String, val data: Data)
 
 class Data(val token: String, val user: User)
 

@@ -48,7 +48,7 @@ class SignupActivity : ComponentActivity(){
         super.onCreate(savedInstanceState)
         setContent {
             CookareTheme {
-                SignupSreen()
+                SignupScreen()
             }
         }
 
@@ -66,7 +66,7 @@ class SignupActivity : ComponentActivity(){
     ExperimentalAnimationApi::class,
     ExperimentalMaterialApi::class)
 @Composable
-fun SignupSreen(){
+fun SignupScreen(){
     Scaffold(){
         var username by remember { mutableStateOf(TextFieldValue("")) }
         var password by remember { mutableStateOf(TextFieldValue("")) }
@@ -290,10 +290,27 @@ fun SignupSreen(){
                         .clip(CircleShape)
                 ){
                     if(loading_signup){
-                        HorizontalDottedProgressBar()
+                        var click = false
                         val context = LocalContext.current
-                        context.startActivity(Intent(context, MainActivity::class.java))
-                        // loading_signup = false
+                        AlertDialog(
+                            onDismissRequest = {
+                                loading_signup = false
+                            },
+                            title = {
+                                Text(text = "Sign up successfully")
+                            },
+                            text = {
+                                Text("Please log in to your account")
+                            },
+                            confirmButton = {
+                                Button(
+                                    onClick = {
+                                        context.startActivity(Intent(context, LoginActivity::class.java))
+                                    }) {
+                                    Text("OK")
+                                }
+                            }
+                        )
                     }else{
                         Text(text = "Sign Up")
                         if(hasError == 1){
@@ -413,7 +430,6 @@ fun signUp(username: String, password: String, email: String):Boolean{
     // println("body: " + body)
     val gson = GsonBuilder().create()
     val signup = gson.fromJson(body, Signup::class.java)
-
     // println("signup: " + signup)
 
     if(signup.code == 1) return true
@@ -430,5 +446,5 @@ class Signup(val code: Int, val msg: String, val data: String)
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    SignupSreen()
+    SignupScreen()
 }
