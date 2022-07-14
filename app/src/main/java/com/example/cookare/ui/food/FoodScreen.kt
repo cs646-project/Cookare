@@ -37,7 +37,5 @@ fun FoodScreen(onNavigate: (Todo?) -> Unit) {
                 )
             }
         }
-
     }
-
 }
