@@ -79,7 +79,7 @@ public class RecipeController {
         }
         if (recipeDto.getIngredients() != null) {
             ingredientsMapper.delete(new LambdaQueryWrapper<Ingredients>().eq(Ingredients::getRecipeId, old_recipe.getId()));
-            for(Ingredients ingredients: recipeDto.getIngredients()){
+            for (Ingredients ingredients : recipeDto.getIngredients()) {
                 ingredients.setRecipeId(old_recipe.getId());
             }
             ingredientsService.saveBatch(recipeDto.getIngredients());
@@ -120,22 +120,16 @@ public class RecipeController {
         if (recipeList == null) {
             return Result.error(MsgConstants.ERROR.NOT_EXIST);
         }
-        List<RecipeVo> recipeVoList = new ArrayList<>();
-        for (Recipe recipe : recipeList) {
-            recipeService.htmlTransUNEscape(recipe);
-            RecipeVo recipeVo = new RecipeVo();
-            recipeVo.setRecipe(recipe);
-            ingredientsService.synRecipeVoIngredients(recipeVo, recipe.getId());
-            recipeVoList.add(recipeVo);
-        }
+        List<RecipeVo> recipeVoList = recipeService.getRecipeVoFromRecipeList(recipeList);
         return Result.success(recipeVoList);
     }
 
-    @PostMapping("/searchRecipeByTitle")
+    @PostMapping("/getSelfRecipeList")
     @ResponseBody
-    public Result<?> searchRecipeByTitle(@RequestParam("recipeTitle") String title) {
-        List<Recipe> resultList = null;
-
-        return Result.success(resultList);
+    public Result<?> getSelfRecipeList(@RequestBody Map<String, Object> objectMap) {
+        int currentUserId = loginService.getCurrentUserId();
+        List<Recipe> recipeList = recipeMapper.selectList(new LambdaQueryWrapper<Recipe>().eq(Recipe::getUpdateUser, currentUserId));
+        List<RecipeVo> recipeVoList = recipeService.getRecipeVoFromRecipeList(recipeList);
+        return Result.success(recipeVoList);
     }
 }

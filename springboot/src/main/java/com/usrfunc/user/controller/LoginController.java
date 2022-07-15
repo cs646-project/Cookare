@@ -45,13 +45,9 @@ public class LoginController {
             return Result.error(MsgConstants.CheckDto.WRONG_PASSWORD);
         }
 
-        // sa-token 登录
         StpUtil.login(user.getId());
-        // 获取token
         SaTokenInfo tokenInfo = StpUtil.getTokenInfo();
-        // 获取session
         SaSession session = StpUtil.getSession();
-        // 设置用户信息
         session.set(Constants.SESSION_USER_KEY, user);
 
         LoginVo loginVo = new LoginVo();

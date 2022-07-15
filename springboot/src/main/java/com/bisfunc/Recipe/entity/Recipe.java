@@ -26,6 +26,7 @@ public class Recipe {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private Date updateTime;
 
+    @TableField(fill = FieldFill.INSERT)
     private Integer deleteFlg;
 
     private String coverUrl;

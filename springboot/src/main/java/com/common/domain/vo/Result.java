@@ -67,16 +67,16 @@ public class Result<T> {
     }
 
     public static <T> Result<T> error(String msg) {
-        return restResult(Constants.ERROR, msg, null);
+        return restResult(ApiCode.ERROR, msg, null);
     }
 
     public static <T> Result<T> restResult(ApiCode errorCode, T data) {
-        return restResult(errorCode.getCode(), errorCode.getMsg(), data);
+        return restResult(errorCode, errorCode.getMsg(), data);
     }
 
-    private static <T> Result<T> restResult(Integer code, String msg, T data) {
+    private static <T> Result<T> restResult(ApiCode code, String msg, T data) {
         Result<T> apiResult = new Result<>();
-        apiResult.setCode(code);
+        apiResult.setCode(code.getCode());
         apiResult.setData(data);
         apiResult.setMsg(msg);
         return apiResult;

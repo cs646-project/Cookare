@@ -1,5 +1,6 @@
 package com.usrfunc.user.controller;
 
+import com.bisfunc.Recipe.entity.Ingredients;
 import com.common.constants.MsgConstants;
 import com.common.domain.vo.Result;
 import com.usrfunc.user.Service.IUserService;
@@ -26,5 +27,11 @@ public class UserController {
     public Result<String> updateUser(@RequestBody User user){
         userService.updateUser(user);
         return Result.success(MsgConstants.NormalReturn.MODIFY_USER);
+    }
+
+    @PostMapping(value = "/testStructure")
+    @ResponseBody
+    public Result<?> testStructure(@RequestParam("p1")Integer p1){
+        return Result.success(p1);
     }
 }
