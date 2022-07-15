@@ -3,6 +3,7 @@ package com.example.cookare.di
 import com.example.cookare.mapper.IngredientNetworkMapper
 import com.example.cookare.mapper.RecipeNetworkMapper
 import com.example.cookare.network.RecipeService
+import com.example.cookare.ui.auth
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -44,6 +45,6 @@ object NetworkModule {
     @Provides
     @Named("auth_token")
     fun provideAuthToken(): String{
-        return "satoken=bcd4a2ee-5a4b-47e8-a9ef-ddb5f5e6efe1"
+        return auth
     }
 }

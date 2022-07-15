@@ -62,12 +62,10 @@ import java.util.*
 fun NavGraphBuilder.addHomeGraph(
     onSnackSelected: (Long, NavBackStackEntry) -> Unit,
     navController: NavController,
-    userStateVM: UserStateViewModel
 ) {
 
     composable(HomeSections.FEED.route) {
-        if(userStateVM.isLoggedIn) HomeScreenNavigate()
-        else LoginOnboarding()
+        HomeScreenNavigate()
     }
     composable(HomeSections.FOOD.route) {
         TodoNavHost()

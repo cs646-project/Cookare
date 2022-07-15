@@ -25,10 +25,9 @@ fun CookareApp() {
     CookareTheme {
         val appState = rememberCookareAppState()
         val navController = rememberNavController()
-        val userStateVM = UserState.current
         CookareScaffold(
             bottomBar = {
-                if (appState.shouldShowBottomBar && userStateVM.isLoggedIn) {
+                if (appState.shouldShowBottomBar) {
                     CookareBottomBar(
                         tabs = appState.bottomBarTabs,
                         currentRoute = appState.currentRoute!!,
@@ -47,7 +46,6 @@ fun CookareApp() {
                     onSnackSelected = appState::navigateToSnackDetail,
                     upPress = appState::upPress,
                     navController = navController,
-                    userStateVM = userStateVM
                 )
             }
         }
@@ -96,7 +94,6 @@ private fun NavGraphBuilder.cookareNavGraph(
     onSnackSelected: (Long, NavBackStackEntry) -> Unit,
     upPress: () -> Unit,
     navController: NavController,
-    userStateVM: UserStateViewModel
 ) {
     navigation(
         route = MainDestinations.HOME_ROUTE,
@@ -105,7 +102,7 @@ private fun NavGraphBuilder.cookareNavGraph(
         addHomeGraph(
             onSnackSelected,
             navController,
-            userStateVM)
+        )
     }
     composable(
         "${MainDestinations.SNACK_DETAIL_ROUTE}/{${MainDestinations.SNACK_ID_KEY}}",

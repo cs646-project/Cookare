@@ -65,6 +65,7 @@ fun HomeScreen(
     viewModel: PostRecipeViewModel
 ) {
     val pagerState = rememberPagerState(pageCount = 4)
+    val data = viewModel.resRecipeList.value
 
     Scaffold(
         floatingActionButton = {
@@ -117,24 +118,40 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("Recipe", fontSize = 18.sp, color = Gray100, fontWeight = FontWeight.Bold)
-                    NamesBar(
-                        pagerState = pagerState,
-                    )
+                    if(data.isNotEmpty()){
+                        NamesBar(
+                            pagerState = pagerState,
+                        )
+                    }
                 }
-                CommunityContent(pagerState = pagerState, hiltViewModel())
+//                CommunityContent(pagerState = pagerState, hiltViewModel())
+                if(data.isNotEmpty()){
+                    CommunityContent(pagerState = pagerState, data)
+                }else{
+                    var defaultData = listOf<Data>(Data(
+                        recipe = Recipe(
+                            title = "Please add your own recipe!!!",
+                            coverUrl = ""
+                        ),
+                        ingredients = listOf()
+                    ))
+                    CommunityContent(pagerState = pagerState, defaultData)
+                }
                 //RDContent(recipes = recipes)
             }
 
         }
-        currentLove?.let { it1 ->
-            LoveDetailsPage(it1, currentLovePageState, cardSize, fullSize, cardOffset, {
-                currentLovePageState = LovePageState.Closing
-            }, {
-                currentLovePageState = LovePageState.Closed
-            },
-                navController,
-                viewModel
-            )
+        if(data.isNotEmpty()){
+            currentLove?.let { it1 ->
+                LoveDetailsPage(it1, currentLovePageState, cardSize, fullSize, cardOffset, {
+                    currentLovePageState = LovePageState.Closing
+                }, {
+                    currentLovePageState = LovePageState.Closed
+                },
+                    navController,
+                    viewModel
+                )
+            }
         }
     }
 
@@ -290,20 +307,33 @@ fun NamesBar(pagerState: PagerState) {
 @ExperimentalPagerApi
 @Composable
 fun CommunityContent(
-    pagerState: PagerState, viewModel: PostRecipeViewModel
+    pagerState: PagerState,
+//    viewModel: PostRecipeViewModel
+    data: List<Data>
 ) {
     // horizontal pager for our tab layout
-    val data = viewModel.resRecipeList.value
+
 
     HorizontalPager(state = pagerState) {
         // the different pages
             page ->
         when (page) {
+//            0 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
+//            1 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
+//            2 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
+//            3 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
             0 -> RDContent(data = data)
             1 -> RDContent(data = data)
             2 -> RDContent(data = data)
             3 -> RDContent(data = data)
         }
+    }
+}
+
+@Composable
+fun emptyContent(){
+    Column() {
+        Text(text = "Please add your own receipt")
     }
 }
 

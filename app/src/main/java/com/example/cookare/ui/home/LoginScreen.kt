@@ -274,12 +274,12 @@ fun LoginOnboarding() {
             // Text(text = "in LoginOnboaring function")
             HomeScreenNavigate()
         } else {
-            LoginScreen {
-                coroutineScope.launch {
-                    delay(2000)
-                    userStateVM.isLoggedIn = true
-                }
-            }
+//            LoginScreen {
+//                coroutineScope.launch {
+//                    delay(2000)
+//                    userStateVM.isLoggedIn = true
+//                }
+//            }
         }
     }
 }
