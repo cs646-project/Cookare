@@ -2,5 +2,5 @@ package com.example.cookare.model
 
 data class Data(
     var recipe: Recipe,
-    var ingredients: Ingredient
+    var ingredients: List<Ingredient>
 )

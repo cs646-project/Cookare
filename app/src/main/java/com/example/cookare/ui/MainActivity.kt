@@ -18,6 +18,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
+            // val appState = rememberCookareAppState()
             CompositionLocalProvider(UserState provides userState) {
                 CookareApp()
             }

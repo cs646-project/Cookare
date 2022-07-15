@@ -1,5 +1,6 @@
 package com.example.cookare.ui.food
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,16 +20,23 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.cookare.model.Recipe
 import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
+import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.ui.utils.loadPicture
+import com.example.cookare.viewModels.PostRecipeViewModel
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun RecipeCard(
     recipe: Recipe,
+//    navController: NavController,
+//    viewModel: PostRecipeViewModel
     onClick: () -> Unit
 ) {
     Card(
+//        onClick = onClick,
         shape = MaterialTheme.shapes.small,
         modifier = Modifier
             .padding(
@@ -36,7 +44,10 @@ fun RecipeCard(
                 top = 10.dp,
             )
             .fillMaxWidth()
-            .clickable(onClick = onClick),
+            .clickable(
+                onClick = onClick
+//                viewModel.searchById(listOf(recipe.id) as List<Int>)
+            ),
         elevation = 8.dp
     ) {
         Column(
@@ -47,47 +58,46 @@ fun RecipeCard(
                 end = 20.dp
             )
         ) {
-//            recipe.featuredImage?.let { url ->
-//                val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
-//                image?.let { img ->
-//                    Image(
-//                        bitmap = img.asImageBitmap(),
-//                        contentDescription = "Recipe Featured Image",
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(225.dp),
-//                        contentScale = ContentScale.Crop,
-//                    )
-//                }
-//            }
+            recipe.coverUrl?.let { url ->
+                val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
+                image?.let { img ->
+                    Image(
+                        bitmap = img.asImageBitmap(),
+                        contentDescription = "Recipe Featured Image",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(225.dp),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
+            }
 
             recipe.title?.let { title ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = 12.dp, bottom = 12.dp)
-                ){
+                ) {
                     Text(
                         text = title,
                         modifier = Modifier
                             .fillMaxWidth(0.85f)
-                            .wrapContentWidth(Alignment.Start)
-                        ,
+                            .wrapContentWidth(Alignment.Start),
                         style = typography.h5
                     )
-                    Icon(
-                        imageVector = Icons.Default.StarBorder,
-                        contentDescription = "collection",
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .align(Alignment.CenterVertically)
-                    )
-                    Icon(
-                        imageVector = Icons.Default.FavoriteBorder,
-                        contentDescription = "like",
-                        modifier = Modifier
-                            .align(Alignment.CenterVertically)
-                    )
+//                    Icon(
+//                        imageVector = Icons.Default.StarBorder,
+//                        contentDescription = "collection",
+//                        modifier = Modifier
+//                            .padding(end = 8.dp)
+//                            .align(Alignment.CenterVertically)
+//                    )
+//                    Icon(
+//                        imageVector = Icons.Default.FavoriteBorder,
+//                        contentDescription = "like",
+//                        modifier = Modifier
+//                            .align(Alignment.CenterVertically)
+//                    )
                 }
             }
 

@@ -25,4 +25,11 @@ interface RecipeService {
         @Header("Cookie") token:String,
         @Body request: SearchById
     ): AllRecipeGetResponse
+
+    @POST("recipe/deleteRecipe")
+    @Headers("Content-type: application/json")
+    suspend fun deleteRecipeById(
+        @Header("Cookie") token:String,
+        @Query("recipeId") recipeId: Int
+    )
 }

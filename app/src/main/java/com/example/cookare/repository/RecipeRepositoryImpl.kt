@@ -1,34 +1,46 @@
 package com.example.cookare.repository
 
-import android.util.Log
+import com.example.cookare.mapper.IngredientNetworkMapper
 import com.example.cookare.mapper.RecipeNetworkMapper
+import com.example.cookare.model.Data
 import com.example.cookare.model.GetAllRecipe
 import com.example.cookare.model.Recipe
 import com.example.cookare.model.SearchById
-import com.example.cookare.network.AllRecipeGetResponse
-import com.example.cookare.network.RecipeNetWorkEntity
-import com.example.cookare.network.RecipeSearchResponse
 import com.example.cookare.network.RecipeService
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class RecipeRepositoryImpl(
     private val recipeService: RecipeService,
-    private val mapper: RecipeNetworkMapper
-): RecipeRepository {
+    private val recipeMapper: RecipeNetworkMapper,
+    private val ingreMapper: IngredientNetworkMapper
+) : RecipeRepository {
     override suspend fun postRecipe(token: String, recipe: Recipe): Recipe {
         val result = recipeService.postRecipe(token, recipe).data
-        return mapper.mapToModel(result.recipe)
+        return recipeMapper.mapToModel(result.recipe)
     }
 
-    override suspend fun getAllRecipes(token: String, request: GetAllRecipe): List<Recipe> {
+    override suspend fun getAllRecipes(token: String, request: GetAllRecipe): List<Data> {
         val result = recipeService.getAllRecipes(token, request).data
-        return result.map { mapper.mapToModel(it.recipe) }
+        val data = result.map {
+            Data(
+                recipeMapper.mapToModel(it.recipe),
+                ingreMapper.toModelList(it.ingredients)
+            )
+        }
+        return data
     }
 
-    override suspend fun searchRecipeById(token: String, recipeIdList: SearchById): List<Recipe> {
+    override suspend fun searchRecipeById(token: String, recipeIdList: SearchById): List<Data> {
         val result = recipeService.searchRecipeById(token, recipeIdList).data
-        return result.map { mapper.mapToModel(it.recipe) }
+        val data = result.map {
+            Data(
+                recipeMapper.mapToModel(it.recipe),
+                ingreMapper.toModelList(it.ingredients)
+            )
+        }
+        return data
+    }
+
+    override suspend fun deleteRecipeById(token: String, recipeId: Int) {
+        recipeService.deleteRecipeById(token, recipeId)
     }
 }

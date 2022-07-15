@@ -18,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Cookare"
         android:usesCleartextTraffic="true"
+        android:noHistory="true"
         >
         <activity
             android:name=".activities.SplashActivity"
@@ -31,6 +32,9 @@
         </activity>
         <activity
             android:name=".ui.MainActivity"
+            android:theme="@style/Theme.Cookare"/>
+        <activity
+            android:name=".activities.EditPostActivity"
             android:theme="@style/Theme.Cookare"/>
     </application>
 </manifest>

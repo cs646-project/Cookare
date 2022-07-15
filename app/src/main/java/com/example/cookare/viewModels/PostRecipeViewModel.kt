@@ -4,8 +4,8 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.cookare.model.Data
 import com.example.cookare.model.GetAllRecipe
-import com.example.cookare.model.Ingredient
 import com.example.cookare.model.Recipe
 import com.example.cookare.model.SearchById
 import com.example.cookare.repository.RecipeRepository
@@ -22,7 +22,8 @@ constructor(
     private @Named("auth_token") val token: String,
 ) : ViewModel() {
     val resRecipe: MutableState<Recipe> = mutableStateOf(Recipe())
-    val resRecipeList: MutableState<List<Recipe>> = mutableStateOf(listOf())
+    val resRecipeList: MutableState<List<Data>> = mutableStateOf(listOf())
+    val resRecipeByIdList: MutableState<List<Data>> = mutableStateOf(listOf())
 
     init {
 //        viewModelScope.launch {
@@ -65,7 +66,16 @@ constructor(
                 token = token,
                 recipeIdList = SearchById(list)
             )
-            resRecipeList.value = res
+            resRecipeByIdList.value = res
+        }
+    }
+
+    fun deletdById(recipeId: Int) {
+        viewModelScope.launch {
+            val res = repository.deleteRecipeById(
+                token = token,
+                recipeId = recipeId
+            )
         }
     }
 //
