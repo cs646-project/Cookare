@@ -34,6 +34,12 @@
             android:name=".ui.MainActivity"
             android:theme="@style/Theme.Cookare"/>
         <activity
+            android:name=".activities.LoginActivity"
+            android:theme="@style/Theme.Cookare"/>
+        <activity
+            android:name=".activities.SignupActivity"
+            android:theme="@style/Theme.Cookare"/>
+        <activity
             android:name=".activities.EditPostActivity"
             android:theme="@style/Theme.Cookare"/>
     </application>
