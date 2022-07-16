@@ -185,17 +185,23 @@ fun LoginSreen(){
             item {
                 var loading_login by remember { mutableStateOf(false) }
                 var loading_signup by remember { mutableStateOf(false) }
-                var token by remember { mutableStateOf("") }
+                var body by remember { mutableStateOf(Body(0, "", Data("",
+                    User(0, "", "", "", "", "", "", "", 0, "")))) }
+
+                // class User(val id: Int, val username: String, val password: String, val email: String, val phone: String,
+                //           val avatarUrl: String, val createTime: String, val updateTime: String, val deleteFlg: Int,
+                //           val tags: String)
+
 
                 Button(
                     onClick = {
                         val thread = thread {
-                            token = matchInput(email.text, password.text)
+                            body = matchInput(email.text, password.text)
                         }
 
                         thread.join()
 
-                        if((!invalidInput(email.text, password.text)) && token.length > 0){
+                        if((!invalidInput(email.text, password.text)) && body != null){
                             loading_login = true
                             hasError = false
                         }else{
@@ -216,7 +222,8 @@ fun LoginSreen(){
                         // context.startActivity(Intent(context, MainActivity::class.java))
                         val context = LocalContext.current
                         var intent = Intent(context, MainActivity::class.java)
-                        intent.putExtra("token", token)
+                        intent.putExtra("token", body.data.token)
+                        intent.putExtra("id", body.data.user.id)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
                         context.startActivity(intent)
@@ -339,7 +346,7 @@ fun invalidInput(email: String, password: String) =
     email.isBlank() || password.isBlank()
 
 
-fun matchInput(email: String, password: String):String{
+fun matchInput(email: String, password: String):Body{
     val jsonObject = JSONObject()
     jsonObject.put("method", 0)
     jsonObject.put("loginCard", email)
@@ -361,29 +368,15 @@ fun matchInput(email: String, password: String):String{
     val body = response?.body?.string()
     // println("body: " + body)
     val gson = GsonBuilder().create()
-    val UserObject = gson.fromJson(body, Body::class.java)
+    var UserObject = gson.fromJson(body, Body::class.java)
 
     // println("login.code" + login.code)
 
-    if(UserObject.data != null) return UserObject.data.token
-    else return ""
-
-
-    /**
-    okHttpClient.newCall(request).enqueue(object : Callback{
-    override fun onFailure(call: Call, e: IOException) {
-    e.printStackTrace()
+    if(UserObject.data != null) return UserObject
+    else{
+        UserObject = null
+        return UserObject
     }
-
-    override fun onResponse(call: Call, response: Response) {
-    val body = response?.body?.string()
-    val gson = GsonBuilder().create()
-    val login = gson.fromJson(body, Login::class.java)
-    if(login.code == 1){
-    val ret = true
-    }
-    }
-    })**/
 }
 
 
