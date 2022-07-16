@@ -7,13 +7,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum ApiCode {
-    /**
-     * 失败
-     */
+
     ERROR(0, "Operation failed!"),
-    /**
-     * 成功
-     */
+
     SUCCESS(1, "Operation succeeded!"),
     ;
 

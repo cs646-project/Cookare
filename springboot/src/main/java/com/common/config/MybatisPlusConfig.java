@@ -7,9 +7,6 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-/**
- *  mybatis-plus Configuration
- */
 @Configuration
 @MapperScan("com.bisfunc")
 @MapperScan("com.usrfunc")
@@ -17,7 +14,6 @@ public class MybatisPlusConfig {
     /**
      * Interceptor
      */
-    //分页
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor(){
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
