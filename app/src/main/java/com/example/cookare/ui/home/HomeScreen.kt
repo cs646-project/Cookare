@@ -50,6 +50,9 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material.icons.filled.ArrowBack
+import com.example.cookare.activities.LoginActivity
+import com.example.cookare.viewModels.PlanViewModel
 
 
 var currentLove: Data? by mutableStateOf(null)
@@ -62,11 +65,12 @@ var cardOffset by mutableStateOf(IntOffset(0, 0))
 @Composable
 fun HomeScreen(
     navController: NavController,
-    viewModel: PostRecipeViewModel
+    recipeViewModel: PostRecipeViewModel,
+    planViewModel: PlanViewModel,
 ) {
     val pagerState = rememberPagerState(pageCount = 4)
-    viewModel.getAllRecipes()
-    val data = viewModel.resRecipeList.value
+    recipeViewModel.getAllRecipes()
+    val data = recipeViewModel.resRecipeList.value
 
     Scaffold(
         floatingActionButton = {
@@ -147,7 +151,7 @@ fun HomeScreen(
                 }
 //                CommunityContent(pagerState = pagerState, hiltViewModel())
                 if (data.isNotEmpty()) {
-                    CommunityContent(pagerState = pagerState, data)
+                    CommunityContent(pagerState = pagerState, data, planViewModel)
                 } else {
                     var defaultData = listOf<Data>(
                         Data(
@@ -158,7 +162,7 @@ fun HomeScreen(
                             ingredients = listOf()
                         )
                     )
-                    CommunityContent(pagerState = pagerState, defaultData)
+                    CommunityContent(pagerState = pagerState, defaultData, planViewModel)
                 }
                 //RDContent(recipes = recipes)
             }
@@ -172,7 +176,7 @@ fun HomeScreen(
                     currentLovePageState = LovePageState.Closed
                 },
                     navController,
-                    viewModel
+                    recipeViewModel
                 )
             }
         }
@@ -332,7 +336,8 @@ fun NamesBar(pagerState: PagerState) {
 fun CommunityContent(
     pagerState: PagerState,
 //    viewModel: PostRecipeViewModel
-    data: List<Data>
+    data: List<Data>,
+    planViewModel: PlanViewModel
 ) {
 //    val data = viewModel.resRecipeList.value
 
@@ -344,10 +349,10 @@ fun CommunityContent(
 //            1 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
 //            2 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
 //            3 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
-            0 -> RDContent(data = data)
-            1 -> RDContent(data = data)
-            2 -> RDContent(data = data)
-            3 -> RDContent(data = data)
+            0 -> RDContent(data = data, planViewModel = planViewModel)
+            1 -> RDContent(data = data, planViewModel = planViewModel)
+            2 -> RDContent(data = data, planViewModel = planViewModel)
+            3 -> RDContent(data = data, planViewModel = planViewModel)
         }
     }
 }
@@ -360,7 +365,7 @@ fun emptyContent() {
 }
 
 @Composable
-fun RDContent(data: List<Data>) {
+fun RDContent(data: List<Data>, planViewModel: PlanViewModel) {
     LovesArea(
         { cardSize = it },
         { data, offset ->
@@ -368,7 +373,8 @@ fun RDContent(data: List<Data>) {
             currentLovePageState = LovePageState.Opening
             cardOffset = offset
         },
-        data = data
+        data = data,
+        planViewModel = planViewModel
     )
 }
 
@@ -376,10 +382,13 @@ fun RDContent(data: List<Data>) {
 @Composable
 fun LovesArea(
     onCardSizedChanged: (IntSize) -> Unit,
-    onCardClicked: (data: Data, offset: IntOffset) -> Unit, data: List<Data>
+    onCardClicked: (data: Data, offset: IntOffset) -> Unit, data: List<Data>,
+    planViewModel: PlanViewModel
 ) {
 
     val recipes = data.map { it.recipe }
+    var showCartDialog by remember { mutableStateOf(false) }
+
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
         contentPadding = PaddingValues(10.dp),
@@ -450,15 +459,47 @@ fun LovesArea(
                         Row(
                             Modifier
                                 .clip(RoundedCornerShape(10.dp))
-                                .background(green100)
-                                .padding(6.dp, 11.dp, 8.dp, 8.dp),
+                                .background(green100),
+//                                .padding(6.dp, 11.dp, 8.dp, 8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            androidx.compose.material3.Icon(
-                                painterResource(R.drawable.ic_cart), "", Modifier.size(24.dp),
-                                tint = green000
-                            )
 
+                            androidx.compose.material3.OutlinedButton(
+                                onClick = {
+                                    recipes[index].id?.let { planViewModel.updatePlan(it) }
+                                    showCartDialog = true
+                                          },
+                                modifier = Modifier
+                                    .size(40.dp)
+                                    .padding(5.dp),
+                                shape = CircleShape,
+                                border = BorderStroke(1.5.dp, green100),
+                                contentPadding = PaddingValues(0.dp),
+                            ) {
+                                androidx.compose.material3.Icon(
+                                    painterResource(R.drawable.ic_cart), "", Modifier.size(24.dp),
+                                    tint = green000,
+                                )
+                            }
+                        }
+
+                        if(showCartDialog){
+                            androidx.compose.material3.AlertDialog(
+                                onDismissRequest = {
+                                    showCartDialog = false
+                                },
+                                text = {
+                                    androidx.compose.material3.Text("Add to list successfully!")
+                                },
+                                confirmButton = {
+                                    androidx.compose.material3.Button(
+                                        onClick = {
+                                            showCartDialog = false
+                                        }) {
+                                        androidx.compose.material3.Text("OK")
+                                    }
+                                }
+                            )
                         }
                     }
                 }

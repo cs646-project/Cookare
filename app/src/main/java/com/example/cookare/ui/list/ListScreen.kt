@@ -3,6 +3,8 @@ package com.example.cookare.ui.list
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.MaterialTheme
@@ -26,10 +28,13 @@ import com.example.cookare.model.Ingredient
 import com.example.cookare.model.Recipe
 import com.example.cookare.model.loves
 import com.example.cookare.network.RecipeSearchResponse
+import com.example.cookare.ui.food.RecipeCard
 import com.example.cookare.ui.theme.BackgroundWhite
 import com.example.cookare.ui.theme.green000
 import com.example.cookare.ui.theme.green100
 import com.example.cookare.ui.theme.green200
+import com.example.cookare.ui.utils.ScreenRoute
+import com.example.cookare.viewModels.PlanViewModel
 import com.example.cookare.viewModels.PostRecipeViewModel
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
@@ -39,54 +44,96 @@ import retrofit2.Response
 import kotlin.concurrent.thread
 
 @Composable
-fun ListScreen(viewModel: PostRecipeViewModel) {
-   /* val ingredient = Ingredient(
-        name = "potato",
-        num = 10,
-        quantifier = "pieces"
-    )
-    val recipe = Recipe(
-//        id = 9,
-        title = "Test 6",
-        content = "This is content -- test 6ashuaifhuefgtqigdyitaeydfgyfqdufhagdywfdyafdtyfywdguitcugqeyfdyafdyqfd",
-        tags = 3,
-        updateUser = 1,
-        coverUrl = "",
-        ingredients = listOf(ingredient)
-    )
+fun ListScreen(viewModel: PlanViewModel) {
 
+    viewModel.getPlan()
+    val data = viewModel.resPlanList.value
+    val recipes = data.map { it.recipe }
+
+    var showDeleteDialog by remember { mutableStateOf(false) }
+    /* val ingredient = Ingredient(
+         name = "potato",
+         num = 10,
+         quantifier = "pieces"
+     )
+     val recipe = Recipe(
+ //        id = 9,
+         title = "Test 6",
+         content = "This is content -- test 6ashuaifhuefgtqigdyitaeydfgyfqdufhagdywfdyafdtyfywdguitcugqeyfdyafdyqfd",
+         tags = 3,
+         updateUser = 1,
+         coverUrl = "",
+         ingredients = listOf(ingredient)
+     )
+
+     Column() {
+         Button(
+             onClick = { viewModel.postRecipe(recipe) }
+         ) {
+             Text(text = "post recipe")
+         }
+ //    val recipe1 = viewModel.resRecipe.value
+ //    recipe1.title?.let { Text(text = it) }
+ //    Log.d("PostRecipeResult", "ShowResult: ${recipe1.title}")
+ //
+         Column() {
+             val recipe2 = viewModel.resRecipeList.value
+             for(r in recipe2){
+                 Log.d("PostRecipeListResult", "ShowResult: ${r.id}")
+                 r.id?.let { Text(text = it.toString()) }
+             }
+
+             Text(text = "in ListScreen")
+         }
+
+     }*/
     Column() {
-        Button(
-            onClick = { viewModel.postRecipe(recipe) }
-        ) {
-            Text(text = "post recipe")
-        }
-//    val recipe1 = viewModel.resRecipe.value
-//    recipe1.title?.let { Text(text = it) }
-//    Log.d("PostRecipeResult", "ShowResult: ${recipe1.title}")
-//
-        Column() {
-            val recipe2 = viewModel.resRecipeList.value
-            for(r in recipe2){
-                Log.d("PostRecipeListResult", "ShowResult: ${r.id}")
-                r.id?.let { Text(text = it.toString()) }
+        ShowRecipe()
+        Spacer(modifier = Modifier.padding(16.dp))
+        if (data.isNotEmpty()) {
+            LazyColumn() {
+                items(recipes) { recipe ->
+                    RecipeCard(recipe = recipe, onClick = {
+                        recipe.id?.let { viewModel.deletePlan(it) }
+                        showDeleteDialog = true
+                    })
+                }
             }
-
-            Text(text = "in ListScreen")
         }
+    }
 
-    }*/
-    ShowRecipe()
+    if (showDeleteDialog) {
+        AlertDialog(
+            onDismissRequest = { showDeleteDialog = false },
+            title = { androidx.compose.material3.Text(text = "Delete") },
+            text = { androidx.compose.material3.Text(text = "Are you sure to delete this plan?") },
+            buttons = {
+                Row() {
+                    TextButton(
+                        onClick = {
+                            showDeleteDialog = false
+                        }
+                    ) {
+                        androidx.compose.material3.Text(text = "Yes")
+                    }
+                    TextButton(
+                        onClick = { showDeleteDialog = false }
+                    ) {
+                        androidx.compose.material3.Text(text = "Cancel")
+                    }
+                }
 
-
-
+            },
+            modifier = Modifier.background(BackgroundWhite)
+        )
+    }
 }
 
 @Composable
 fun ShowRecipe() {
     Box(
         Modifier
-            .fillMaxSize()
+//            .fillMaxSize()
             .background(BackgroundWhite),
     ) {
 
@@ -181,11 +228,10 @@ fun StoryAvatar(imageUrl: String, onClick: () -> Unit) {
                     }
 
                 },
-            modifier = Modifier.background(BackgroundWhite)
+                modifier = Modifier.background(BackgroundWhite)
 
             )
         }
-
 
 
     }

@@ -59,7 +59,7 @@ fun HomeScreenNavigate() {
 
     NavHost(navController = navController, startDestination = ScreenRoute.HomeScreen.route){
         composable(route = ScreenRoute.HomeScreen.route){
-            HomeScreen(navController = navController, hiltViewModel())
+            HomeScreen(navController = navController, hiltViewModel(), hiltViewModel())
         }
         composable(route = ScreenRoute.ProfileScreen.route){
             ProfileScreen(navController = navController)

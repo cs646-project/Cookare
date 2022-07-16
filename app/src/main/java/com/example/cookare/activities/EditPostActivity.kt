@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cookare.model.Recipe
 import com.example.cookare.ui.MainActivity
 import com.example.cookare.ui.theme.CookareTheme
+import com.example.cookare.ui.userId
 import com.example.cookare.viewModels.PostRecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -236,7 +237,7 @@ fun EditRecipeScreen(
                             title,
                             content,
                             Integer.parseInt(tags),
-                            1,
+                            userId,
                             coverUrl,
                             null
                         )

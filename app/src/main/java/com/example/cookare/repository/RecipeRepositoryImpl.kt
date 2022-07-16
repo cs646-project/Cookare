@@ -2,10 +2,7 @@ package com.example.cookare.repository
 
 import com.example.cookare.mapper.IngredientNetworkMapper
 import com.example.cookare.mapper.RecipeNetworkMapper
-import com.example.cookare.model.Data
-import com.example.cookare.model.GetAllRecipe
-import com.example.cookare.model.Recipe
-import com.example.cookare.model.SearchById
+import com.example.cookare.model.*
 import com.example.cookare.network.RecipeService
 
 class RecipeRepositoryImpl(
@@ -46,5 +43,26 @@ class RecipeRepositoryImpl(
 
     override suspend fun deleteRecipeById(token: String, recipeId: Int) {
         recipeService.deleteRecipeById(token, recipeId)
+    }
+
+    override suspend fun updatePlan(token: String, plan: Plan): String {
+        val result = recipeService.updatePlan(token, plan).data
+        return "Successfully!"
+    }
+
+    override suspend fun getPlan(token: String, request: GetAllRecipe): List<Data> {
+        val result = recipeService.getPlan(token, request).data
+        val data = result.map {
+            Data(
+                recipeMapper.mapToModel(it.recipe),
+                ingreMapper.toModelList(it.ingredients)
+            )
+        }
+        return data
+    }
+
+    override suspend fun deletePlan(token: String, plan: Plan): String {
+        val result = recipeService.deletePlan(token, plan).data
+        return "Successfully!"
     }
 }

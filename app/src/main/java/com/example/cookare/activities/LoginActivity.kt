@@ -223,7 +223,7 @@ fun LoginSreen(){
                         val context = LocalContext.current
                         var intent = Intent(context, MainActivity::class.java)
                         intent.putExtra("token", body.data.token)
-                        intent.putExtra("id", body.data.user.id)
+                        intent.putExtra("id", body.data.user.id.toString())
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
                         context.startActivity(intent)

@@ -1,6 +1,7 @@
 package com.example.cookare.network
 
 import com.example.cookare.model.GetAllRecipe
+import com.example.cookare.model.Plan
 import com.example.cookare.model.Recipe
 import com.example.cookare.model.SearchById
 import retrofit2.Call
@@ -32,4 +33,25 @@ interface RecipeService {
         @Header("Cookie") token:String,
         @Query("recipeId") recipeId: Int
     )
+
+    // plan
+    @POST("plan/updatePlan")
+    @Headers("Content-type: application/json")
+    suspend fun updatePlan(
+        @Header("Cookie") token:String,
+        @Body plan: Plan
+    ): PlanGetResponse
+
+    @POST("plan/updatePlan")
+    @Headers("Content-type: application/json")
+    suspend fun deletePlan(
+        @Header("Cookie") token:String,
+        @Body plan: Plan
+    ): PlanGetResponse
+
+    @POST("plan/getPlan")
+    suspend fun getPlan(
+        @Header("Cookie") token:String,
+        @Body request: GetAllRecipe
+    ): AllRecipeGetResponse
 }

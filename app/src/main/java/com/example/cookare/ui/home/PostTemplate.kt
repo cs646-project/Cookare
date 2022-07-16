@@ -25,6 +25,7 @@ import androidx.navigation.NavController
 import com.example.cookare.model.Ingredient
 import com.example.cookare.model.Recipe
 import com.example.cookare.ui.theme.CookareTheme
+import com.example.cookare.ui.userId
 import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.viewModels.PostRecipeViewModel
 
@@ -208,7 +209,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                             title,
                             content,
                             Integer.parseInt(tags),
-                            1,
+                            userId,
                             coverUrl,
                             listOf(
                                 Ingredient(
