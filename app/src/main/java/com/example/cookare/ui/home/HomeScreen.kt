@@ -65,15 +65,49 @@ fun HomeScreen(
     viewModel: PostRecipeViewModel
 ) {
     val pagerState = rememberPagerState(pageCount = 4)
+    viewModel.getAllRecipes()
     val data = viewModel.resRecipeList.value
 
     Scaffold(
         floatingActionButton = {
-            if (currentLovePageState == LovePageState.Closed) {
+            if (data.isNotEmpty()) {
+                if (currentLovePageState == LovePageState.Closed) {
+                    FloatingActionButton(
+                        backgroundColor = green000,
+
+                        onClick = { navController.navigate(ScreenRoute.PostTemplates.route) }) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_add),
+                            contentDescription = "add_posts",
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .size(32.dp),
+                            tint = BackgroundWhite
+                        )
+                    }
+                } else {
+                    FloatingActionButton(
+                        backgroundColor = green000,
+
+                        onClick = { }) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_cart),
+                            contentDescription = "add_cart",
+                            modifier = Modifier
+                                .padding(10.dp)
+                                .size(32.dp),
+                            tint = BackgroundWhite
+                        )
+                    }
+                }
+            } else {
+                currentLovePageState = LovePageState.Closed
                 FloatingActionButton(
                     backgroundColor = green000,
 
-                    onClick = { navController.navigate(ScreenRoute.PostTemplates.route) }) {
+                    onClick = {
+                        navController.navigate(ScreenRoute.PostTemplates.route)
+                    }) {
                     Icon(
                         painter = painterResource(R.drawable.ic_add),
                         contentDescription = "add_posts",
@@ -83,21 +117,8 @@ fun HomeScreen(
                         tint = BackgroundWhite
                     )
                 }
-            } else {
-                FloatingActionButton(
-                    backgroundColor = green000,
-
-                    onClick = { }) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_cart),
-                        contentDescription = "add_cart",
-                        modifier = Modifier
-                            .padding(10.dp)
-                            .size(32.dp),
-                        tint = BackgroundWhite
-                    )
-                }
             }
+
         },
         isFloatingActionButtonDocked = true,
 
@@ -118,30 +139,32 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("Recipe", fontSize = 18.sp, color = Gray100, fontWeight = FontWeight.Bold)
-                    if(data.isNotEmpty()){
+                    if (data.isNotEmpty()) {
                         NamesBar(
                             pagerState = pagerState,
                         )
                     }
                 }
 //                CommunityContent(pagerState = pagerState, hiltViewModel())
-                if(data.isNotEmpty()){
+                if (data.isNotEmpty()) {
                     CommunityContent(pagerState = pagerState, data)
-                }else{
-                    var defaultData = listOf<Data>(Data(
-                        recipe = Recipe(
-                            title = "Please add your own recipe!!!",
-                            coverUrl = ""
-                        ),
-                        ingredients = listOf()
-                    ))
+                } else {
+                    var defaultData = listOf<Data>(
+                        Data(
+                            recipe = Recipe(
+                                title = "Please add your own recipe!!!",
+                                coverUrl = ""
+                            ),
+                            ingredients = listOf()
+                        )
+                    )
                     CommunityContent(pagerState = pagerState, defaultData)
                 }
                 //RDContent(recipes = recipes)
             }
 
         }
-        if(data.isNotEmpty()){
+        if (data.isNotEmpty()) {
             currentLove?.let { it1 ->
                 LoveDetailsPage(it1, currentLovePageState, cardSize, fullSize, cardOffset, {
                     currentLovePageState = LovePageState.Closing
@@ -311,8 +334,7 @@ fun CommunityContent(
 //    viewModel: PostRecipeViewModel
     data: List<Data>
 ) {
-    // horizontal pager for our tab layout
-
+//    val data = viewModel.resRecipeList.value
 
     HorizontalPager(state = pagerState) {
         // the different pages
@@ -331,7 +353,7 @@ fun CommunityContent(
 }
 
 @Composable
-fun emptyContent(){
+fun emptyContent() {
     Column() {
         Text(text = "Please add your own receipt")
     }
@@ -389,7 +411,7 @@ fun LovesArea(
                 )
             ) {
                 Column {
-                    recipes[index].coverUrl?.let { url ->
+                    recipes[index]?.coverUrl?.let { url ->
                         val image =
                             loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
                         image?.let { img ->
@@ -410,7 +432,7 @@ fun LovesArea(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Column() {
-                            recipes[index].title?.let {
+                            recipes[index]?.title?.let {
                                 androidx.compose.material3.Text(
                                     it,
                                     color = Color.Black,
@@ -589,6 +611,9 @@ fun LoveDetailsPage(
                             val intent = Intent(context, EditPostActivity::class.java)
                             intent.putExtra("id", recipe.id.toString())
                             context.startActivity(intent)
+
+                            onPageClosing()
+                            currentLovePageState = LovePageState.Closed
                         },
                         modifier = Modifier.size(50.dp),
                         shape = CircleShape,
@@ -636,7 +661,7 @@ fun LoveDetailsPage(
                     fontWeight = FontWeight.Bold
                 )
 
-                if(ingredients.isNotEmpty()){
+                if (ingredients.isNotEmpty()) {
                     for (i in ingredients) {
                         Row() {
                             i.name?.let {

@@ -224,7 +224,6 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                             )
                         )
                     )
-
                     navController.navigate(ScreenRoute.HomeScreen.route)
                 },
                 modifier = Modifier

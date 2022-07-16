@@ -304,7 +304,10 @@ fun SignupScreen(){
                             confirmButton = {
                                 Button(
                                     onClick = {
-                                        context.startActivity(Intent(context, LoginActivity::class.java))
+                                        var intent = Intent(context, LoginActivity::class.java)
+                                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+                                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
+                                        context.startActivity(intent)
                                     }) {
                                     Text("OK")
                                 }

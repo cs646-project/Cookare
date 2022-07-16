@@ -30,7 +30,7 @@ import com.guru.fontawesomecomposelib.FaIcon
 import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import com.example.cookare.ui.HomeScreenNavigate
+//import com.example.cookare.ui.HomeScreenNavigate
 import com.example.cookare.R
 import com.example.cookare.ui.theme.CookareTheme
 
@@ -267,19 +267,19 @@ fun DrawCanvas(
 @Composable
 fun LoginOnboarding() {
 //    var loggedIn by remember { mutableStateOf(false) }
-    val userStateVM = UserState.current
-    val coroutineScope = rememberCoroutineScope()
-    Crossfade(targetState = userStateVM.isLoggedIn) {
-        if (userStateVM.isLoggedIn) {
+//    val userStateVM = UserState.current
+//    val coroutineScope = rememberCoroutineScope()
+//    Crossfade(targetState = userStateVM.isLoggedIn) {
+//        if (userStateVM.isLoggedIn) {
             // Text(text = "in LoginOnboaring function")
-            HomeScreenNavigate()
-        } else {
+//            HomeScreenNavigate()
+//        } else {
 //            LoginScreen {
 //                coroutineScope.launch {
 //                    delay(2000)
 //                    userStateVM.isLoggedIn = true
 //                }
 //            }
-        }
-    }
+//        }
+//    }
 }

@@ -1,5 +1,6 @@
 package com.example.cookare.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -30,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.cookare.model.Recipe
+import com.example.cookare.ui.MainActivity
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.viewModels.PostRecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -73,6 +76,8 @@ fun EditRecipeScreen(
     var ingredientName2 by mutableStateOf("")
     var ingredientNum2 by mutableStateOf("")
 
+    val context = LocalContext.current
+
     LazyColumn(state = rememberLazyListState()) {
         item {
             Column {
@@ -84,7 +89,12 @@ fun EditRecipeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     OutlinedButton(
-                        onClick = { },
+                        onClick = {
+                            var intent = Intent(context, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
+                            context.startActivity(intent)
+                        },
                         modifier = Modifier
                             .size(60.dp)
                             .padding(12.dp),
@@ -195,7 +205,7 @@ fun EditRecipeScreen(
                                     modifier = Modifier
                                         .padding(8.dp)
                                         .fillMaxWidth(),
-                                    label = { Text(text = "Ingredient name -- ${index+1}") },
+                                    label = { Text(text = "Ingredient name -- ${index + 1}") },
                                     onValueChange = {
 
                                     }
@@ -206,7 +216,7 @@ fun EditRecipeScreen(
                                     modifier = Modifier
                                         .padding(8.dp)
                                         .fillMaxWidth(),
-                                    label = { Text(text = "Ingredient number -- ${index+1}") },
+                                    label = { Text(text = "Ingredient number -- ${index + 1}") },
                                     onValueChange = {
                                     }
                                 )
@@ -231,6 +241,11 @@ fun EditRecipeScreen(
                             null
                         )
                     )
+
+                    var intent = Intent(context, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
+                    context.startActivity(intent)
                 },
                 modifier = Modifier
                     .fillMaxWidth()

@@ -17,6 +17,10 @@ class RecipeRepositoryImpl(
         val result = recipeService.postRecipe(token, recipe).data
         return recipeMapper.mapToModel(result.recipe)
     }
+//    override suspend fun postRecipe(token: String, recipe: Recipe): String {
+//        val result = recipeService.postRecipe(token, recipe).data
+//        return "Successfully!"
+//    }
 
     override suspend fun getAllRecipes(token: String, request: GetAllRecipe): List<Data> {
         val result = recipeService.getAllRecipes(token, request).data

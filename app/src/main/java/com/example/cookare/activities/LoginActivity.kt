@@ -217,6 +217,8 @@ fun LoginSreen(){
                         val context = LocalContext.current
                         var intent = Intent(context, MainActivity::class.java)
                         intent.putExtra("token", token)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
                         context.startActivity(intent)
                         // loading_login = false
                     } else {
@@ -262,6 +264,8 @@ fun LoginSreen(){
                         val context = LocalContext.current
                         var intent = Intent(context, SignupActivity::class.java)
                         // intent.putExtra("token", token)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
                         context.startActivity(intent)
                         // loading_login = false
                     } else {

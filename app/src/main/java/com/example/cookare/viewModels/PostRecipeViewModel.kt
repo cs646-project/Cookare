@@ -19,7 +19,7 @@ class PostRecipeViewModel
 @Inject
 constructor(
     private val repository: RecipeRepository,
-    private @Named("auth_token") val token: String,
+    @Named("auth_token") private val token: String,
 ) : ViewModel() {
     val resRecipe: MutableState<Recipe> = mutableStateOf(Recipe())
     val resRecipeList: MutableState<List<Data>> = mutableStateOf(listOf())
@@ -78,14 +78,14 @@ constructor(
             )
         }
     }
-//
-//    fun getAllRecipes(){
-//        viewModelScope.launch {
-//            val res = repository.getAllRecipes(
-//                token = token,
-//                request = GetAllRecipe(null)
-//            )
-//            resRecipeList.value = res
-//        }
-//    }
+
+    fun getAllRecipes(){
+        viewModelScope.launch {
+            val res = repository.getAllRecipes(
+                token = token,
+                request = GetAllRecipe(null)
+            )
+            resRecipeList.value = res
+        }
+    }
 }
