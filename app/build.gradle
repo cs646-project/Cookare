@@ -123,4 +123,22 @@ dependencies {
     androidTestImplementation "androidx.room:room-testing:$room_version"
 
     implementation 'com.google.code.gson:gson:2.8.6'
+
+    // Amplify
+    def amplify_version = "1.31.3"
+    implementation "com.amplifyframework:aws-storage-s3:$amplify_version"
+    implementation "com.amplifyframework:aws-auth-cognito:$amplify_version"
+
+    // Coil
+    def coil_version = "1.4.0"
+    implementation "io.coil-kt:coil-compose:$coil_version"
+
+    // Amplify core dependency
+    implementation 'com.amplifyframework:core:1.36.2'
+
+    // Support for Java 8 features
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+
+    implementation 'com.amplifyframework:aws-api:1.36.2'
+    implementation 'com.amplifyframework:aws-datastore:1.36.2'
 }
