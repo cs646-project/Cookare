@@ -42,5 +42,8 @@
         <activity
             android:name=".activities.EditPostActivity"
             android:theme="@style/Theme.Cookare"/>
+        <activity
+            android:name=".activities.UploadPhoto"
+            android:theme="@style/Theme.Cookare"/>
     </application>
 </manifest>

@@ -1,6 +1,8 @@
 package com.example.cookare.ui.home
 
+import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
 import androidx.compose.foundation.*
@@ -21,7 +23,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
@@ -33,26 +34,26 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
+import com.amplifyframework.core.Amplify
 import com.example.cookare.R
 import com.example.cookare.activities.EditPostActivity
-import com.example.cookare.model.*
+import com.example.cookare.activities.UploadPhoto
+import com.example.cookare.model.Data
+import com.example.cookare.model.Recipe
+import com.example.cookare.model.users
 import com.example.cookare.ui.components.TopBar
 import com.example.cookare.ui.theme.*
-import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
 import com.example.cookare.ui.utils.ScreenRoute
-import com.example.cookare.ui.utils.loadPicture
+import com.example.cookare.viewModels.PlanViewModel
 import com.example.cookare.viewModels.PostRecipeViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.launch
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.material.icons.filled.ArrowBack
-import com.example.cookare.activities.LoginActivity
-import com.example.cookare.viewModels.PlanViewModel
+import java.io.File
 
 
 var currentLove: Data? by mutableStateOf(null)
@@ -60,6 +61,7 @@ var currentLovePageState by mutableStateOf(LovePageState.Closed)
 var cardSize by mutableStateOf(IntSize(0, 0))
 var fullSize by mutableStateOf(IntSize(0, 0))
 var cardOffset by mutableStateOf(IntOffset(0, 0))
+
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -157,7 +159,7 @@ fun HomeScreen(
                         Data(
                             recipe = Recipe(
                                 title = "Please add your own recipe!!!",
-                                coverUrl = ""
+                                coverUrl = R.string.cover_placeholder.toString()
                             ),
                             ingredients = listOf()
                         )
@@ -386,6 +388,7 @@ fun LovesArea(
     planViewModel: PlanViewModel
 ) {
 
+    val context = LocalContext.current
     val recipes = data.map { it.recipe }
     var showCartDialog by remember { mutableStateOf(false) }
 
@@ -420,6 +423,7 @@ fun LovesArea(
                 )
             ) {
                 Column {
+                    /*
                     recipes[index]?.coverUrl?.let { url ->
                         val image =
                             loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
@@ -436,6 +440,38 @@ fun LovesArea(
                             )
                         }
                     }
+
+                     */
+
+
+
+
+
+
+
+                    recipes[index]?.coverUrl?.let {
+                        val downloadedImage = recipes[index].coverUrl?.let { it1 ->
+                            downloadPhoto(
+                                it1,
+                                context
+                            )
+                        }
+                        Image(
+                            painter = rememberImagePainter(downloadedImage),
+                            contentDescription = "Recipe Featured Image",
+                            Modifier
+                                .clip(RoundedCornerShape(16.dp))
+                                .fillMaxWidth()
+                                .aspectRatio(1.35f),
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center
+                        )
+                    }
+
+
+
+
+
                     Row(
                         Modifier.padding(8.dp, 12.dp, 8.dp, 8.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -594,6 +630,7 @@ fun LoveDetailsPage(
                 .padding(paddingSize)
         ) {
             Column(Modifier.verticalScroll(rememberScrollState())) {
+                /*
                 recipe.coverUrl?.let { url ->
                     val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
                     image?.let { img ->
@@ -609,6 +646,30 @@ fun LoveDetailsPage(
                         )
                     }
                 }
+
+                 */
+
+
+
+
+
+                recipe.coverUrl?.let {
+                    val downloadedImage = downloadPhoto(recipe.coverUrl, context)
+                    Image(
+                        painter = rememberImagePainter(downloadedImage),
+                        contentDescription = "Recipe Featured Image",
+                        Modifier
+                            .clip(RoundedCornerShape(16.dp))
+                            .fillMaxWidth()
+                            .aspectRatio(1.35f),
+                        contentScale = ContentScale.Crop,
+                        alignment = Alignment.Center
+                    )
+                }
+
+
+
+
                 Row(
                     Modifier
                         .offset(0.dp, titleOffsetY)
@@ -642,36 +703,72 @@ fun LoveDetailsPage(
                     }
                     Spacer(Modifier.weight(1f))
 
-                    OutlinedButton(
-                        onClick = {
+                    Row {
+                        OutlinedButton(
+                            onClick = {
 //                            val searchList: List<Int> = listOf(recipe.id) as List<Int>
 //                            Log.d("searchList", "recipeId ${searchList[0]}" )
 //                            viewModel.searchById(searchList)
 //                            navController.navigate(ScreenRoute.PostDetails.route)
 
-                            val intent = Intent(context, EditPostActivity::class.java)
-                            intent.putExtra("id", recipe.id.toString())
-                            context.startActivity(intent)
+                                val intent = Intent(context, UploadPhoto::class.java)
+                                intent.putExtra("id", recipe.id.toString())
+                                context.startActivity(intent)
 
-                            onPageClosing()
-                            currentLovePageState = LovePageState.Closed
-                        },
-                        modifier = Modifier.size(50.dp),
-                        shape = CircleShape,
-                        contentPadding = PaddingValues(0.dp),
+                                onPageClosing()
+                                currentLovePageState = LovePageState.Closed
+                            },
+                            modifier = Modifier.size(50.dp),
+                            shape = CircleShape,
+                            contentPadding = PaddingValues(0.dp),
 //                        border = BorderStroke(5.dp, green100),
 //                        colors = ButtonDefaults.buttonColors(green100)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Edit,
-                            contentDescription = "edit",
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .size(22.dp),
-                            tint = Color.Black
-                        )
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Edit,
+                                contentDescription = "change cover",
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .size(22.dp),
+                                tint = Color.Black
+                            )
 
+                        }
+
+
+                        OutlinedButton(
+                            onClick = {
+//                            val searchList: List<Int> = listOf(recipe.id) as List<Int>
+//                            Log.d("searchList", "recipeId ${searchList[0]}" )
+//                            viewModel.searchById(searchList)
+//                            navController.navigate(ScreenRoute.PostDetails.route)
+
+                                val intent = Intent(context, EditPostActivity::class.java)
+                                intent.putExtra("id", recipe.id.toString())
+                                context.startActivity(intent)
+
+                                onPageClosing()
+                                currentLovePageState = LovePageState.Closed
+                            },
+                            modifier = Modifier.size(50.dp),
+                            shape = CircleShape,
+                            contentPadding = PaddingValues(0.dp),
+//                        border = BorderStroke(5.dp, green100),
+//                        colors = ButtonDefaults.buttonColors(green100)
+                        ) {
+                            Icon(
+                                imageVector = Icons.Outlined.Edit,
+                                contentDescription = "edit",
+                                modifier = Modifier
+                                    .padding(10.dp)
+                                    .size(22.dp),
+                                tint = Color.Black
+                            )
+
+                        }
                     }
+
+
                 }
                 androidx.compose.material3.Text(
                     "Description",
@@ -808,6 +905,40 @@ fun LoveDetailsPage(
             }
         }
     }
+}
+
+private fun downloadPhoto(
+    coverUrl: String,
+    context: Context
+): File {
+    val photoKey = "$coverUrl.jpg"
+    val filePath = "${context.filesDir}/${photoKey}"
+
+    Log.i("downloadPhoto", "photoKey is: $photoKey")
+
+    if (!fileIsExists(filePath)) {
+        val localFile = File(filePath)
+        Amplify.Storage.downloadFile(
+            photoKey,
+            localFile,
+            { },
+            { Log.e("downloadPhoto", "Failed download", it) }
+        )
+    }
+
+    return File(filePath)
+}
+
+private fun fileIsExists(filePath: String): Boolean {
+    try {
+        val f = File(filePath)
+        if (!f.exists()) {
+            return false
+        }
+    } catch (e: Exception) {
+        return false
+    }
+    return true
 }
 
 
