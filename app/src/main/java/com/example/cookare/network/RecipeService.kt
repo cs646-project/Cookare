@@ -5,6 +5,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface RecipeService {
+    // recipe
     @POST("recipe/updateRecipe")
     suspend fun postRecipe(
         @Header("Cookie") token:String,
@@ -69,5 +70,12 @@ interface RecipeService {
     suspend fun deleteStock(
         @Header("Cookie") token:String,
         @Body stockMap: StockMap
+    ): StockResponse
+
+    // list
+    @POST("plan/generateBuyList")
+    suspend fun generateList(
+        @Header("Cookie") token:String,
+        @Body request: GetAllRecipe
     ): StockResponse
 }
