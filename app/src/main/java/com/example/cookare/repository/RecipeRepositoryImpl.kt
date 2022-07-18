@@ -65,4 +65,19 @@ class RecipeRepositoryImpl(
         val result = recipeService.deletePlan(token, plan).data
         return "Successfully!"
     }
+
+    override suspend fun getStock(token: String, request: GetAllRecipe): Map<String, Int> {
+        val result = recipeService.getStock(token, request).data
+        return result
+    }
+
+    override suspend fun addStock(token: String, stockMap: StockMap): String {
+        val result = recipeService.addStock(token, stockMap).data
+        return "Successfully!"
+    }
+
+    override suspend fun deleteStock(token: String, stockMap: StockMap): String {
+        val result = recipeService.deleteStock(token, stockMap).data
+        return "Successfully!"
+    }
 }

@@ -1,9 +1,6 @@
 package com.example.cookare.network
 
-import com.example.cookare.model.GetAllRecipe
-import com.example.cookare.model.Plan
-import com.example.cookare.model.Recipe
-import com.example.cookare.model.SearchById
+import com.example.cookare.model.*
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -54,4 +51,23 @@ interface RecipeService {
         @Header("Cookie") token:String,
         @Body request: GetAllRecipe
     ): AllRecipeGetResponse
+
+    // stock
+    @POST("stock/getStock")
+    suspend fun getStock(
+        @Header("Cookie") token:String,
+        @Body request: GetAllRecipe
+    ): StockResponse
+
+    @POST("stock/updateStock")
+    suspend fun addStock(
+        @Header("Cookie") token:String,
+        @Body stockMap: StockMap
+    ): StockResponse
+
+    @POST("stock/updateStock")
+    suspend fun deleteStock(
+        @Header("Cookie") token:String,
+        @Body stockMap: StockMap
+    ): StockResponse
 }

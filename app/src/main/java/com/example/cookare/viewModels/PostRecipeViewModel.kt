@@ -26,28 +26,7 @@ constructor(
     val resRecipeByIdList: MutableState<List<Data>> = mutableStateOf(listOf())
 
     init {
-//        viewModelScope.launch {
-//            val res = repository.postRecipe(
-//                token = token,
-//                recipe = recipe
-//            )
-//            resRecipe.value = res
-//        }
-
-//        viewModelScope.launch {
-//            val res = repository.searchRecipeById(
-//                token = token,
-//                recipeIdList = SearchById(listOf(5,6,7))
-//            )
-//            resRecipeList.value = res
-//        }
-        viewModelScope.launch {
-            val res = repository.getAllRecipes(
-                token = token,
-                request = GetAllRecipe(null)
-            )
-            resRecipeList.value = res
-        }
+        getAllRecipes()
     }
 
     fun postRecipe(recipe: Recipe) {

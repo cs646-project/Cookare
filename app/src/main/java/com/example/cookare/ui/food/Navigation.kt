@@ -2,6 +2,7 @@ package com.example.cookare.ui.food
 
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -24,7 +25,8 @@ fun TodoNavHost() {
         startDestination = NavRoute.FoodScreen.route,
     ) {
         composable(NavRoute.FoodScreen.route) {
-            FoodScreen {
+//            FoodScreen(hiltViewModel()) {
+            FoodScreen() {
                 navController.navigate(NavRoute.Detail.route + "/${it?.id ?: -1}") {
 
                 }

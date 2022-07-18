@@ -12,4 +12,9 @@ interface RecipeRepository {
     suspend fun updatePlan(token: String, plan: Plan) : String
     suspend fun getPlan(token: String, request: GetAllRecipe) : List<Data>
     suspend fun deletePlan(token: String, plan: Plan) : String
+
+    // stock
+    suspend fun getStock(token: String, request: GetAllRecipe) : Map<String,Int>
+    suspend fun addStock(token: String, stockMap: StockMap) : String
+    suspend fun deleteStock(token: String, stockMap: StockMap) : String
 }
