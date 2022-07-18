@@ -71,7 +71,9 @@ public class RecipeController {
             //set default cover url
             //todo save default url as form of xml
             RecipeDto.SynDtoToRecipe(recipeDto, old_recipe);
-            old_recipe.setCoverUrl("https://seopic.699pic.com/photo/50074/8934.jpg_wh1200.jpg");
+            if (recipeDto.getCoverUrl() == null) {
+                old_recipe.setCoverUrl("logo");//AWS M3 storage index
+            }
             recipeMapper.insert(old_recipe);
         } else {
             RecipeDto.SynDtoToRecipe(recipeDto, old_recipe);
