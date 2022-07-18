@@ -8,21 +8,26 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cookare.ui.food.data.Todo
+import com.example.cookare.ui.theme.green200
 
 
 @Composable
 fun TodoItem(
     todo: Todo,
-    onChecked: (Boolean) -> Unit,
     onDelete: (Todo) -> Unit,
+    onChecked: (Boolean) -> Unit,
     onNavigation: (Todo) -> Unit,
 ) {
+    val (count, updateCount) = remember { mutableStateOf(todo.time.toInt()) }
     Card(
-        backgroundColor = MaterialTheme.colors.primaryVariant,
+        backgroundColor = green200,
         modifier = Modifier
             .padding(16.dp)
             .clickable { onNavigation(todo) },
@@ -32,14 +37,18 @@ fun TodoItem(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Checkbox(checked = todo.isComplete, onCheckedChange = { onChecked(it) })
+//            Checkbox(checked = todo.isComplete, onCheckedChange = { onChecked(it) })
             Spacer(modifier = Modifier.size(16.dp))
             Column(modifier = Modifier.weight(1f)) {
-                Text(text = todo.todo, style = MaterialTheme.typography.subtitle2)
+                Text(text = todo.todo,
+//                    style = MaterialTheme.typography.subtitle1,
+                    fontSize = 20.sp)
                 Spacer(modifier = Modifier.size(16.dp))
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text(text = todo.time, style = MaterialTheme.typography.body2)
-                }
+                QuantitySelector(
+                    count = count,
+                    decreaseItemCount = { if (count > 0) updateCount(count - 1) },
+                    increaseItemCount = { updateCount(count + 1) }
+                )
             }
             Spacer(modifier = Modifier.size(16.dp))
             IconButton(onClick = { onDelete(todo) }) {

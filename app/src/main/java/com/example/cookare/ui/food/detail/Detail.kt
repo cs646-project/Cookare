@@ -55,13 +55,13 @@ fun DetailScreenComponent(
         OutlinedTextField(
             value = todoText,
             onValueChange = { onTodoTextChange(it) },
-            label = { Text(text = "Enter Todo") }
+            label = { Text(text = "Enter food name") }
         )
         Spacer(modifier = Modifier.size(16.dp))
         OutlinedTextField(
             value = timeText,
             onValueChange = { onTimeTextChange(it) },
-            label = { Text(text = "Enter Time") }
+            label = { Text(text = "Enter number") }
         )
         Spacer(modifier = Modifier.size(16.dp))
         Button(onClick = {
@@ -70,7 +70,7 @@ fun DetailScreenComponent(
             onSaveTodo(todo)
             onNavigate()
         }) {
-            val text = if (isTodoEdit) "Save Todo" else "Update todo"
+            val text = if (isTodoEdit) "Save" else "Update"
             Text(text = text)
         }
 
