@@ -22,50 +22,23 @@ import com.example.cookare.viewModels.StockViewModel
 
 @Composable
 fun FoodScreen(
-//    stockViewModel: StockViewModel,
+    stockViewModel: StockViewModel,
     onNavigate: (Todo?) -> Unit
 ) {
-//    stockViewModel.getStock()
-//    val data = stockViewModel.resStockList.value
-//
-//    Column() {
-//        for (entry in data.entries.iterator()) {
-//            Text(text = "${entry.key} : ${entry.value}")
-//        }
-//        Button(
-//            onClick = { stockViewModel.addStock(mapOf("test1" to 1)) }
-//        ) {
-//            Text(text = "Add stock")
-//        }
-//
-//        Button(
-//            onClick = { stockViewModel.addStock(mapOf("test1" to 5)) }
-//        ) {
-//            Text(text = "Update stock")
-//        }
-//
-//        Button(
-//            onClick = { stockViewModel.deleteStock("test1") }
-//        ) {
-//            Text(text = "Delete stock")
-//        }
-//    }
-
-    val viewModel = viewModel(HomeViewModel::class.java)
-    val state by viewModel.state.collectAsState()
+    stockViewModel.getStock()
+    val data = stockViewModel.resStockList.value
 
     Scaffold(floatingActionButton = {
         FloatingActionButton(onClick = { onNavigate(null) }) {
             Icon(imageVector = Icons.Default.Add, contentDescription = null)
         }
     }) {
-        LazyColumn {
-            items(state.todoList) { todo ->
+        Column() {
+            for(entry in data.entries.iterator()){
                 TodoItem(
-                    todo = todo,
-                    onChecked = { viewModel.updateTodo(it, todo.id) },
-                    onDelete = { viewModel.delete(it) },
-                    onNavigation = { onNavigate(it) }
+                    key = entry.key,
+                    value = entry.value,
+                    stockViewModel = stockViewModel
                 )
             }
         }

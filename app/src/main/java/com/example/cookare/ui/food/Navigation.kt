@@ -25,8 +25,8 @@ fun TodoNavHost() {
         startDestination = NavRoute.FoodScreen.route,
     ) {
         composable(NavRoute.FoodScreen.route) {
-//            FoodScreen(hiltViewModel()) {
-            FoodScreen() {
+            FoodScreen(hiltViewModel()) {
+//            FoodScreen() {
                 navController.navigate(NavRoute.Detail.route + "/${it?.id ?: -1}") {
 
                 }
