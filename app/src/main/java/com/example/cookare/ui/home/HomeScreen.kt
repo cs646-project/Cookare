@@ -711,38 +711,6 @@ fun LoveDetailsPage(
 //                            viewModel.searchById(searchList)
 //                            navController.navigate(ScreenRoute.PostDetails.route)
 
-                                val intent = Intent(context, UploadPhoto::class.java)
-                                intent.putExtra("id", recipe.id.toString())
-                                context.startActivity(intent)
-
-                                onPageClosing()
-                                currentLovePageState = LovePageState.Closed
-                            },
-                            modifier = Modifier.size(50.dp),
-                            shape = CircleShape,
-                            contentPadding = PaddingValues(0.dp),
-//                        border = BorderStroke(5.dp, green100),
-//                        colors = ButtonDefaults.buttonColors(green100)
-                        ) {
-                            Icon(
-                                imageVector = Icons.Outlined.Edit,
-                                contentDescription = "change cover",
-                                modifier = Modifier
-                                    .padding(10.dp)
-                                    .size(22.dp),
-                                tint = Color.Black
-                            )
-
-                        }
-
-
-                        OutlinedButton(
-                            onClick = {
-//                            val searchList: List<Int> = listOf(recipe.id) as List<Int>
-//                            Log.d("searchList", "recipeId ${searchList[0]}" )
-//                            viewModel.searchById(searchList)
-//                            navController.navigate(ScreenRoute.PostDetails.route)
-
                                 val intent = Intent(context, EditPostActivity::class.java)
                                 intent.putExtra("id", recipe.id.toString())
                                 context.startActivity(intent)
@@ -911,7 +879,7 @@ private fun downloadPhoto(
     coverUrl: String,
     context: Context
 ): File {
-    val photoKey = "$coverUrl.jpg"
+    val photoKey = "$coverUrl.png"
     val filePath = "${context.filesDir}/${photoKey}"
 
     Log.i("downloadPhoto", "photoKey is: $photoKey")

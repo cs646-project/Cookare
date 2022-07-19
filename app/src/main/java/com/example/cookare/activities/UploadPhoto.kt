@@ -322,7 +322,7 @@ private fun uploadPhotoUri(
     context: Context
 ):String {
     val newUrl = UUID.randomUUID().toString()
-    val photoKey = "$newUrl.jpg"
+    val photoKey = "$newUrl.png"
     val stream = context.contentResolver.openInputStream(imageUri)!!
     Log.i("uploadPhotoUri", "photoKey is: $photoKey")
 
@@ -342,7 +342,7 @@ private fun uploadPhotoBitmap(
     context: Context
 ):String {
     val newUrl = UUID.randomUUID().toString()
-    val photoKey = "$newUrl.jpg"
+    val photoKey = "$newUrl.png"
     val filePath = "${context.filesDir}/${photoKey}"
     Log.i("uploadPhotoBitmap", "photoKey is: $photoKey")
     Log.i("uploadPhotoBitmap", "filePath is: $filePath")
@@ -351,7 +351,7 @@ private fun uploadPhotoBitmap(
 
     try {
         val saveImgOut = FileOutputStream(localFile)
-        imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, saveImgOut)
+        imageBitmap.compress(Bitmap.CompressFormat.PNG, 0, saveImgOut)
         // flush and close the output stream
         saveImgOut.flush()
         saveImgOut.close()
