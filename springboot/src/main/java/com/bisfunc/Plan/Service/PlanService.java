@@ -15,7 +15,7 @@ import java.util.List;
 @Component
 @Service
 @Slf4j
-public class PlanService extends ServiceImpl<PlanMapper, Plan> implements IPlanService{
+public class PlanService extends ServiceImpl<PlanMapper, Plan> implements IPlanService {
     @Resource
     PlanMapper planMapper;
 
