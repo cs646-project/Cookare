@@ -7,15 +7,15 @@
     "CredentialsProvider": {
         "CognitoIdentity": {
             "Default": {
-                "PoolId": "us-east-1:81eb3da7-7b3a-4527-9fca-c2b5ff040367",
+                "PoolId": "us-east-1:b73fee97-389b-4ee7-a76a-2b7c96b2505f",
                 "Region": "us-east-1"
             }
         }
     },
     "CognitoUserPool": {
         "Default": {
-            "PoolId": "us-east-1_amEiW4rPB",
-            "AppClientId": "jkabqi4toge5ntassfeomv0e3",
+            "PoolId": "us-east-1_VRrbrEURh",
+            "AppClientId": "5dc2ncdfehs8pr83v18n428jo8",
             "Region": "us-east-1"
         }
     },
@@ -42,7 +42,7 @@
     },
     "S3TransferUtility": {
         "Default": {
-            "Bucket": "uploadfilesamplify02cd28cda1cd46dfa481d04f14e0e175101-test",
+            "Bucket": "s3-cookare171503-dev",
             "Region": "us-east-1"
         }
     }
