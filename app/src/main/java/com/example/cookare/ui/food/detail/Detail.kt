@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +20,9 @@ import com.example.cookare.PickPicture
 import com.example.cookare.ui.food.data.Todo
 import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
 import com.example.cookare.ui.theme.green200
+import com.example.cookare.ui.theme.green500
+import androidx.compose.material3.*
+import androidx.compose.ui.unit.sp
 
 
 @Composable
@@ -72,21 +76,24 @@ fun DetailScreenComponent(
             label = { Text(text = "Enter Number") }
         )
         Spacer(modifier = Modifier.size(25.dp))
-        Button(onClick = {
+        Button(
+
+
+                onClick = {
             val todo = if (isTodoEdit) Todo(todoText, timeText)
             else Todo(todoText, timeText, id = selectedId)
             onSaveTodo(todo)
             onNavigate()
         },
+            colors = androidx.compose.material3.ButtonDefaults.buttonColors(green500),
             modifier = Modifier
 
             .padding(vertical = 40.dp)
             .height(50.dp).width(200.dp)
             .clip(CircleShape)
-
-                .background(color = green200)) {
+        ) {
             val text = if (isTodoEdit) "Save" else "Update"
-            Text(text = text)
+            Text(text = text,fontSize = 30.sp,)
         }
 
 
