@@ -39,7 +39,6 @@ import coil.compose.rememberImagePainter
 import com.amplifyframework.core.Amplify
 import com.example.cookare.R
 import com.example.cookare.activities.EditPostActivity
-import com.example.cookare.activities.UploadPhoto
 import com.example.cookare.model.Data
 import com.example.cookare.model.Recipe
 import com.example.cookare.model.users
@@ -882,7 +881,7 @@ private fun downloadPhoto(
     val photoKey = "$coverUrl.png"
     val filePath = "${context.filesDir}/${photoKey}"
 
-    Log.i("downloadPhoto", "photoKey is: $photoKey")
+    Log.i("downloadPhoto", "home photoKey is: $photoKey")
 
     if (!fileIsExists(filePath)) {
         val localFile = File(filePath)

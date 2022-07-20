@@ -7,16 +7,17 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
+import android.net.Uri.fromFile
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.launch
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -40,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -52,7 +54,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.rememberAsyncImagePainter
 import coil.compose.rememberImagePainter
 import com.amplifyframework.core.Amplify
 import com.example.cookare.model.Recipe
@@ -109,7 +113,6 @@ fun EditRecipeScreen(
 
     val context = LocalContext.current
 
-    // ----------------------------------------------------------------
     val bottomSheetModalState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
 
@@ -121,18 +124,38 @@ fun EditRecipeScreen(
         mutableStateOf<Bitmap?>(null)
     }
 
+    val localFile = File("${context.filesDir}/photo.png")
+
+    var photoUri by remember {
+        mutableStateOf<Uri>(
+            FileProvider.getUriForFile(
+            context,
+            context.applicationContext.packageName + ".provider",
+            localFile
+            )
+        )
+    }
+
     var isCameraSelected by remember {
-        mutableStateOf<Boolean>(false)
+        mutableStateOf(false)
+    }
+
+    var takenFromCamera by remember {
+        mutableStateOf(false)
     }
 
     val galleryLauncher = rememberLauncherForActivityResult(contract =
     ActivityResultContracts.GetContent()) { uri: Uri? ->
         imageUri = uri
+        takenFromCamera = false
     }
 
     val cameraLauncher = rememberLauncherForActivityResult(contract =
-    ActivityResultContracts.TakePicturePreview()){ btm: Bitmap? ->
-        bitmap = btm
+    ActivityResultContracts.TakePicture()) {
+        result: Boolean  ->
+        if (result) {
+            takenFromCamera = true
+        }
     }
 
     val permissionLauncher = rememberLauncherForActivityResult(contract =
@@ -140,7 +163,7 @@ fun EditRecipeScreen(
             isGranted: Boolean ->
         if(isGranted){
             if (isCameraSelected){
-                cameraLauncher.launch()
+                cameraLauncher.launch(photoUri)
             }else{
                 galleryLauncher.launch("image/*")
             }
@@ -187,7 +210,7 @@ fun EditRecipeScreen(
                                 ContextCompat.checkSelfPermission(
                                     context, Manifest.permission.CAMERA
                                 ) -> {
-                                    cameraLauncher.launch()
+                                    cameraLauncher.launch(photoUri)
                                     coroutineScope.launch {
                                         bottomSheetModalState.hide()
                                     }
@@ -381,6 +404,7 @@ fun EditRecipeScreen(
 
                 // bug: first check imageUri
                 if (imageUri != null) {
+                    Log.i("Take Photo", "from gallery1")
                     if(!isCameraSelected){
                         bitmap = if(Build.VERSION.SDK_INT<28){
                             MediaStore.Images.Media.getBitmap(context.contentResolver,imageUri)
@@ -401,34 +425,54 @@ fun EditRecipeScreen(
                                 .fillMaxWidth()
                                 .fillMaxHeight()
                                 .padding(top = 10.dp),
-                            contentScale = ContentScale.Fit
+                            contentScale = ContentScale.Fit,
+                            filterQuality = FilterQuality.High
                         )
+
+                        Log.i("Take Photo", "from gallery2")
                     }
                 }
-                else if (bitmap != null) {
-                    Image(
-                        bitmap = bitmap!!.asImageBitmap(),
-                        contentDescription = "Image",
-                        alignment = Alignment.TopCenter,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .fillMaxHeight()
-                            .padding(top = 10.dp),
-                        contentScale = ContentScale.Fit
-                    )
+                else if (takenFromCamera) {
+                    Log.i("Take Photo", "from camera1")
+
+                    bitmap = if(Build.VERSION.SDK_INT<28){
+                        MediaStore.Images.Media.getBitmap(context.contentResolver,photoUri)
+                    }else{
+                        val source = ImageDecoder.createSource(context.contentResolver,
+                            photoUri!!
+                        )
+                        ImageDecoder.decodeBitmap(source)
+                    }
+
+                    bitmap?.let { btm ->
+                        Image(
+                            bitmap = btm.asImageBitmap(),
+                            contentDescription = "Image",
+                            alignment = Alignment.TopCenter,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight()
+                                .padding(top = 10.dp),
+                            contentScale = ContentScale.Fit,
+                            filterQuality = FilterQuality.High
+                        )
+
+                        Log.i("Take Photo", "from gallery2")
+                    }
                 }
                 else {
+                    Log.i("Take Photo", "from default1")
                     coverUrl?.let {
                         val downloadedImage = downloadPhoto(coverUrl!!, context)
                         Image(
-                            painter = rememberImagePainter(downloadedImage),
+                            painter = rememberAsyncImagePainter(downloadedImage),
                             contentDescription = "Recipe Featured Image",
                             Modifier
                                 .clip(RoundedCornerShape(16.dp))
                                 .fillMaxWidth()
                                 .aspectRatio(1.35f),
-                            contentScale = ContentScale.Crop,
-                            alignment = Alignment.Center
+                            contentScale = ContentScale.Fit,
+                            alignment = Alignment.TopCenter
                         )
                     }
                 }
@@ -550,7 +594,7 @@ private fun uploadPhotoUri(
     val newUrl = UUID.randomUUID().toString()
     val photoKey = "$newUrl.png"
     val stream = context.contentResolver.openInputStream(imageUri)!!
-    Log.i("uploadPhotoUri", "photoKey is: $photoKey")
+    Log.i("uploadPhotoUri", "Uri photoKey is: $photoKey")
 
     Amplify.Storage.uploadInputStream(
         photoKey,
@@ -570,7 +614,7 @@ private fun uploadPhotoBitmap(
     val newUrl = UUID.randomUUID().toString()
     val photoKey = "$newUrl.png"
     val filePath = "${context.filesDir}/${photoKey}"
-    Log.i("uploadPhotoBitmap", "photoKey is: $photoKey")
+    Log.i("uploadPhotoBitmap", "Bitmap photoKey is: $photoKey")
     Log.i("uploadPhotoBitmap", "filePath is: $filePath")
 
     val localFile = File("${context.filesDir}/${photoKey}")
@@ -603,7 +647,7 @@ private fun downloadPhoto(
     val photoKey = "$coverUrl.png"
     val filePath = "${context.filesDir}/${photoKey}"
 
-    Log.i("downloadPhoto", "photoKey is: $photoKey")
+    Log.i("downloadPhoto", "download photoKey is: $photoKey")
 
     if (!fileIsExists(filePath)) {
         val localFile = File(filePath)
