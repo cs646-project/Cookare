@@ -78,7 +78,7 @@ fun HomeScreen(
             if (data.isNotEmpty()) {
                 if (currentLovePageState == LovePageState.Closed) {
                     FloatingActionButton(
-                        backgroundColor = green000,
+                        backgroundColor = green200,
 
                         onClick = { navController.navigate(ScreenRoute.PostTemplates.route) }) {
                         Icon(
