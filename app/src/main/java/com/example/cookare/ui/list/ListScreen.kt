@@ -34,6 +34,7 @@ import com.example.cookare.ui.theme.green000
 import com.example.cookare.ui.theme.green100
 import com.example.cookare.ui.theme.green200
 import com.example.cookare.ui.utils.ScreenRoute
+import com.example.cookare.viewModels.ListGenerateViewModel
 import com.example.cookare.viewModels.PlanViewModel
 import com.example.cookare.viewModels.PostRecipeViewModel
 import okhttp3.HttpUrl.Companion.toHttpUrl

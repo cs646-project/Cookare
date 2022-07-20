@@ -14,10 +14,6 @@ class RecipeRepositoryImpl(
         val result = recipeService.postRecipe(token, recipe).data
         return recipeMapper.mapToModel(result.recipe)
     }
-//    override suspend fun postRecipe(token: String, recipe: Recipe): String {
-//        val result = recipeService.postRecipe(token, recipe).data
-//        return "Successfully!"
-//    }
 
     override suspend fun getAllRecipes(token: String, request: GetAllRecipe): List<Data> {
         val result = recipeService.getAllRecipes(token, request).data
@@ -46,7 +42,7 @@ class RecipeRepositoryImpl(
     }
 
     override suspend fun updatePlan(token: String, plan: Plan): String {
-        val result = recipeService.updatePlan(token, plan).data
+        recipeService.updatePlan(token, plan).data
         return "Successfully!"
     }
 
@@ -62,7 +58,25 @@ class RecipeRepositoryImpl(
     }
 
     override suspend fun deletePlan(token: String, plan: Plan): String {
-        val result = recipeService.deletePlan(token, plan).data
+        recipeService.deletePlan(token, plan).data
         return "Successfully!"
+    }
+
+    override suspend fun getStock(token: String, request: GetAllRecipe): Map<String, Int> {
+        return recipeService.getStock(token, request).data
+    }
+
+    override suspend fun addStock(token: String, stockMap: StockMap): String {
+        recipeService.addStock(token, stockMap).data
+        return "Successfully!"
+    }
+
+    override suspend fun deleteStock(token: String, stockMap: StockMap): String {
+        recipeService.deleteStock(token, stockMap).data
+        return "Successfully!"
+    }
+
+    override suspend fun generateList(token: String, request: GetAllRecipe): Map<String, Int> {
+        return recipeService.generateList(token, request).data
     }
 }
