@@ -11,6 +11,7 @@ import androidx.navigation.*
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.cookare.PickPicture
 import com.example.cookare.ui.components.CookareScaffold
 import com.example.cookare.ui.home.*
 
@@ -87,6 +88,11 @@ private fun NavGraphBuilder.cookareNavGraph(
         "notification_screen"
     ) {
         NotificationScreen(upPress)
+    }
+    composable(
+        route = ScreenRoute.PhotoScreen.route
+    ) {
+        PickPicture(upPress)
     }
 }
 

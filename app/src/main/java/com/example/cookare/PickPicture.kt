@@ -10,41 +10,74 @@ import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.launch
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.semantics.Role.Companion.Image
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import com.example.cookare.ui.theme.CookareTheme
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import java.io.File
 
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PickPicture() {
+fun PickPicture(
+    upPress: () -> Unit
+) {
     val context = LocalContext.current
     val bottomSheetModalState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
 
-    var imageUri by remember {
-        mutableStateOf<Uri?>(null)
+    // The file that saves the photo chosen from the gallery, overwritten each time picking a new one
+    val galleryFile = File("${context.filesDir}/food1.png")
+
+    var galleryUri by remember {
+        mutableStateOf<Uri?>(
+            FileProvider.getUriForFile(
+                context,
+                context.applicationContext.packageName + ".provider",
+                galleryFile
+            )
+        )
+    }
+
+    // The file that saves the photo taken by camera, overwritten each time taking a new one
+    val cameraFile = File("${context.filesDir}/food2.png")
+
+    var cameraUri by remember {
+        mutableStateOf<Uri>(
+            FileProvider.getUriForFile(
+                context,
+                context.applicationContext.packageName + ".provider",
+                cameraFile
+            )
+        )
     }
 
     var bitmap by remember {
@@ -52,25 +85,39 @@ fun PickPicture() {
     }
 
     var isCameraSelected by remember {
-        mutableStateOf<Boolean>(false)
+        mutableStateOf(false)
+    }
+
+    var takenFromCamera by remember {
+        mutableStateOf(false)
+    }
+
+    var initPickPicture by remember {
+        mutableStateOf(false)
     }
 
     val galleryLauncher = rememberLauncherForActivityResult(contract =
     ActivityResultContracts.GetContent()) { uri: Uri? ->
-        imageUri = uri
+        galleryUri = uri
+        takenFromCamera = false
+        initPickPicture = true
     }
 
     val cameraLauncher = rememberLauncherForActivityResult(contract =
-    ActivityResultContracts.TakePicturePreview()){ btm: Bitmap? ->
-        bitmap = btm
+    ActivityResultContracts.TakePicture()) {
+            result: Boolean  ->
+        if (result) {
+            takenFromCamera = true
+            initPickPicture = true
+        }
     }
 
     val permissionLauncher = rememberLauncherForActivityResult(contract =
     ActivityResultContracts.RequestPermission()){
-        isGranted: Boolean ->
+            isGranted: Boolean ->
         if(isGranted){
             if (isCameraSelected){
-                cameraLauncher.launch()
+                cameraLauncher.launch(cameraUri)
             }else{
                 galleryLauncher.launch("image/*")
             }
@@ -117,7 +164,7 @@ fun PickPicture() {
                                 ContextCompat.checkSelfPermission(
                                     context, Manifest.permission.CAMERA
                                 ) -> {
-                                    cameraLauncher.launch()
+                                    cameraLauncher.launch(cameraUri)
                                     coroutineScope.launch {
                                         bottomSheetModalState.hide()
                                     }
@@ -189,100 +236,127 @@ fun PickPicture() {
         sheetShape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
         modifier = Modifier.background(CookareTheme.colors.background)
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ){
-            Button(
-                onClick = {
-                coroutineScope.launch {
-                    if(!bottomSheetModalState.isVisible){
-                        bottomSheetModalState.show()
-                    }else{
-                        bottomSheetModalState.hide()
+        LazyColumn(state = rememberLazyListState()) {
+            item {
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(60.dp)
+                            .background(color = CookareTheme.colors.onPrimaryContainer),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        androidx.compose.material3.OutlinedButton(
+                            onClick = upPress,
+                            modifier = Modifier
+                                .size(60.dp)
+                                .padding(12.dp),
+                            shape = CircleShape,
+                            border = BorderStroke(1.5.dp, Color.White),
+                            contentPadding = PaddingValues(0.dp),
+                        ) {
+                            androidx.compose.material3.Icon(
+                                imageVector = Icons.Default.ArrowBack,
+                                contentDescription = "go back",
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .size(30.dp),
+                                tint = Color.White
+                            )
+                        }
+
+                        androidx.compose.material3.Text(
+                            buildAnnotatedString {
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = 22.sp,
+                                        fontWeight = FontWeight.Medium,
+                                        color = Color.White,
+                                    )
+                                ) {
+                                    append("Take a photo")
+                                }
+                            }
+                        )
                     }
                 }
-            },
-                modifier = Modifier
-                    .padding(16.dp)
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(8.dp)
-            ) {
+
+                Button(
+                    onClick = {
+                        coroutineScope.launch {
+                            if(!bottomSheetModalState.isVisible){
+                                bottomSheetModalState.show()
+                            }else{
+                                bottomSheetModalState.hide()
+                            }
+                        }
+                    },
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
                     Text(
-                        text = "Take Picture",
+                        text = "Pick a picture",
                         modifier = Modifier.padding(8.dp),
                         textAlign = TextAlign.Center,
                         color =  Color.White
                     )
+                }
+
+                if (initPickPicture) {
+                    if (!takenFromCamera) {
+                        if(!isCameraSelected){
+                            bitmap = if(Build.VERSION.SDK_INT<28){
+                                MediaStore.Images.Media.getBitmap(context.contentResolver,galleryUri)
+                            }else{
+                                val source = ImageDecoder.createSource(context.contentResolver,
+                                    galleryUri!!
+                                )
+                                ImageDecoder.decodeBitmap(source)
+                            }
+                        }
+
+                        bitmap?.let { btm ->
+                            Image(
+                                bitmap = btm.asImageBitmap(),
+                                contentDescription = "Image",
+                                alignment = Alignment.TopCenter,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight()
+                                    .padding(top = 10.dp),
+                                contentScale = ContentScale.Fit,
+                                filterQuality = FilterQuality.High
+                            )
+                        }
+                    }
+                    else if (takenFromCamera) {
+                        bitmap = if(Build.VERSION.SDK_INT<28){
+                            MediaStore.Images.Media.getBitmap(context.contentResolver,cameraUri)
+                        }else{
+                            val source = ImageDecoder.createSource(context.contentResolver,
+                                cameraUri
+                            )
+                            ImageDecoder.decodeBitmap(source)
+                        }
+
+                        bitmap?.let { btm ->
+                            Image(
+                                bitmap = btm.asImageBitmap(),
+                                contentDescription = "Image",
+                                alignment = Alignment.TopCenter,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight()
+                                    .padding(top = 10.dp),
+                                contentScale = ContentScale.Fit,
+                                filterQuality = FilterQuality.High
+                            )
+                        }
+                    }
+                }
             }
         }
     }
-
-    imageUri?.let {
-        if(!isCameraSelected){
-            bitmap = if(Build.VERSION.SDK_INT<28){
-                MediaStore.Images.Media.getBitmap(context.contentResolver,it)
-            }else{
-                val source = ImageDecoder.createSource(context.contentResolver,it)
-                ImageDecoder.decodeBitmap(source)
-            }
-        }
-
-        bitmap?.let { btm ->
-            Image(
-                bitmap = btm.asImageBitmap(),
-                contentDescription = "Image",
-                alignment = Alignment.TopCenter,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .padding(top = 10.dp),
-                contentScale = ContentScale.Fit
-            )
-        }
-    }
-
-    bitmap?.let { btm ->
-        Image(
-            bitmap = btm.asImageBitmap(),
-            contentDescription = "Image",
-            alignment = Alignment.TopCenter,
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(top = 10.dp),
-            contentScale = ContentScale.Fit
-        )
-    }
-
 }
-
-//@Composable
-//fun CaptureImageFromCamera() {
-//        Scaffold(content = {
-//            val bitmap = remember { mutableStateOf(null) }
-//            val launcher =
-//                rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) {
-//                    bitmap.value = it as Nothing?
-//                }
-//            Column(
-//                modifier = Modifier.padding(16.dp), content = {
-//                    Button(onClick = {
-//                        launcher.launch(
-//                        )
-//                    }, content = {
-//                        Text(text = "Capture Image From Camera")
-//                    })
-//                    Spacer(modifier = Modifier.padding(16.dp))
-//                    bitmap.let {
-//                        val data = it.value
-//                        if (data != null) {
-//                            Image(
-//                                bitmap = data.asImageBitmap(),
-//                                contentDescription = null,
-//                                modifier = Modifier.size(400.dp)
-//                            )
-//                        }
-//                    }
-//                })
-//        })
-//}
