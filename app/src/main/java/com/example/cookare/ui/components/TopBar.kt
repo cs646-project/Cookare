@@ -32,10 +32,10 @@ fun TopBar(users:User,navController:NavController) {
         Modifier
             .fillMaxWidth()
             .padding(28.dp, 28.dp, 28.dp, 16.dp),
-    verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedButton(
-            onClick = {},
+            onClick = {navController.navigate(ScreenRoute.PhotoScreen.route)},
             modifier= Modifier.size(64.dp),
             shape = CircleShape,
             contentPadding = PaddingValues(0.dp),
@@ -58,25 +58,25 @@ fun TopBar(users:User,navController:NavController) {
             Text(users.username, fontSize = 18.sp, color = Color.Black, fontWeight = FontWeight.Bold)
             Text(users.tags, fontSize = 14.sp, color = Gray)
         }
-       /* OutlinedButton(
-            onClick = {},
-            modifier= Modifier.size(50.dp),
-            shape = CircleShape,
-            border= BorderStroke(5.dp, green100),
-            contentPadding = PaddingValues(0.dp),
-            colors = ButtonDefaults.buttonColors(green100)
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.ic_notification_new),
-                contentDescription = "notification",
-                modifier = Modifier
-                    .padding(10.dp)
-                    .size(32.dp),
-                tint = Color.Black
-            )
-        }
-         Spacer(modifier = Modifier.padding(8.dp))
-        */
+        /* OutlinedButton(
+             onClick = {},
+             modifier= Modifier.size(50.dp),
+             shape = CircleShape,
+             border= BorderStroke(5.dp, green100),
+             contentPadding = PaddingValues(0.dp),
+             colors = ButtonDefaults.buttonColors(green100)
+         ) {
+             Icon(
+                 painter = painterResource(R.drawable.ic_notification_new),
+                 contentDescription = "notification",
+                 modifier = Modifier
+                     .padding(10.dp)
+                     .size(32.dp),
+                 tint = Color.Black
+             )
+         }
+          Spacer(modifier = Modifier.padding(8.dp))
+         */
 
         OutlinedButton(
             onClick = { navController.navigate(ScreenRoute.ProfileScreen.route) },
