@@ -7,12 +7,10 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
-import android.net.Uri.fromFile
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -28,10 +26,8 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material3.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
@@ -57,7 +53,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
-import coil.compose.rememberImagePainter
 import com.amplifyframework.core.Amplify
 import com.example.cookare.model.Recipe
 import com.example.cookare.ui.MainActivity
@@ -70,7 +65,6 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
-
 
 @AndroidEntryPoint
 class EditPostActivity : ComponentActivity() {
@@ -402,9 +396,8 @@ fun EditRecipeScreen(
                     )
                 }
 
-                // bug: first check imageUri
-                if (imageUri != null) {
-                    Log.i("Take Photo", "from gallery1")
+                if (!takenFromCamera && imageUri != null) {
+                    Log.i("Take Photo", "from gallery")
                     if(!isCameraSelected){
                         bitmap = if(Build.VERSION.SDK_INT<28){
                             MediaStore.Images.Media.getBitmap(context.contentResolver,imageUri)
@@ -428,12 +421,10 @@ fun EditRecipeScreen(
                             contentScale = ContentScale.Fit,
                             filterQuality = FilterQuality.High
                         )
-
-                        Log.i("Take Photo", "from gallery2")
                     }
                 }
                 else if (takenFromCamera) {
-                    Log.i("Take Photo", "from camera1")
+                    Log.i("Take Photo", "from camera")
 
                     bitmap = if(Build.VERSION.SDK_INT<28){
                         MediaStore.Images.Media.getBitmap(context.contentResolver,photoUri)
@@ -456,12 +447,10 @@ fun EditRecipeScreen(
                             contentScale = ContentScale.Fit,
                             filterQuality = FilterQuality.High
                         )
-
-                        Log.i("Take Photo", "from gallery2")
                     }
                 }
                 else {
-                    Log.i("Take Photo", "from default1")
+                    Log.i("Take Photo", "from default")
                     coverUrl?.let {
                         val downloadedImage = downloadPhoto(coverUrl!!, context)
                         Image(
