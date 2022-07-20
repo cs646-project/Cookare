@@ -138,13 +138,10 @@ dependencies {
     implementation 'com.amplifyframework:core:1.36.2'
 
     // Support for Java 8 features
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.0'
 
     implementation 'com.amplifyframework:aws-api:1.36.2'
     implementation 'com.amplifyframework:aws-datastore:1.36.2'
-
-    implementation "com.github.bumptech.glide:glide:4.13.0"
-    kapt 'com.github.bumptech.glide:compiler:4.13.0'
 }
 
 apply plugin: 'kotlin-kapt'
