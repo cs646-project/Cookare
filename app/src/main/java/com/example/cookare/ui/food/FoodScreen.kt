@@ -25,6 +25,7 @@ import com.example.cookare.R
 import com.example.cookare.ui.food.data.Todo
 import com.example.cookare.ui.theme.BackgroundWhite
 import com.example.cookare.ui.theme.green000
+import com.example.cookare.ui.theme.green200
 import com.example.cookare.viewModels.StockViewModel
 
 

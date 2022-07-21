@@ -11,9 +11,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.cookare.model.StockMap
 import com.example.cookare.ui.food.data.Todo
 import com.example.cookare.ui.theme.BackgroundWhite
+import com.example.cookare.ui.theme.FunctionalGrey
+import com.example.cookare.ui.theme.green200
+import com.example.cookare.ui.theme.yel1
 import com.example.cookare.viewModels.StockViewModel
 
 
@@ -24,9 +28,10 @@ fun TodoItem(
     stockViewModel: StockViewModel
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
+    val (count, updateCount) = remember { mutableStateOf(value.toInt()) }
 
     Card(
-        backgroundColor = MaterialTheme.colors.primaryVariant,
+        backgroundColor = green200,
         modifier = Modifier
             .padding(16.dp)
     ) {
@@ -36,12 +41,21 @@ fun TodoItem(
             modifier = Modifier.fillMaxWidth(),
         ) {
             Spacer(modifier = Modifier.size(16.dp))
-            Column(modifier = Modifier.weight(1f)) {
-                Text(text = key, style = MaterialTheme.typography.subtitle2)
-                Spacer(modifier = Modifier.size(16.dp))
-                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
-                    Text(text = value.toString(), style = MaterialTheme.typography.body2)
-                }
+            Column(modifier = Modifier.weight(25f)) {
+                Text(text = key,
+//                    style = MaterialTheme.typography.subtitle2,
+                    color = FunctionalGrey,
+                    style = MaterialTheme.typography.button,
+                    fontSize = 20.sp,)
+                Spacer(modifier = Modifier.size(20.dp))
+//                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+//                    Text(text = value.toString(), style = MaterialTheme.typography.body2)
+//                }
+                QuantitySelector(
+                    count = count,
+                    decreaseItemCount = { if (count > 0) updateCount(count - 1) },
+                    increaseItemCount = { updateCount(count + 1) }
+                )
             }
             Spacer(modifier = Modifier.size(16.dp))
             IconButton(
