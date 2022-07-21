@@ -141,4 +141,5 @@ dependencies {
 
     implementation 'com.amplifyframework:aws-api:1.36.2'
     implementation 'com.amplifyframework:aws-datastore:1.36.2'
+    kapt "org.xerial:sqlite-jdbc:3.36.0.1"
 }
