@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cookare.PickPicture
 import com.example.cookare.ui.component.list.data.Todo
 
 
@@ -45,11 +46,14 @@ fun DetailScreenComponent(
 ) {
     val isTodoEdit = selectedId == -1L
     Column(
+
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+
         Spacer(modifier = Modifier.size(16.dp))
+        PickPicture()
         OutlinedTextField(
             value = todoText,
             onValueChange = { onTodoTextChange(it) },

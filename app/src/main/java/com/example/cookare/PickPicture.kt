@@ -185,7 +185,7 @@ fun PickPicture() {
         }
     },
         sheetState = bottomSheetModalState,
-        sheetShape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
+        sheetShape = RoundedCornerShape(topStart = 0.5.dp, topEnd = 1.dp),
         modifier = Modifier.background(MaterialTheme.colors.background)
     ) {
         Box(
@@ -202,7 +202,7 @@ fun PickPicture() {
                 }
             },
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(19.dp)
                     .fillMaxWidth(),
                 shape = RoundedCornerShape(8.dp)
             ) {
