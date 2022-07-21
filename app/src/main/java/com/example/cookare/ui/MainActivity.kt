@@ -7,6 +7,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.CompositionLocalProvider
+import com.amplifyframework.AmplifyException
+import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
+import com.amplifyframework.core.Amplify
+import com.amplifyframework.storage.s3.AWSS3StoragePlugin
 import com.example.cookare.ui.home.UserState
 import com.example.cookare.ui.home.UserStateViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,8 +33,22 @@ class MainActivity : ComponentActivity() {
         Log.d("Token", "ShowResultToken $token")
         Log.d("Auth", "ShowResultToken $auth")
 
+        configureAmplify()
+
         setContent {
                 CookareApp()
+        }
+    }
+
+    private fun configureAmplify() {
+        try {
+            Amplify.addPlugin(AWSCognitoAuthPlugin())
+            Amplify.addPlugin(AWSS3StoragePlugin())
+            Amplify.configure(applicationContext)
+
+            Log.i("kilo", "Initialized Amplify")
+        } catch (error: AmplifyException) {
+            Log.e("kilo", "Could not initialize Amplify", error)
         }
     }
 }

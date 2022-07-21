@@ -46,4 +46,7 @@
     <string name="rating">Rating</string>
     <string name="alphabetical">Alphabetical</string>
     <string name="close">Close</string>
+
+    <!-- Recipe Detail -->
+    <string name="cover_placeholder">logo</string>
 </resources>
