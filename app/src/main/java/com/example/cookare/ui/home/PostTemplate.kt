@@ -1,5 +1,7 @@
 package com.example.cookare.ui.home
 
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,6 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -22,26 +25,34 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.cookare.R
 import com.example.cookare.model.Ingredient
 import com.example.cookare.model.Recipe
 import com.example.cookare.ui.theme.CookareTheme
+import com.example.cookare.ui.theme.green000
 import com.example.cookare.ui.userId
 import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.viewModels.PostRecipeViewModel
 
 @Composable
 fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
-    LazyColumn(state = rememberLazyListState()) {
-        var title by mutableStateOf("")
-        var content by mutableStateOf("")
-        var tags by mutableStateOf("")
-        var updateUser by mutableStateOf("")
-        var coverUrl by mutableStateOf("")
-        var ingredientName by mutableStateOf("")
-        var ingredientNum by mutableStateOf("")
-        var ingredientName1 by mutableStateOf("")
-        var ingredientNum1 by mutableStateOf("")
+    var num by remember { mutableStateOf(2) }
 
+    var ingredientNameMap: MutableMap<String, MutableState<String>> = remember { mutableMapOf() }
+    var ingredientNumMap: MutableMap<String, MutableState<String>> = remember { mutableMapOf() }
+
+    for (index in 1..num) {
+        ingredientNameMap["ingredientName$index"] = remember { mutableStateOf("") }
+        ingredientNumMap["ingredientNum$index"] = remember { mutableStateOf("") }
+    }
+
+    var title by remember { mutableStateOf("") }
+    var content by remember { mutableStateOf("") }
+    var tags by remember { mutableStateOf("") }
+    var updateUser by remember { mutableStateOf("") }
+    var coverUrl by remember { mutableStateOf("") }
+
+    LazyColumn(state = rememberLazyListState()) {
         item {
             Column {
                 Row(
@@ -142,62 +153,74 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                 }
             )
 
-            Text(
-                "Ingredients",
-                Modifier
-                    .padding(14.dp, 24.dp, 14.dp, 14.dp),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ){
+                Text(
+                    "Ingredients",
+                    Modifier
+                        .padding(14.dp, 24.dp, 14.dp, 14.dp),
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Bold
+                )
 
-            OutlinedTextField(
-                value = ingredientName,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                label = { Text(text = "Ingredient name -- 1") },
-                placeholder = { Text(text = "") },
-                onValueChange = {
-                    ingredientName = it
+                OutlinedButton(
+                    onClick = {
+                        num += 1
+                        Log.d("Debug" , "ShowResult: Click!!!! $num")
+                      },
+                    modifier = Modifier
+                        .size(30.dp),
+//                        .padding(5.dp),
+                    shape = CircleShape,
+                    border = BorderStroke(1.5.dp, green000),
+                    colors = ButtonDefaults.buttonColors(green000),
+                    contentPadding = PaddingValues(0.dp),
+                ) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_add),
+                        contentDescription = "add ingredients",
+                        modifier = Modifier
+                            .padding(6.dp)
+                            .size(60.dp),
+                        tint = Color.White
+                    )
                 }
-            )
+            }
 
-            OutlinedTextField(
-                value = ingredientNum,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                label = { Text(text = "Ingredient number -- 1") },
-                placeholder = { Text(text = "") },
-                onValueChange = {
-                    ingredientNum = it
+
+            for (index in 1..num) {
+                Row(
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+
+                    OutlinedTextField(
+                        value = ingredientNameMap["ingredientName$index"]!!.value,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .weight(1f),
+                        label = { Text(text = "Name$index") },
+                        placeholder = { Text(text = "") },
+                        onValueChange = {
+                            ingredientNameMap["ingredientName$index"]!!.value = it
+                        }
+                    )
+
+                    OutlinedTextField(
+                        value = ingredientNumMap["ingredientNum$index"]!!.value,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .weight(1f),
+                        label = { Text(text = "Number$index") },
+                        placeholder = { Text(text = "") },
+                        onValueChange = {
+                            ingredientNumMap["ingredientNum$index"]!!.value = it
+                        }
+                    )
                 }
-            )
 
-            OutlinedTextField(
-                value = ingredientName1,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                label = { Text(text = "Ingredient name -- 2") },
-                placeholder = { Text(text = "") },
-                onValueChange = {
-                    ingredientName1 = it
-                }
-            )
-
-            OutlinedTextField(
-                value = ingredientNum1,
-                modifier = Modifier
-                    .padding(8.dp)
-                    .fillMaxWidth(),
-                label = { Text(text = "Ingredient number -- 2") },
-                placeholder = { Text(text = "") },
-                onValueChange = {
-                    ingredientNum1 = it
-                }
-            )
-
+            }
         }
 
         item {
@@ -211,18 +234,16 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                             Integer.parseInt(tags),
                             userId,
                             coverUrl,
-                            listOf(
+                            (1..num).map{
                                 Ingredient(
-                                    if(ingredientName == "") null else ingredientName,
-                                    if(ingredientNum == "") null else Integer.parseInt(ingredientNum),
-                                    null
-                                ),
-                                Ingredient(
-                                    if(ingredientName == "") null else ingredientName1,
-                                    if(ingredientNum == "") null else Integer.parseInt(ingredientNum1),
-                                    null
+                                    if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                    if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                 )
-                            )
+                            }.filter {
+                                it.name != ""
+                            }.filter {
+                                it.num != 0
+                            }
                         )
                     )
                     navController.navigate(ScreenRoute.HomeScreen.route)
@@ -237,4 +258,9 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
             }
         }
     }
+}
+
+
+fun isNumber(s: String?): Boolean {
+    return if (s.isNullOrEmpty()) false else s.all { Character.isDigit(it) }
 }

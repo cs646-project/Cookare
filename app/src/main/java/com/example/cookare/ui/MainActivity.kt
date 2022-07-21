@@ -13,7 +13,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlin.properties.Delegates
 
 lateinit var auth: String
-var userId: Int = 0
+var userId: Int? = null
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -25,9 +25,8 @@ class MainActivity : ComponentActivity() {
             auth = "satoken=$token"
         }
 
-        userId = Integer.parseInt(intent.getStringExtra("id"))
-        Log.d("Token", "ShowResultToken $token")
-        Log.d("Auth", "ShowResultToken $auth")
+        val id = intent.getStringExtra("id")
+        userId = id?.let { Integer.parseInt(it) }
 
         setContent {
                 CookareApp()

@@ -36,13 +36,14 @@ constructor(
 //            )
 //            resRecipeList.value = res
 //        }
-        viewModelScope.launch {
-            val res = repository.getPlan(
-                token = token,
-                request = GetAllRecipe(null)
-            )
-            resPlanList.value = res
-        }
+//        viewModelScope.launch {
+//            val res = repository.getPlan(
+//                token = token,
+//                request = GetAllRecipe(null)
+//            )
+//            resPlanList.value = res
+//        }
+        getPlan()
     }
 
     fun updatePlan(planId: Int){
