@@ -201,7 +201,7 @@ fun LoginSreen(){
 
                         thread.join()
 
-                        if((!invalidInput(email.text, password.text)) && body != null){
+                        if((!invalidInput(email.text, password.text)) && body.data != null){
                             loading_login = true
                             hasError = false
                         }else{
@@ -372,11 +372,13 @@ fun matchInput(email: String, password: String):Body{
 
     // println("login.code" + login.code)
 
+    return UserObject
+    /**
     if(UserObject.data != null) return UserObject
     else{
         UserObject = null
         return UserObject
-    }
+    }**/
 }
 
 
