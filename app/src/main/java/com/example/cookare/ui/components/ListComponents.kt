@@ -1,6 +1,7 @@
 package com.example.cookare.ui.components
 
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cookare.model.StockMap
@@ -25,10 +27,14 @@ import com.example.cookare.viewModels.StockViewModel
 fun TodoItem(
     key: String,
     value: Int,
-    stockViewModel: StockViewModel
+    stockViewModel: StockViewModel,
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
-    val (count, updateCount) = remember { mutableStateOf(value.toInt()) }
+    var increase by remember { mutableStateOf(false) }
+    var decrease by remember { mutableStateOf(false) }
+//    val (count, updateCount) = remember { mutableStateOf(value.toInt()) }
+    var count by  mutableStateOf(value)
+//    var count by remember { mutableStateOf(value) }
 
     Card(
         backgroundColor = green200,
@@ -42,19 +48,41 @@ fun TodoItem(
         ) {
             Spacer(modifier = Modifier.size(16.dp))
             Column(modifier = Modifier.weight(25f)) {
-                Text(text = key,
+                Text(
+                    text = key,
 //                    style = MaterialTheme.typography.subtitle2,
-                    color = FunctionalGrey,
+                    color = Color.Black,
+//                    color = FunctionalGrey,
                     style = MaterialTheme.typography.button,
-                    fontSize = 20.sp,)
+                    fontSize = 20.sp,
+                )
                 Spacer(modifier = Modifier.size(20.dp))
 //                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
 //                    Text(text = value.toString(), style = MaterialTheme.typography.body2)
 //                }
                 QuantitySelector(
                     count = count,
-                    decreaseItemCount = { if (count > 0) updateCount(count - 1) },
-                    increaseItemCount = { updateCount(count + 1) }
+                    decreaseItemCount = {
+                        if(count > 0) count -= 1
+                        decrease = true
+
+                        Log.d("Decrease", "ShowResult: $count")
+                        Log.d("DecreaseTag", "ShowResult: $decrease")
+//                        stockViewModel.updateStock(key, count)
+//                        Log.d("Decrease", "ShowResult: $count")
+//                        if (count > 0) updateCount(count - 1)
+
+                                        },
+                    increaseItemCount = {
+                        count += 1
+                        increase = true
+//                        stockViewModel.updateStock(key, count)
+                        Log.d("Increase", "ShowResult: $count")
+                        Log.d("IncreaseTag", "ShowResult: $increase")
+//                        updateCount(count + 1)
+                                        },
+//                    stockViewModel = stockViewModel,
+//                    key = key
                 )
             }
             Spacer(modifier = Modifier.size(16.dp))
@@ -92,6 +120,20 @@ fun TodoItem(
                 },
                 modifier = Modifier.background(BackgroundWhite)
             )
+        }
+
+        if(increase){
+            stockViewModel.updateStock(key, count)
+//            stockViewModel.getStock()
+            increase = false
+            Log.d("IncreaseUpdate", "ShowResult: $increase")
+        }
+
+        if(decrease){
+            stockViewModel.updateStock(key, count)
+//            stockViewModel.getStock()
+            decrease = false
+            Log.d("DecreaseUpdate", "ShowResult: $decrease")
         }
 
     }

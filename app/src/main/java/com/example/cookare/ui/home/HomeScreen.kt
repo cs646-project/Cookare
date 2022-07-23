@@ -78,7 +78,7 @@ fun HomeScreen(
             if (data.isNotEmpty()) {
                 if (currentLovePageState == LovePageState.Closed) {
                     FloatingActionButton(
-                        backgroundColor = green200,
+                        backgroundColor = green000,
 
                         onClick = { navController.navigate(ScreenRoute.PostTemplates.route) }) {
                         Icon(
@@ -111,6 +111,7 @@ fun HomeScreen(
                     backgroundColor = green000,
 
                     onClick = {
+                        navController.navigate(ScreenRoute.PostTemplates.route)
                         navController.navigate(ScreenRoute.PostTemplates.route)
                     }) {
                     Icon(
@@ -346,22 +347,11 @@ fun CommunityContent(
         // the different pages
             page ->
         when (page) {
-//            0 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
-//            1 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
-//            2 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
-//            3 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
             0 -> RDContent(data = data, planViewModel = planViewModel)
             1 -> RDContent(data = data, planViewModel = planViewModel)
             2 -> RDContent(data = data, planViewModel = planViewModel)
             3 -> RDContent(data = data, planViewModel = planViewModel)
         }
-    }
-}
-
-@Composable
-fun emptyContent() {
-    Column() {
-        Text(text = "Please add your own receipt")
     }
 }
 
@@ -422,32 +412,6 @@ fun LovesArea(
                 )
             ) {
                 Column {
-                    /*
-                    recipes[index]?.coverUrl?.let { url ->
-                        val image =
-                            loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
-                        image?.let { img ->
-                            Image(
-                                bitmap = img.asImageBitmap(),
-                                contentDescription = "Recipe Featured Image",
-                                Modifier
-                                    .clip(RoundedCornerShape(16.dp))
-                                    .fillMaxWidth()
-                                    .aspectRatio(1.35f),
-                                contentScale = ContentScale.Crop,
-                                alignment = Alignment.Center
-                            )
-                        }
-                    }
-
-                     */
-
-
-
-
-
-
-
                     recipes[index]?.coverUrl?.let {
                         val downloadedImage = recipes[index].coverUrl?.let { it1 ->
                             downloadPhoto(
@@ -467,10 +431,6 @@ fun LovesArea(
                         )
                     }
 
-
-
-
-
                     Row(
                         Modifier.padding(8.dp, 12.dp, 8.dp, 8.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -484,18 +444,12 @@ fun LovesArea(
                                 )
                             }
                             Spacer(Modifier.height(4.dp))
-//                            androidx.compose.material3.Text(
-//                                recipes[index].tags.toString(),
-//                                color =Gray,
-//                                fontSize = 14.sp
-//                            )
                         }
                         Spacer(Modifier.weight(1f))
                         Row(
                             Modifier
                                 .clip(RoundedCornerShape(10.dp))
                                 .background(green100),
-//                                .padding(6.dp, 11.dp, 8.dp, 8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
 
@@ -524,7 +478,7 @@ fun LovesArea(
                                     showCartDialog = false
                                 },
                                 text = {
-                                    androidx.compose.material3.Text("Add to list successfully!")
+                                    androidx.compose.material3.Text("Added it to list successfully!")
                                 },
                                 confirmButton = {
                                     androidx.compose.material3.Button(
@@ -629,29 +583,6 @@ fun LoveDetailsPage(
                 .padding(paddingSize)
         ) {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-                /*
-                recipe.coverUrl?.let { url ->
-                    val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
-                    image?.let { img ->
-                        Image(
-                            bitmap = img.asImageBitmap(),
-                            contentDescription = "Recipe Featured Image",
-                            Modifier
-                                .clip(RoundedCornerShape(imageCornerSize))
-                                .fillMaxWidth()
-                                .aspectRatio(imageRatio),
-                            contentScale = ContentScale.Crop,
-                            alignment = Alignment.Center
-                        )
-                    }
-                }
-
-                 */
-
-
-
-
-
                 recipe.coverUrl?.let {
                     val downloadedImage = downloadPhoto(recipe.coverUrl, context)
                     Image(
@@ -665,9 +596,6 @@ fun LoveDetailsPage(
                         alignment = Alignment.Center
                     )
                 }
-
-
-
 
                 Row(
                     Modifier
@@ -705,17 +633,10 @@ fun LoveDetailsPage(
                     Row {
                         OutlinedButton(
                             onClick = {
-//                            val searchList: List<Int> = listOf(recipe.id) as List<Int>
-//                            Log.d("searchList", "recipeId ${searchList[0]}" )
-//                            viewModel.searchById(searchList)
-//                            navController.navigate(ScreenRoute.PostDetails.route)
+                                navController.navigate(ScreenRoute.EditPost.route + "/${recipe.id}")
 
-                                val intent = Intent(context, EditPostActivity::class.java)
-                                intent.putExtra("id", recipe.id.toString())
-                                context.startActivity(intent)
-
-                                onPageClosing()
-                                currentLovePageState = LovePageState.Closed
+//                                onPageClosing()
+//                                currentLovePageState = LovePageState.Closed
                             },
                             modifier = Modifier.size(50.dp),
                             shape = CircleShape,
@@ -822,10 +743,6 @@ fun LoveDetailsPage(
                 {
                     clicked = true
                     showDialog = true
-
-//                    val intent = Intent(context, MainActivity::class.java)
-//                    context.startActivity(intent)
-//
                 },
                 Modifier
                     .align(Alignment.TopEnd)

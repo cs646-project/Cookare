@@ -17,6 +17,7 @@ interface RecipeRepository {
     // stock
     suspend fun getStock(token: String, request: GetAllRecipe) : Map<String,Int>
     suspend fun addStock(token: String, stockMap: StockMap) : String
+    suspend fun updateStock(token: String, stockMap: StockMap) : String
     suspend fun deleteStock(token: String, stockMap: StockMap) : String
 
     // list

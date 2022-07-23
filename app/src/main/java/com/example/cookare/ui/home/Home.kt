@@ -71,7 +71,7 @@ fun NavGraphBuilder.addHomeGraph(
         TodoNavHost()
     }
     composable(HomeSections.LIST.route) {
-        ListScreen(hiltViewModel())
+        ListScreen(hiltViewModel(), hiltViewModel())
     }
 }
 

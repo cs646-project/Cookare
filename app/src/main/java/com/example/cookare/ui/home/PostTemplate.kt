@@ -63,7 +63,9 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     OutlinedButton(
-                        onClick = { navController.navigate(ScreenRoute.HomeScreen.route) },
+                        onClick = {
+                            navController.navigateUp()
+                                  },
                         modifier = Modifier
                             .size(60.dp)
                             .padding(12.dp),
@@ -172,7 +174,6 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                       },
                     modifier = Modifier
                         .size(30.dp),
-//                        .padding(5.dp),
                     shape = CircleShape,
                     border = BorderStroke(1.5.dp, green000),
                     colors = ButtonDefaults.buttonColors(green000),
@@ -246,7 +247,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                             }
                         )
                     )
-                    navController.navigate(ScreenRoute.HomeScreen.route)
+                    navController.navigateUp()
                 },
                 modifier = Modifier
                     .fillMaxWidth()
