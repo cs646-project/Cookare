@@ -3,6 +3,7 @@ package com.example.cookare.ui.food.detail
 import android.Manifest
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory.decodeFile
 import android.graphics.ImageDecoder
 import android.icu.number.IntegerWidth
 import android.net.Uri
@@ -43,6 +44,8 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cookare.activities.matchInput
+import com.example.cookare.network.ObjectDetectAPIClient
 import com.example.cookare.ui.food.data.Todo
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
@@ -50,6 +53,7 @@ import com.example.cookare.ui.theme.green200
 import com.example.cookare.viewModels.StockViewModel
 import kotlinx.coroutines.launch
 import java.io.File
+import kotlin.concurrent.thread
 
 
 @Composable
@@ -92,6 +96,8 @@ fun DetailScreenComponent(
     val bottomSheetModalState =
         rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
+
+    var apiClient = ObjectDetectAPIClient()
 
     // The file that saves the photo chosen from the gallery, overwritten each time picking a new one
     val galleryFile = File("${context.filesDir}/food1.png")
@@ -390,6 +396,14 @@ fun DetailScreenComponent(
                                     filterQuality = FilterQuality.High
                                 )
                             }
+
+                            var queryImage = decodeFile("${context.filesDir}/food1.png")
+
+                            val thread = thread {
+                                searchByImage(queryImage, apiClient)
+                            }
+
+                            thread.join()
                         } else if (takenFromCamera) {
                             bitmap = if (Build.VERSION.SDK_INT < 28) {
                                 MediaStore.Images.Media.getBitmap(
@@ -417,6 +431,14 @@ fun DetailScreenComponent(
                                     filterQuality = FilterQuality.High
                                 )
                             }
+
+                            var queryImage = decodeFile("${context.filesDir}/food2.png")
+
+                            val thread = thread {
+                                searchByImage(queryImage, apiClient)
+                            }
+
+                            thread.join()
                         }
                     }
 
@@ -457,5 +479,11 @@ fun DetailScreenComponent(
                 }
             }
         }
+
     }
+}
+
+fun searchByImage(queryImage: Bitmap, apiClient: ObjectDetectAPIClient){
+    // println("queryImage: " + queryImage)
+    apiClient.annotateImage(queryImage)
 }

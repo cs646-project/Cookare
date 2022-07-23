@@ -2,6 +2,7 @@ package com.example.cookare.network
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Base64
 import com.android.volley.toolbox.Volley
 import com.example.cookare.model.ObjectDetectResults
 import com.google.android.gms.tasks.Task
@@ -10,8 +11,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import java.io.ByteArrayOutputStream
 
-class ObjectDetectAPIClient(context: Context) {
+class ObjectDetectAPIClient() {
     companion object {
         const val VISION_API_PRODUCT_MAX_RESULT = 10
 
@@ -23,14 +25,35 @@ class ObjectDetectAPIClient(context: Context) {
         const val VISION_API_PRODUCT_SET_ID = "product_set0"
     }
 
+    private fun convertBitmapToBase64(bitmap: Bitmap): String {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+        val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
+        return Base64.encodeToString(byteArray, Base64.DEFAULT)
+    }
 
-    fun annotateImage(image: Bitmap?){
+    fun annotateImage(image: Bitmap){
         val apiSource = TaskCompletionSource<List<ObjectDetectResults>>()
-        // val apiTask = apiSource.task
 
-        // Craft the request body JSON.
+        val base64 = convertBitmapToBase64(image)
 
-        val requestJson = JSONObject("""{"requests":[{"image":{"imageUri": "https://cloud.google.com/vision/docs/images/bicycle_example.png"},"features": [{"type": ""OBJECT_LOCALIZATION"","maxResults": $VISION_API_PRODUCT_MAX_RESULT}],}]}""")
+        val requestJson = JSONObject("""
+            {
+              "requests": [
+                {
+                  "image": {
+                    "content": """".trimIndent() + base64 + """"
+                  },
+                  "features": [
+                    {
+                      "maxResults": $VISION_API_PRODUCT_MAX_RESULT,
+                      "type": "OBJECT_LOCALIZATION"
+                    },
+                  ]
+                }
+              ]
+            }
+        """.trimIndent())
 
         println("requestJson: " + requestJson.toString())
 
