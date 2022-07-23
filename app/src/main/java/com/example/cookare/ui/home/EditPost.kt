@@ -539,56 +539,55 @@ fun EditPost(
             item {
                 Button(
                     onClick = {
-                        if (recipe != null) {
-                            imageUri?.let {
-                                recipe.coverUrl?.let { it1 ->
-                                    viewModel.postRecipe(
-                                        Recipe(
-                                            recipeId,
-                                            title,
-                                            content,
-                                            Integer.parseInt(tags),
-                                            userId,
-                                            uploadPhotoUri(it, it1, context),
-                                            (1..num+count).map{
-                                                Ingredient(
-                                                    if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
-                                                    if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
-                                                )
-                                            }.filter {
-                                                it.name != ""
-                                            }.filter {
-                                                it.num != 0
-                                            }
+                        if (!takenFromCamera && imageUri != null) {
+                            viewModel.postRecipe(
+                                Recipe(
+                                    recipeId,
+                                    title,
+                                    content,
+                                    Integer.parseInt(tags),
+                                    userId,
+                                    uploadPhotoUri(
+                                        imageUri!!,
+                                        context
+                                    ),
+                                    (1..num+count).map{
+                                        Ingredient(
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
-                                    )
-                                }
-                            }
-
-                            bitmap?.let { btm ->
-                                recipe.coverUrl?.let {
-                                    viewModel.postRecipe(
-                                        Recipe(
-                                            recipeId,
-                                            title,
-                                            content,
-                                            Integer.parseInt(tags),
-                                            userId,
-                                            uploadPhotoBitmap(btm, it, context),
-                                            (1..num+count).map{
-                                                Ingredient(
-                                                    if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
-                                                    if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
-                                                )
-                                            }.filter {
-                                                it.name != ""
-                                            }.filter {
-                                                it.num != 0
-                                            }
+                                    }.filter {
+                                        it.name != ""
+                                    }.filter {
+                                        it.num != 0
+                                    }
+                                )
+                            )
+                        }
+                        else if(takenFromCamera) {
+                            viewModel.postRecipe(
+                                Recipe(
+                                    recipeId,
+                                    title,
+                                    content,
+                                    Integer.parseInt(tags),
+                                    userId,
+                                    uploadPhotoUri(
+                                        photoUri!!,
+                                        context
+                                    ),
+                                    (1..num+count).map{
+                                        Ingredient(
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
-                                    )
-                                }
-                            }
+                                    }.filter {
+                                        it.name != ""
+                                    }.filter {
+                                        it.num != 0
+                                    }
+                                )
+                            )
                         }
                         else {
                             viewModel.postRecipe(
@@ -632,7 +631,6 @@ fun EditPost(
 
 private fun uploadPhotoUri(
     imageUri: Uri,
-    coverUrl: String,
     context: Context
 ):String {
     val newUrl = UUID.randomUUID().toString()
@@ -652,7 +650,6 @@ private fun uploadPhotoUri(
 
 private fun uploadPhotoBitmap(
     imageBitmap: Bitmap,
-    coverUrl: String,
     context: Context
 ):String {
     val newUrl = UUID.randomUUID().toString()
