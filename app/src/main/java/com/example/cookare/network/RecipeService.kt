@@ -67,6 +67,12 @@ interface RecipeService {
     ): StockResponse
 
     @POST("stock/updateStock")
+    suspend fun updateStock(
+        @Header("Cookie") token:String,
+        @Body stockMap: StockMap
+    ): StockResponse
+
+    @POST("stock/updateStock")
     suspend fun deleteStock(
         @Header("Cookie") token:String,
         @Body stockMap: StockMap

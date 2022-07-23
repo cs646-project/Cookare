@@ -1,5 +1,7 @@
 package com.example.cookare.ui.list
 
+import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,12 +23,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
+import com.amplifyframework.core.Amplify
 import com.example.cookare.R
 import com.example.cookare.ui.components.CookareDivider
 import com.example.cookare.mapper.EntityMapper
@@ -41,6 +46,7 @@ import com.example.cookare.ui.theme.*
 import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
 import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.ui.utils.loadPicture
+import com.example.cookare.viewModels.ListGenerateViewModel
 import com.example.cookare.viewModels.PlanViewModel
 import com.example.cookare.viewModels.PostRecipeViewModel
 import com.example.cookare.viewModels.StockViewModel
@@ -49,22 +55,36 @@ import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import kotlin.concurrent.thread
 
 @Composable
 fun ListScreen(
-    viewModel: PlanViewModel) {
+    planViewModel: PlanViewModel,
+    listGenerateViewModel: ListGenerateViewModel
+) {
 
-    viewModel.getPlan()
-    val data = viewModel.resPlanList.value
+    planViewModel.getPlan()
+    val data = planViewModel.resPlanList.value
     val recipes = data.map { it.recipe }
+//    val data = planViewModel.resPlanList?.value
+//    val recipes = data?.map { it.recipe }
+
+    val shoppingList = listGenerateViewModel.resListGenerate.value
+
+    var showList by remember {
+        mutableStateOf(false)
+    }
 
 
     Scaffold(floatingActionButton = {
-        FloatingActionButton(backgroundColor = green000,onClick = { /*TODO*/ }) {
+        FloatingActionButton(backgroundColor = green000, onClick = {
+            listGenerateViewModel.generateList()
+            showList = true
+        }) {
             androidx.compose.material.Text("GET", fontSize = 16.sp, color = BackgroundWhite)
         }
-    }){
+    }) {
 
         Column() {
             Box(
@@ -84,22 +104,39 @@ fun ListScreen(
                         modifier = Modifier.padding(25.dp, 10.dp, 28.dp, 0.dp),
                         text = "Here are some recipes you selected.",
                         fontSize = 15.sp,
-                        color= Gray100
+                        color = Gray100
                     )
                     androidx.compose.material.Text(
                         modifier = Modifier.padding(25.dp, 0.dp, 28.dp, 10.dp),
                         text = "Click GET, and generate your list!",
                         fontSize = 15.sp,
-                        color= Gray100
+                        color = Gray100
                     )
                     Divider()
 
+//                    if (data != null) {
+//                        if (data.isNotEmpty()) {
+//                            LazyColumn(
+//                                modifier = Modifier.heightIn(max = 400.dp)
+//                            )
+//                            {
+//                                items(1) {
+//                                    if (recipes != null) {
+//                                        for(recipe in recipes){
+//                                            RecipeArea(recipe = recipe,viewModel=planViewModel)
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
                     if (data.isNotEmpty()) {
                         LazyColumn(
+                            modifier = Modifier.heightIn(max = 300.dp)
                         )
                         {
                             items(recipes) { recipe ->
-                                RecipeArea(recipe = recipe,viewModel=viewModel)
+                                RecipeArea(recipe = recipe, viewModel = planViewModel)
                             }
                         }
                     }
@@ -111,9 +148,19 @@ fun ListScreen(
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Medium
                     )
-                    CardList()
-                    CardList()
-                    CardList()
+
+                    if (showList) {
+                        LazyColumn(
+                        )
+                        {
+                            items(1) {
+                                for (entry in shoppingList.entries.iterator()) {
+                                    CardList(entry.key, entry.value)
+                                }
+                            }
+                        }
+                    }
+
                     /*androidx.compose.material.Text(
                         modifier = Modifier.padding(20.dp, 20.dp, 28.dp, 0.dp),
                         text = "Here is your list!",
@@ -131,11 +178,12 @@ fun ListScreen(
     }
 
 
-
 }
 
 @Composable
-fun RecipeArea(recipe:Recipe,viewModel: PlanViewModel) {
+fun RecipeArea(recipe: Recipe, viewModel: PlanViewModel) {
+    val context = LocalContext.current
+
     var showDeleteDialog by remember { mutableStateOf(false) }
     Column(Modifier.padding(24.dp, 2.dp, 24.dp, 2.dp)) {
         Surface(
@@ -148,7 +196,7 @@ fun RecipeArea(recipe:Recipe,viewModel: PlanViewModel) {
 
         ) {
             Row(Modifier.height(IntrinsicSize.Max)) {
-                StoryAvatar(recipe = recipe)
+                StoryAvatar(recipe = recipe, context = context)
                 recipe.title?.let { title ->
                     Row(
                         modifier = Modifier
@@ -164,7 +212,10 @@ fun RecipeArea(recipe:Recipe,viewModel: PlanViewModel) {
                         )
                         androidx.compose.material3.OutlinedButton(
                             onClick = {
-                                recipe.id?.let { viewModel.deletePlan(it) }
+                                recipe.id?.let {
+                                    viewModel.deletePlan(it)
+                                    viewModel.getPlan()
+                                }
                                 showDeleteDialog = true
                             },
                             modifier = Modifier
@@ -223,7 +274,10 @@ fun RecipeArea(recipe:Recipe,viewModel: PlanViewModel) {
 }
 
 @Composable
-fun StoryAvatar(recipe: Recipe) {
+fun StoryAvatar(
+    recipe: Recipe,
+    context: Context
+) {
 
     Box(
         Modifier
@@ -239,48 +293,22 @@ fun StoryAvatar(recipe: Recipe) {
             .background(Color.LightGray)
 
     ) {
-        /*  AsyncImage(
-             model = imageUrl,
-             contentDescription = null,
-             contentScale = ContentScale.Crop,
-         )*/
         recipe.coverUrl?.let { url ->
-            val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
-            image?.let { img ->
-                Image(
-                    bitmap = img.asImageBitmap(),
-                    contentDescription = "Recipe Featured Image",
-                    contentScale = ContentScale.Crop,
-                )
-            }
+            val downloadedImage = downloadPhoto(recipe.coverUrl!!, context)
+            Image(
+                painter = rememberAsyncImagePainter(downloadedImage),
+                contentDescription = "Recipe Featured Image",
+                contentScale = ContentScale.Crop,
+            )
         }
-        /* if (clicked and showDialog) {
-             AlertDialog(
-                 onDismissRequest = { showDialog = false },
-                 title = { Text(text = "Delete") },
-                 text = { Text(text = "Are you sure to remove this dish?") },
-                 buttons = {
-                     Row() {
-                         TextButton(onClick = { /*TODO*/ }) {
-                             Text(text = "Yes")
-                         }
-                         TextButton(onClick = {  }) {
-                             Text(text = "Cancel")
-                         }
-                     }
-
-                 },
-                 modifier = Modifier.background(BackgroundWhite)
-
-             )
-         }*/
-
-
     }
 }
 
 @Composable
-fun CardList() {
+fun CardList(
+    key: String,
+    value: Int
+) {
     Card(
         backgroundColor = green200,
         modifier = Modifier
@@ -288,23 +316,27 @@ fun CardList() {
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 15.dp, vertical = 5.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 15.dp, vertical = 5.dp),
         ) {
-            Checkbox(checked = true/*TODO*/, onCheckedChange = {/*TODO*/  })
+            Checkbox(checked = true/*TODO*/, onCheckedChange = {/*TODO*/ })
 
 
-                androidx.compose.material.Text(
-                    text = "Item",/*TODO*/
-                    style = MaterialTheme.typography.h6,
-                    modifier = Modifier.padding(start = 15.dp).weight(1f)
-                )
+            androidx.compose.material.Text(
+                text = key,
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier
+                    .padding(start = 15.dp)
+                    .weight(1f)
+            )
 
 
-                    androidx.compose.material.Text(
-                        text ="number",/*TODO*/
-                        style = MaterialTheme.typography.body1,
-                        modifier = Modifier.weight(1f)
-                    )
+            androidx.compose.material.Text(
+                text = value.toString(),
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.weight(1f)
+            )
 
 
 
@@ -320,4 +352,38 @@ fun CardList() {
 
 
     }
+}
+
+private fun downloadPhoto(
+    coverUrl: String,
+    context: Context
+): File {
+    val photoKey = "$coverUrl.png"
+    val filePath = "${context.filesDir}/${photoKey}"
+
+    Log.i("downloadPhoto", "download photoKey is: $photoKey")
+
+    if (!fileIsExists(filePath)) {
+        val localFile = File(filePath)
+        Amplify.Storage.downloadFile(
+            photoKey,
+            localFile,
+            { },
+            { Log.e("downloadPhoto", "Failed download", it) }
+        )
+    }
+
+    return File(filePath)
+}
+
+private fun fileIsExists(filePath: String): Boolean {
+    try {
+        val f = File(filePath)
+        if (!f.exists()) {
+            return false
+        }
+    } catch (e: Exception) {
+        return false
+    }
+    return true
 }

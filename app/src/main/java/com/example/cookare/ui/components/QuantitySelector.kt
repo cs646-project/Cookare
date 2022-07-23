@@ -17,6 +17,7 @@
 package com.example.cookare.ui.components
 
 
+import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
@@ -27,6 +28,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.example.cookare.R
 import com.example.cookare.ui.theme.BackgroundWhite
 import com.example.cookare.ui.theme.green700
+import com.example.cookare.viewModels.StockViewModel
 
 
 @Composable
@@ -42,7 +45,9 @@ fun QuantitySelector(
     count: Int,
     decreaseItemCount: () -> Unit,
     increaseItemCount: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+//    stockViewModel: StockViewModel,
+//    key: String
 ) {
     Row(modifier = modifier) {
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
@@ -50,7 +55,8 @@ fun QuantitySelector(
                 text = stringResource(R.string.quantity),
                 style = MaterialTheme.typography.caption,
                 fontSize = 20.sp,
-                color = BackgroundWhite,
+//                color = BackgroundWhite,
+                color = Color.Black,
                 modifier = Modifier
                     .padding(end = 25.dp)
                     .align(Alignment.CenterVertically)
@@ -58,7 +64,12 @@ fun QuantitySelector(
         }
 //
         FloatingActionButton(
-            onClick = decreaseItemCount,
+            onClick =
+
+                decreaseItemCount
+//                stockViewModel.updateStock(key, count)
+//                Log.d("Decrease", "ShowResult: $count")
+            ,
             modifier = Modifier.height(20.dp).width(20.dp) .align(Alignment.CenterVertically)
         ) {
             Icon(imageVector = Icons.Default.Remove, contentDescription = null, tint = BackgroundWhite)
@@ -72,26 +83,31 @@ fun QuantitySelector(
                 text = "$it",
                 style = MaterialTheme.typography.subtitle2,
                 fontSize = 25.sp,
-                color = BackgroundWhite,
+//                color = BackgroundWhite,
+                color = Color.Black,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.widthIn(min = 30.dp)
             )
         }
 //
-        FloatingActionButton(onClick = increaseItemCount,
+        FloatingActionButton(
+            onClick =
+                increaseItemCount
+//                Log.d("Increase", "ShowResult: $count")
+                      ,
             modifier = Modifier.height(20.dp).width(20.dp) .align(Alignment.CenterVertically)) {
             Icon(imageVector = Icons.Default.Add, contentDescription = null, tint = BackgroundWhite)
         }
     }
 }
 
-@Preview("default")
-
-@Composable
-fun QuantitySelectorPreview() {
-
-
-            QuantitySelector(1, {}, {})
-        }
+//@Preview("default")
+//
+//@Composable
+//fun QuantitySelectorPreview() {
+//
+//
+//            QuantitySelector(1, {}, {})
+//        }
 
 

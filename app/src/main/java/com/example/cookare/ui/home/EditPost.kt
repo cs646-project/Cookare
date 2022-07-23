@@ -1,16 +1,22 @@
 package com.example.cookare.ui.home
 
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.Composable
 import android.Manifest
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
 import android.net.Uri
 import android.os.Build
+import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.compose.setContent
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -51,17 +57,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.rememberAsyncImagePainter
-import com.amplifyframework.core.Amplify
 import com.example.cookare.R
 import com.example.cookare.model.Ingredient
+import coil.compose.rememberAsyncImagePainter
+import com.amplifyframework.core.Amplify
 import com.example.cookare.model.Recipe
+import com.example.cookare.ui.MainActivity
+import com.example.cookare.ui.auth
+import com.example.cookare.ui.home.isNumber
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.green000
 import com.example.cookare.ui.userId
 import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.viewModels.PostRecipeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -70,22 +81,33 @@ import java.util.*
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
-    var num by remember { mutableStateOf(2) }
+fun EditPost(
+    recipeId: Int,
+    navController: NavController,
+    viewModel: PostRecipeViewModel
+) {
+    Log.d("recipeId", "ShowResult: $recipeId")
+    viewModel.searchById(listOf(recipeId))
+    var data = viewModel.resRecipeByIdList.value
+    val recipes = data.map { it.recipe }
+    val ingredients = data.map { it.ingredients }
+    var recipe = if (recipes.isNotEmpty()) recipes[0] else null
 
-    var ingredientNameMap: MutableMap<String, MutableState<String>> = remember { mutableMapOf() }
+    var title by mutableStateOf(if (recipe != null) recipe.title else "")
+    var content by  mutableStateOf(if (recipe != null) recipe.content else "")
+    var tags by  mutableStateOf(recipe?.tags?.toString() ?: "")
+    var updateUser by  mutableStateOf(if (recipe != null) recipe.updateUser else "")
+    var coverUrl by mutableStateOf(if (recipe != null) recipe.coverUrl else "")
+
+    var num by mutableStateOf(if(ingredients.isNotEmpty()) ingredients[0].size else 0)
+    var count by remember { mutableStateOf(0)}
+
+    var ingredientNameMap: MutableMap<String, MutableState<String?>> = remember { mutableMapOf() }
     var ingredientNumMap: MutableMap<String, MutableState<String>> = remember { mutableMapOf() }
-
-    for (index in 1..num) {
-        ingredientNameMap["ingredientName$index"] = remember { mutableStateOf("") }
-        ingredientNumMap["ingredientNum$index"] = remember { mutableStateOf("") }
+    for (index in 1..(num+count)) {
+        ingredientNameMap["ingredientName$index"] = remember { mutableStateOf( if (index <= num && ingredients[0][index-1].name != null) ingredients[0][index-1].name else "") }
+        ingredientNumMap["ingredientNum$index"] = remember { mutableStateOf(if(index <= num && ingredients[0][index-1].num.toString() != "null") ingredients[0][index-1].num.toString() else "") }
     }
-
-    var title by remember { mutableStateOf("") }
-    var content by remember { mutableStateOf("") }
-    var tags by remember { mutableStateOf("") }
-    var updateUser by remember { mutableStateOf("") }
-    var coverUrl by remember { mutableStateOf("logo") }
 
     val context = LocalContext.current
 
@@ -100,7 +122,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
         mutableStateOf<Bitmap?>(null)
     }
 
-    val localFile = File("${context.filesDir}/photoAdd.png")
+    val localFile = File("${context.filesDir}/photo.png")
 
     var photoUri by remember {
         mutableStateOf<Uri>(
@@ -258,6 +280,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
         sheetShape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
         modifier = Modifier.background(CookareTheme.colors.background)
     ) {
+
         LazyColumn(state = rememberLazyListState()) {
             item {
                 Column {
@@ -270,7 +293,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                     ) {
                         OutlinedButton(
                             onClick = {
-                                navController.navigateUp()
+                                      navController.navigateUp()
                             },
                             modifier = Modifier
                                 .size(60.dp)
@@ -298,7 +321,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                                         color = Color.White,
                                     )
                                 ) {
-                                    append("Add Your Recipe")
+                                    append("Edit Your Recipe")
                                 }
                             }
                         )
@@ -313,29 +336,32 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                     fontWeight = FontWeight.Bold
                 )
 
-                OutlinedTextField(
-                    value = title,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    label = { Text(text = "Title") },
-                    placeholder = { Text(text = "") },
-                    onValueChange = {
-                        title = it
-                    }
-                )
+                title?.let { it1 ->
+                    OutlinedTextField(
+                        value = it1,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        label = { Text(text = "Title") },
+                        placeholder = { Text(text = "") },
+                        onValueChange = {
+                            title = it
+                        }
+                    )
+                }
 
-                OutlinedTextField(
-                    value = content,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    label = { Text(text = "Content") },
-                    placeholder = { Text(text = "") },
-                    onValueChange = {
-                        content = it
-                    }
-                )
+                content?.let { it1 ->
+                    OutlinedTextField(
+                        value = it1,
+                        modifier = Modifier
+                            .padding(8.dp)
+                            .fillMaxWidth(),
+                        label = { Text(text = "Content") },
+                        onValueChange = {
+                            content = it
+                        }
+                    )
+                }
 
                 OutlinedTextField(
                     value = tags,
@@ -343,7 +369,6 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                         .padding(8.dp)
                         .fillMaxWidth(),
                     label = { Text(text = "Tags") },
-                    placeholder = { Text(text = "") },
                     onValueChange = {
                         tags = it
                     }
@@ -427,19 +452,19 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                 }
                 else {
                     Log.i("Take Photo", "from default")
-
-                    val downloadedImage = downloadPhoto(coverUrl, context)
-                    Image(
-                        painter = rememberAsyncImagePainter(downloadedImage),
-                        contentDescription = "Recipe Featured Image",
-                        Modifier
-                            .clip(RoundedCornerShape(16.dp))
-                            .fillMaxWidth()
-                            .aspectRatio(1.35f),
-                        contentScale = ContentScale.Fit,
-                        alignment = Alignment.TopCenter
-                    )
-
+                    coverUrl?.let {
+                        val downloadedImage = downloadPhoto(coverUrl!!, context)
+                        Image(
+                            painter = rememberAsyncImagePainter(downloadedImage),
+                            contentDescription = "Recipe Featured Image",
+                            Modifier
+                                .clip(RoundedCornerShape(16.dp))
+                                .fillMaxWidth()
+                                .aspectRatio(1.35f),
+                            contentScale = ContentScale.Fit,
+                            alignment = Alignment.TopCenter
+                        )
+                    }
                 }
 
                 Row(
@@ -456,8 +481,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
 
                     OutlinedButton(
                         onClick = {
-                            num += 1
-                            Log.d("Debug" , "ShowResult: Click!!!! $num")
+                            count += 1
                         },
                         modifier = Modifier
                             .size(30.dp),
@@ -478,22 +502,24 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                 }
 
 
-                for (index in 1..num) {
+                for (index in 1..(num+count)) {
                     Row(
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
 
-                        OutlinedTextField(
-                            value = ingredientNameMap["ingredientName$index"]!!.value,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .weight(1f),
-                            label = { Text(text = "Name$index") },
-                            placeholder = { Text(text = "") },
-                            onValueChange = {
-                                ingredientNameMap["ingredientName$index"]!!.value = it
-                            }
-                        )
+                        ingredientNameMap["ingredientName$index"]!!.value?.let { it1 ->
+                            OutlinedTextField(
+                                value = it1,
+                                modifier = Modifier
+                                    .padding(8.dp)
+                                    .weight(1f),
+                                label = { Text(text = "Name$index") },
+                                placeholder = { Text(text = "") },
+                                onValueChange = {
+                                    ingredientNameMap["ingredientName$index"]!!.value = it
+                                }
+                            )
+                        }
 
                         OutlinedTextField(
                             value = ingredientNumMap["ingredientNum$index"]!!.value,
@@ -507,7 +533,6 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                             }
                         )
                     }
-
                 }
             }
 
@@ -517,7 +542,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                         if (!takenFromCamera && imageUri != null) {
                             viewModel.postRecipe(
                                 Recipe(
-                                    null,
+                                    recipeId,
                                     title,
                                     content,
                                     Integer.parseInt(tags),
@@ -526,7 +551,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                                         imageUri!!,
                                         context
                                     ),
-                                    (1..num).map{
+                                    (1..num+count).map{
                                         Ingredient(
                                             if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
@@ -542,16 +567,16 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                         else if(takenFromCamera) {
                             viewModel.postRecipe(
                                 Recipe(
-                                    null,
+                                    recipeId,
                                     title,
                                     content,
                                     Integer.parseInt(tags),
                                     userId,
                                     uploadPhotoUri(
-                                        photoUri,
+                                        photoUri!!,
                                         context
                                     ),
-                                    (1..num).map{
+                                    (1..num+count).map{
                                         Ingredient(
                                             if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
@@ -567,13 +592,13 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                         else {
                             viewModel.postRecipe(
                                 Recipe(
-                                    null,
+                                    recipeId,
                                     title,
                                     content,
                                     Integer.parseInt(tags),
                                     userId,
                                     coverUrl,
-                                    (1..num).map{
+                                    (1..num+count).map{
                                         Ingredient(
                                             if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
@@ -586,7 +611,9 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                                 )
                             )
                         }
-                        navController.navigateUp()
+                        navController.navigate(ScreenRoute.HomeScreen.route){
+                            launchSingleTop = true
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -594,17 +621,13 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                         .height(50.dp)
                         .clip(CircleShape)
                 ) {
-                    Text(text = "Add")
+                    Text(text = "Edit")
                 }
             }
         }
     }
 }
 
-
-fun isNumber(s: String?): Boolean {
-    return if (s.isNullOrEmpty()) false else s.all { Character.isDigit(it) }
-}
 
 private fun uploadPhotoUri(
     imageUri: Uri,

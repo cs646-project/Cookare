@@ -35,10 +35,12 @@ fun FoodScreen(
     onNavigate: (Todo?) -> Unit
 ) {
     stockViewModel.getStock()
-    val data = stockViewModel.resStockList.value
+//    val data = stockViewModel.resStockList.value
 
     Scaffold(floatingActionButton = {
-        FloatingActionButton(backgroundColor = green000,onClick = { onNavigate(null) }) {
+        FloatingActionButton(backgroundColor = green000,
+            onClick = { onNavigate(null) }
+        ) {
             Icon(
                 painter = painterResource(R.drawable.ic_add),
                 contentDescription = "add_food",
@@ -50,11 +52,11 @@ fun FoodScreen(
         }
     }) {
         Column() {
-            for(entry in data.entries.iterator()){
+            for(entry in stockViewModel.resStockList.value.entries.iterator()){
                 TodoItem(
                     key = entry.key,
                     value = entry.value,
-                    stockViewModel = stockViewModel
+                    stockViewModel = stockViewModel,
                 )
             }
         }

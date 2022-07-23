@@ -26,7 +26,7 @@ constructor(
 
     fun generateList(){
         viewModelScope.launch {
-            val res = repository.getStock(
+            val res = repository.generateList(
                 token = token,
                 request = GetAllRecipe(null)
             )

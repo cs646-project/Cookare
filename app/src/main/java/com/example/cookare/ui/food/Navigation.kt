@@ -26,22 +26,16 @@ fun TodoNavHost() {
     ) {
         composable(NavRoute.FoodScreen.route) {
             FoodScreen(hiltViewModel()) {
-//            FoodScreen() {
-                navController.navigate(NavRoute.Detail.route + "/${it?.id ?: -1}") {
-
-                }
+                navController.navigate(NavRoute.Detail.route + "/${it?.id ?: -1}") {}
             }
         }
         composable(
             NavRoute.Detail.route + "/{id}",
             arguments = listOf(navArgument("id") { type = NavType.LongType }),
         ) {
-            DetailScreen(selectedId = it.arguments?.getLong("id") ?: -1) {
-                navController.navigateUp()
+            DetailScreen(selectedId = it.arguments?.getLong("id") ?: -1, hiltViewModel()) {
+                navController.navigate(NavRoute.FoodScreen.route)
             }
         }
-
     }
-
-
 }

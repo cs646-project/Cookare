@@ -1,10 +1,10 @@
 package com.example.cookare.ui.food.detail
 
 import android.Manifest
-import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
+import android.icu.number.IntegerWidth
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
@@ -47,15 +47,15 @@ import com.example.cookare.ui.food.data.Todo
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
 import com.example.cookare.ui.theme.green200
+import com.example.cookare.viewModels.StockViewModel
 import kotlinx.coroutines.launch
 import java.io.File
-import com.example.cookare.network.ObjectDetectAPIClient
-import kotlin.concurrent.thread
 
 
 @Composable
 fun DetailScreen(
     selectedId: Long,
+    stockViewModel: StockViewModel,
     onNavigate: () -> Unit,
 ) {
     val viewModel = viewModel(
@@ -63,13 +63,17 @@ fun DetailScreen(
         factory = DetailViewModelFactory(selectedId)
     )
     val state by viewModel.state.collectAsState()
-    DetailScreenComponent(todoText = state.todo,
+    DetailScreenComponent(
+        todoText = state.todo,
         onTodoTextChange = { viewModel.onTextChange(it) },
         timeText = state.time,
         onTimeTextChange = { viewModel.onTimeChange(it) },
         onNavigate = { onNavigate() },
         onSaveTodo = { viewModel.insert(it) },
-        selectedId = state.selectId)
+        selectedId = state.selectId,
+        stockViewModel = stockViewModel
+    )
+
 }
 
 @OptIn(ExperimentalMaterialApi::class)
@@ -82,9 +86,11 @@ fun DetailScreenComponent(
     onNavigate: () -> Unit,
     onSaveTodo: (Todo) -> Unit,
     selectedId: Long,
+    stockViewModel: StockViewModel
 ) {
     val context = LocalContext.current
-    val bottomSheetModalState = rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
+    val bottomSheetModalState =
+        rememberModalBottomSheetState(initialValue = ModalBottomSheetValue.Hidden)
     val coroutineScope = rememberCoroutineScope()
 
     // The file that saves the photo chosen from the gallery, overwritten each time picking a new one
@@ -129,144 +135,152 @@ fun DetailScreenComponent(
         mutableStateOf(false)
     }
 
-    val galleryLauncher = rememberLauncherForActivityResult(contract =
-    ActivityResultContracts.GetContent()) { uri: Uri? ->
+    val galleryLauncher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
         galleryUri = uri
         takenFromCamera = false
         initPickPicture = true
     }
 
-    val cameraLauncher = rememberLauncherForActivityResult(contract =
-    ActivityResultContracts.TakePicture()) {
-            result: Boolean  ->
+    val cameraLauncher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.TakePicture()
+    ) { result: Boolean ->
         if (result) {
             takenFromCamera = true
             initPickPicture = true
         }
     }
 
-    val permissionLauncher = rememberLauncherForActivityResult(contract =
-    ActivityResultContracts.RequestPermission()){
-            isGranted: Boolean ->
-        if(isGranted){
-            if (isCameraSelected){
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract =
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            if (isCameraSelected) {
                 cameraLauncher.launch(cameraUri)
-            }else{
+            } else {
                 galleryLauncher.launch("image/*")
             }
 
             coroutineScope.launch {
                 bottomSheetModalState.hide()
             }
-        }else{
+        } else {
             Toast.makeText(context, "Permission Denied!", Toast.LENGTH_SHORT).show()
         }
     }
 
     val isTodoEdit = selectedId == -1L
 
-    ModalBottomSheetLayout(sheetContent = {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight()
-                .background(CookareTheme.colors.primary.copy(0.08f))
-        ){
-            Column(
-                verticalArrangement = Arrangement.SpaceEvenly,
-                horizontalAlignment = Alignment.CenterHorizontally
+    ModalBottomSheetLayout(
+        sheetContent = {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentHeight()
+                    .background(CookareTheme.colors.primary.copy(0.08f))
             ) {
-                Text(
-                    text = "Add Photo!",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(15.dp),
-                    color = CookareTheme.colors.primary,
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
-                    fontFamily = FontFamily.SansSerif
-                )
-                Divider(modifier = Modifier
-                    .height(1.dp)
-                    .background(CookareTheme.colors.primary)
-                )
-                Text(
-                    text = "Take Photo",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            when (PackageManager.PERMISSION_GRANTED) {
-                                ContextCompat.checkSelfPermission(
-                                    context, Manifest.permission.CAMERA
-                                ) -> {
-                                    cameraLauncher.launch(cameraUri)
-                                    coroutineScope.launch {
-                                        bottomSheetModalState.hide()
+                Column(
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "Add Photo!",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(15.dp),
+                        color = CookareTheme.colors.primary,
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        fontFamily = FontFamily.SansSerif
+                    )
+                    Divider(
+                        modifier = Modifier
+                            .height(1.dp)
+                            .background(CookareTheme.colors.primary)
+                    )
+                    Text(
+                        text = "Take Photo",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                when (PackageManager.PERMISSION_GRANTED) {
+                                    ContextCompat.checkSelfPermission(
+                                        context, Manifest.permission.CAMERA
+                                    ) -> {
+                                        cameraLauncher.launch(cameraUri)
+                                        coroutineScope.launch {
+                                            bottomSheetModalState.hide()
+                                        }
+                                    }
+                                    else -> {
+                                        isCameraSelected = true
+                                        permissionLauncher.launch((Manifest.permission.CAMERA))
                                     }
                                 }
-                                else -> {
-                                    isCameraSelected = true
-                                    permissionLauncher.launch((Manifest.permission.CAMERA))
-                                }
                             }
-                        }
-                        .padding(15.dp),
-                    color = Color.Black,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.SansSerif
-                )
-                Divider(modifier = Modifier
-                    .height(0.5.dp)
-                    .fillMaxWidth()
-                    .background(Color.LightGray)
-                )
-                Text(
-                    text = "Choose from Gallery",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            when (PackageManager.PERMISSION_GRANTED) {
-                                ContextCompat.checkSelfPermission(
-                                    context, Manifest.permission.READ_EXTERNAL_STORAGE
-                                ) -> {
-                                    galleryLauncher.launch("image/*")
-                                    coroutineScope.launch {
-                                        bottomSheetModalState.hide()
+                            .padding(15.dp),
+                        color = Color.Black,
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily.SansSerif
+                    )
+                    Divider(
+                        modifier = Modifier
+                            .height(0.5.dp)
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                    )
+                    Text(
+                        text = "Choose from Gallery",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                when (PackageManager.PERMISSION_GRANTED) {
+                                    ContextCompat.checkSelfPermission(
+                                        context, Manifest.permission.READ_EXTERNAL_STORAGE
+                                    ) -> {
+                                        galleryLauncher.launch("image/*")
+                                        coroutineScope.launch {
+                                            bottomSheetModalState.hide()
+                                        }
+                                    }
+                                    else -> {
+                                        isCameraSelected = false
+                                        permissionLauncher.launch((Manifest.permission.READ_EXTERNAL_STORAGE))
                                     }
                                 }
-                                else -> {
-                                    isCameraSelected = false
-                                    permissionLauncher.launch((Manifest.permission.READ_EXTERNAL_STORAGE))
+                            }
+                            .padding(15.dp),
+                        color = Color.Black,
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily.SansSerif
+                    )
+                    Divider(
+                        modifier = Modifier
+                            .height(0.5.dp)
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                    )
+                    Text(
+                        text = "Cancel",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                coroutineScope.launch {
+                                    bottomSheetModalState.hide()
                                 }
                             }
-                        }
-                        .padding(15.dp),
-                    color = Color.Black,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.SansSerif
-                )
-                Divider(modifier = Modifier
-                    .height(0.5.dp)
-                    .fillMaxWidth()
-                    .background(Color.LightGray)
-                )
-                Text(
-                    text = "Cancel",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable {
-                            coroutineScope.launch {
-                                bottomSheetModalState.hide()
-                            }
-                        }
-                        .padding(15.dp),
-                    color = Color.Black,
-                    fontSize = 18.sp,
-                    fontFamily = FontFamily.SansSerif
-                )
+                            .padding(15.dp),
+                        color = Color.Black,
+                        fontSize = 18.sp,
+                        fontFamily = FontFamily.SansSerif
+                    )
+                }
             }
-        }
-    },
+        },
         sheetState = bottomSheetModalState,
         sheetShape = RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp),
         modifier = Modifier.background(CookareTheme.colors.background)
@@ -282,7 +296,7 @@ fun DetailScreenComponent(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         androidx.compose.material3.OutlinedButton(
-                            onClick = {},
+                            onClick = { onNavigate() },
                             modifier = Modifier
                                 .size(60.dp)
                                 .padding(12.dp),
@@ -326,9 +340,9 @@ fun DetailScreenComponent(
                     Button(
                         onClick = {
                             coroutineScope.launch {
-                                if(!bottomSheetModalState.isVisible){
+                                if (!bottomSheetModalState.isVisible) {
                                     bottomSheetModalState.show()
-                                }else{
+                                } else {
                                     bottomSheetModalState.hide()
                                 }
                             }
@@ -342,17 +356,21 @@ fun DetailScreenComponent(
                             text = "Pick a picture",
                             modifier = Modifier.padding(8.dp),
                             textAlign = TextAlign.Center,
-                            color =  Color.White
+                            color = Color.White
                         )
                     }
 
                     if (initPickPicture) {
                         if (!takenFromCamera) {
-                            if(!isCameraSelected){
-                                bitmap = if(Build.VERSION.SDK_INT<28){
-                                    MediaStore.Images.Media.getBitmap(context.contentResolver,galleryUri)
-                                }else{
-                                    val source = ImageDecoder.createSource(context.contentResolver,
+                            if (!isCameraSelected) {
+                                bitmap = if (Build.VERSION.SDK_INT < 28) {
+                                    MediaStore.Images.Media.getBitmap(
+                                        context.contentResolver,
+                                        galleryUri
+                                    )
+                                } else {
+                                    val source = ImageDecoder.createSource(
+                                        context.contentResolver,
                                         galleryUri!!
                                     )
                                     ImageDecoder.decodeBitmap(source)
@@ -372,23 +390,19 @@ fun DetailScreenComponent(
                                     filterQuality = FilterQuality.High
                                 )
                             }
-
-                            val thread = thread {
-                                searchByImage(bitmap, context)
-                            }
-
-                            thread.join()
-                        }
-                        else if (takenFromCamera) {
-                            bitmap = if(Build.VERSION.SDK_INT<28){
-                                MediaStore.Images.Media.getBitmap(context.contentResolver,cameraUri)
-                            }else{
-                                val source = ImageDecoder.createSource(context.contentResolver,
+                        } else if (takenFromCamera) {
+                            bitmap = if (Build.VERSION.SDK_INT < 28) {
+                                MediaStore.Images.Media.getBitmap(
+                                    context.contentResolver,
+                                    cameraUri
+                                )
+                            } else {
+                                val source = ImageDecoder.createSource(
+                                    context.contentResolver,
                                     cameraUri
                                 )
                                 ImageDecoder.decodeBitmap(source)
                             }
-
 
                             bitmap?.let { btm ->
                                 Image(
@@ -403,12 +417,6 @@ fun DetailScreenComponent(
                                     filterQuality = FilterQuality.High
                                 )
                             }
-
-                            val thread = thread {
-                                searchByImage(bitmap, context)
-                            }
-
-                            thread.join()
                         }
                     }
 
@@ -426,19 +434,23 @@ fun DetailScreenComponent(
                         label = { Text(text = "Enter Number") }
                     )
 
-                    Button(onClick = {
-                        val todo = if (isTodoEdit) Todo(todoText, timeText)
-                        else Todo(todoText, timeText, id = selectedId)
-                        onSaveTodo(todo)
-                        onNavigate()
-                    },
+                    Button(
+                        onClick = {
+                            val todo = if (isTodoEdit) Todo(todoText, timeText)
+                            else Todo(todoText, timeText, id = selectedId)
+                            onSaveTodo(todo)
+                            stockViewModel.addStock(mapOf(todoText to Integer.parseInt(timeText)))
+                            onNavigate()
+                        },
                         modifier = Modifier
 
                             .padding(vertical = 40.dp)
-                            .height(50.dp).width(200.dp)
+                            .height(50.dp)
+                            .width(200.dp)
                             .clip(CircleShape)
 
-                            .background(color = green200)) {
+                            .background(color = green200)
+                    ) {
                         val text = if (isTodoEdit) "Save" else "Update"
                         Text(text = text)
                     }
@@ -446,10 +458,4 @@ fun DetailScreenComponent(
             }
         }
     }
-}
-
-fun searchByImage(queryImage: Bitmap?, context: Context){
-    // object detection api client
-    var apiClient = ObjectDetectAPIClient(context)
-    apiClient.annotateImage(queryImage)
 }

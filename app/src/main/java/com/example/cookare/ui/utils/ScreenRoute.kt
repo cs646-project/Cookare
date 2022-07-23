@@ -8,4 +8,5 @@ sealed class ScreenRoute(val route: String){
     object PostTemplates: ScreenRoute("template_screen")
     object PostDetails: ScreenRoute("post_details")
     object ProfileScreen: ScreenRoute("profile_screen")
+    object EditPost: ScreenRoute("edit_post")
 }
