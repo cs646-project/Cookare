@@ -1,6 +1,7 @@
 package com.example.cookare.ui.food.detail
 
 import android.Manifest
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.ImageDecoder
@@ -48,6 +49,8 @@ import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
 import com.example.cookare.ui.theme.green200
 import kotlinx.coroutines.launch
 import java.io.File
+import com.example.cookare.network.ObjectDetectAPIClient
+import kotlin.concurrent.thread
 
 
 @Composable
@@ -369,6 +372,12 @@ fun DetailScreenComponent(
                                     filterQuality = FilterQuality.High
                                 )
                             }
+
+                            val thread = thread {
+                                searchByImage(bitmap, context)
+                            }
+
+                            thread.join()
                         }
                         else if (takenFromCamera) {
                             bitmap = if(Build.VERSION.SDK_INT<28){
@@ -379,6 +388,7 @@ fun DetailScreenComponent(
                                 )
                                 ImageDecoder.decodeBitmap(source)
                             }
+
 
                             bitmap?.let { btm ->
                                 Image(
@@ -393,6 +403,12 @@ fun DetailScreenComponent(
                                     filterQuality = FilterQuality.High
                                 )
                             }
+
+                            val thread = thread {
+                                searchByImage(bitmap, context)
+                            }
+
+                            thread.join()
                         }
                     }
 
@@ -430,4 +446,10 @@ fun DetailScreenComponent(
             }
         }
     }
+}
+
+fun searchByImage(queryImage: Bitmap?, context: Context){
+    // object detection api client
+    var apiClient = ObjectDetectAPIClient(context)
+    apiClient.annotateImage(queryImage)
 }
