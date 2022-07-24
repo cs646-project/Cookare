@@ -466,7 +466,18 @@ fun DetailScreenComponent(
                         Button(
                             onClick = {
                                 var queryImage = if (!takenFromCamera) {
-                                    decodeFile("${context.filesDir}/food1.png")
+                                    if (Build.VERSION.SDK_INT < 28) {
+                                        MediaStore.Images.Media.getBitmap(
+                                            context.contentResolver,
+                                            galleryUri
+                                        )
+                                    } else {
+                                        val source = ImageDecoder.createSource(
+                                            context.contentResolver,
+                                            galleryUri!!
+                                        )
+                                        ImageDecoder.decodeBitmap(source)
+                                    }
                                 }
                                 else {
                                     decodeFile("${context.filesDir}/food2.png")
