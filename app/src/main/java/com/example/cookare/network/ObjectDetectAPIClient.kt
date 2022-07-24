@@ -33,7 +33,7 @@ class ObjectDetectAPIClient() {
         return Base64.encodeToString(byteArray, Base64.DEFAULT)
     }
 
-    fun annotateImage(image: Bitmap){
+    fun annotateImage(image: Bitmap):Set<String>{
         // val apiSource = TaskCompletionSource<List<DetectResultResponse>>()
 
         val base64 = convertBitmapToBase64(image)
@@ -58,7 +58,7 @@ class ObjectDetectAPIClient() {
             }
         """.trimIndent())
 
-        println("requestJson: " + requestJson.toString())
+        // println("requestJson: " + requestJson.toString())
 
         val payload = requestJson.toString()
         val requestBody = payload.toRequestBody()
@@ -67,18 +67,23 @@ class ObjectDetectAPIClient() {
             .post(requestBody)
             .build()
         val response = OkHttpClient().newCall(request).execute()
-        println("Response: " + response)
+        // println("Response: " + response)
         val body = response?.body?.string()
-        println("Body: " + body)
+        // println("Body: " + body)
 
         val gson = GsonBuilder().create()
         var ObjectDetection = gson.fromJson(body, DetectResultResponse::class.java)
 
-        println("ObjectDetection: " + ObjectDetection)
+        var objectNames = mutableSetOf<String>()
 
+        for (item in ObjectDetection.responses[0].localizedObjectAnnotations){
+            objectNames.add(item.name.toString())
+        }
+
+        // println("objectNames: " + objectNames)
         // println(ObjectDetection.objectDetectResults?.localizedObjectAnnotations)
 
-        // return apiTask
+        return objectNames
     }
 
 }

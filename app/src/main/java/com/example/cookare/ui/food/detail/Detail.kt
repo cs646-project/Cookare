@@ -486,5 +486,6 @@ fun DetailScreenComponent(
 
 fun searchByImage(queryImage: Bitmap, apiClient: ObjectDetectAPIClient){
     // println("queryImage: " + queryImage)
-    apiClient.annotateImage(queryImage)
+    val objectName = apiClient.annotateImage(queryImage)
+    // println("objectName: " + objectName)
 }
