@@ -404,6 +404,7 @@ fun DetailScreenComponent(
                             }
 
                             thread.join()
+
                         } else if (takenFromCamera) {
                             bitmap = if (Build.VERSION.SDK_INT < 28) {
                                 MediaStore.Images.Media.getBitmap(

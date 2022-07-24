@@ -1,5 +1,9 @@
 package com.example.cookare.model
 
+
+// data class ObjectDetectRes()
+
+/**
 data class Response(
     val objectDetectResults: ObjectDetectResults?
 )
@@ -19,3 +23,4 @@ data class NormalizedVertices(
     val x: Double,
     val y: Double
 )
+        **/

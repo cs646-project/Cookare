@@ -4,9 +4,10 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Base64
 import com.android.volley.toolbox.Volley
-import com.example.cookare.model.ObjectDetectResults
+import com.example.example.DetectResultResponse
 import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.TaskCompletionSource
+import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -33,9 +34,11 @@ class ObjectDetectAPIClient() {
     }
 
     fun annotateImage(image: Bitmap){
-        val apiSource = TaskCompletionSource<List<ObjectDetectResults>>()
+        // val apiSource = TaskCompletionSource<List<DetectResultResponse>>()
 
         val base64 = convertBitmapToBase64(image)
+
+        // println("base64: " + base64)
 
         val requestJson = JSONObject("""
             {
@@ -67,6 +70,13 @@ class ObjectDetectAPIClient() {
         println("Response: " + response)
         val body = response?.body?.string()
         println("Body: " + body)
+
+        val gson = GsonBuilder().create()
+        var ObjectDetection = gson.fromJson(body, DetectResultResponse::class.java)
+
+        println("ObjectDetection: " + ObjectDetection)
+
+        // println(ObjectDetection.objectDetectResults?.localizedObjectAnnotations)
 
         // return apiTask
     }
