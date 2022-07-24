@@ -14,7 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.cookare.model.StockMap
+import com.example.cookare.ui.food.NavRoute
 import com.example.cookare.ui.food.data.Todo
 import com.example.cookare.ui.theme.BackgroundWhite
 import com.example.cookare.ui.theme.FunctionalGrey
@@ -28,6 +30,7 @@ fun TodoItem(
     key: String,
     value: Int,
     stockViewModel: StockViewModel,
+    navController: NavController
 ) {
     var showDeleteDialog by remember { mutableStateOf(false) }
     var increase by remember { mutableStateOf(false) }
@@ -104,8 +107,10 @@ fun TodoItem(
                     Row() {
                         TextButton(
                             onClick = {
-                                showDeleteDialog = false
                                 stockViewModel.deleteStock(key)
+                                showDeleteDialog = false
+                                stockViewModel.getStock()
+                                navController.navigate(NavRoute.FoodScreen.route)
                             }
                         ) {
                             androidx.compose.material3.Text(text = "Yes")

@@ -553,7 +553,7 @@ fun EditPost(
                                     ),
                                     (1..num+count).map{
                                         Ingredient(
-                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value?.lowercase() else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
                                     }.filter {
@@ -578,7 +578,7 @@ fun EditPost(
                                     ),
                                     (1..num+count).map{
                                         Ingredient(
-                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value?.lowercase() else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
                                     }.filter {
@@ -600,7 +600,7 @@ fun EditPost(
                                     coverUrl,
                                     (1..num+count).map{
                                         Ingredient(
-                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value?.lowercase() else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
                                     }.filter {

@@ -337,17 +337,17 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                     }
                 )
 
-                OutlinedTextField(
-                    value = tags,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    label = { Text(text = "Tags") },
-                    placeholder = { Text(text = "") },
-                    onValueChange = {
-                        tags = it
-                    }
-                )
+//                OutlinedTextField(
+//                    value = tags,
+//                    modifier = Modifier
+//                        .padding(8.dp)
+//                        .fillMaxWidth(),
+//                    label = { Text(text = "Tags") },
+//                    placeholder = { Text(text = "") },
+//                    onValueChange = {
+//                        tags = it
+//                    }
+//                )
 
                 androidx.compose.material.Button(
                     onClick = {
@@ -520,7 +520,8 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                                     null,
                                     title,
                                     content,
-                                    Integer.parseInt(tags),
+//                                    Integer.parseInt(tags),
+                                    1,
                                     userId,
                                     uploadPhotoUri(
                                         imageUri!!,
@@ -528,7 +529,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                                     ),
                                     (1..num).map{
                                         Ingredient(
-                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value.lowercase() else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
                                     }.filter {
@@ -545,7 +546,8 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                                     null,
                                     title,
                                     content,
-                                    Integer.parseInt(tags),
+//                                    Integer.parseInt(tags),
+                                    1,
                                     userId,
                                     uploadPhotoUri(
                                         photoUri,
@@ -553,7 +555,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                                     ),
                                     (1..num).map{
                                         Ingredient(
-                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value.lowercase() else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
                                     }.filter {
@@ -570,12 +572,13 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                                     null,
                                     title,
                                     content,
-                                    Integer.parseInt(tags),
+//                                    Integer.parseInt(tags),
+                                    1,
                                     userId,
                                     coverUrl,
                                     (1..num).map{
                                         Ingredient(
-                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value.lowercase() else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
                                     }.filter {
@@ -586,7 +589,8 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                                 )
                             )
                         }
-                        navController.navigateUp()
+//                        navController.navigateUp()
+                        navController.navigate(ScreenRoute.HomeScreen.route)
                     },
                     modifier = Modifier
                         .fillMaxWidth()

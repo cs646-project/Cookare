@@ -112,7 +112,7 @@ fun HomeScreen(
 
                     onClick = {
                         navController.navigate(ScreenRoute.PostTemplates.route)
-                        navController.navigate(ScreenRoute.PostTemplates.route)
+//                        navController.navigate(ScreenRoute.PostTemplates.route)
                     }) {
                     Icon(
                         painter = painterResource(R.drawable.ic_add),
@@ -145,15 +145,16 @@ fun HomeScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text("Recipe", fontSize = 18.sp, color = Gray100, fontWeight = FontWeight.Bold)
-                    if (data.isNotEmpty()) {
-                        NamesBar(
-                            pagerState = pagerState,
-                        )
-                    }
+//                    if (data.isNotEmpty()) {
+//                        NamesBar(
+//                            pagerState = pagerState,
+//                        )
+//                    }
                 }
 //                CommunityContent(pagerState = pagerState, hiltViewModel())
                 if (data.isNotEmpty()) {
-                    CommunityContent(pagerState = pagerState, data, planViewModel)
+//                    CommunityContent(pagerState = pagerState, data, planViewModel)
+                    RDContent(data = data, planViewModel = planViewModel)
                 } else {
                     var defaultData = listOf<Data>(
                         Data(
@@ -164,7 +165,8 @@ fun HomeScreen(
                             ingredients = listOf()
                         )
                     )
-                    CommunityContent(pagerState = pagerState, defaultData, planViewModel)
+//                    CommunityContent(pagerState = pagerState, defaultData, planViewModel)
+                    RDContent(defaultData, planViewModel)
                 }
                 //RDContent(recipes = recipes)
             }
@@ -770,7 +772,7 @@ fun LoveDetailsPage(
                             TextButton(
                                 onClick = {
                                     recipe.id?.let { viewModel.deletdById(recipeId = it) }
-                                    onPageClosing()
+//                                    onPageClosing()
                                     navController.navigate(ScreenRoute.HomeScreen.route)
                                 }
                             ) {

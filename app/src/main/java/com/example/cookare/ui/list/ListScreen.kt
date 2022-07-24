@@ -28,7 +28,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.amplifyframework.core.Amplify
@@ -42,7 +46,13 @@ import com.example.cookare.model.loves
 import com.example.cookare.network.RecipeSearchResponse
 import com.example.cookare.ui.food.RecipeCard
 import com.example.cookare.ui.food.data.Todo
+import com.example.cookare.ui.home.EditPost
+import com.example.cookare.ui.home.HomeScreen
+import com.example.cookare.ui.home.PostTemplate
+import com.example.cookare.ui.home.notification.NotificationScreen
+import com.example.cookare.ui.profile.ProfileScreen
 import com.example.cookare.ui.theme.*
+import com.example.cookare.ui.upPress
 import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
 import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.ui.utils.loadPicture
@@ -59,9 +69,21 @@ import java.io.File
 import kotlin.concurrent.thread
 
 @Composable
+fun ListScreenNavigate() {
+    val navController = rememberNavController()
+
+    NavHost(navController = navController, startDestination = ScreenRoute.ListScreen.route) {
+        composable(route = ScreenRoute.ListScreen.route) {
+            ListScreen(hiltViewModel(), hiltViewModel(),navController)
+        }
+    }
+}
+
+@Composable
 fun ListScreen(
     planViewModel: PlanViewModel,
-    listGenerateViewModel: ListGenerateViewModel
+    listGenerateViewModel: ListGenerateViewModel,
+    navController: NavController
 ) {
 
     planViewModel.getPlan()
@@ -76,12 +98,14 @@ fun ListScreen(
         mutableStateOf(false)
     }
 
-
     Scaffold(floatingActionButton = {
-        FloatingActionButton(backgroundColor = green000, onClick = {
+        FloatingActionButton(
+            backgroundColor = if(data.isEmpty()) Color.DarkGray else green000,
+            onClick = {
             listGenerateViewModel.generateList()
             showList = true
-        }) {
+        },
+        ) {
             androidx.compose.material.Text("GET", fontSize = 16.sp, color = BackgroundWhite)
         }
     }) {
@@ -136,7 +160,27 @@ fun ListScreen(
                         )
                         {
                             items(recipes) { recipe ->
-                                RecipeArea(recipe = recipe, viewModel = planViewModel)
+                                RecipeArea(recipe = recipe, viewModel = planViewModel, navController = navController)
+                            }
+                        }
+                    }else{
+                        Column(Modifier.padding(24.dp, 2.dp, 24.dp, 2.dp)) {
+                            Surface(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(top = 8.dp)
+                                    .clip(RoundedCornerShape(16.dp))
+                                    .background(Color.White)
+                                    .padding(8.dp)
+
+                            ){
+                                androidx.compose.material.Text(
+                                    text = "No recipe selected yet!",
+                                    modifier = Modifier
+                                        .fillMaxWidth(0.85f)
+                                        .wrapContentWidth(Alignment.Start),
+                                    fontSize = 18.sp
+                                )
                             }
                         }
                     }
@@ -181,7 +225,7 @@ fun ListScreen(
 }
 
 @Composable
-fun RecipeArea(recipe: Recipe, viewModel: PlanViewModel) {
+fun RecipeArea(recipe: Recipe, viewModel: PlanViewModel, navController: NavController) {
     val context = LocalContext.current
 
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -212,10 +256,6 @@ fun RecipeArea(recipe: Recipe, viewModel: PlanViewModel) {
                         )
                         androidx.compose.material3.OutlinedButton(
                             onClick = {
-                                recipe.id?.let {
-                                    viewModel.deletePlan(it)
-                                    viewModel.getPlan()
-                                }
                                 showDeleteDialog = true
                             },
                             modifier = Modifier
@@ -255,7 +295,11 @@ fun RecipeArea(recipe: Recipe, viewModel: PlanViewModel) {
                 Row() {
                     TextButton(
                         onClick = {
+                            recipe.id?.let {
+                                viewModel.deletePlan(it)
+                            }
                             showDeleteDialog = false
+                            navController.navigate(ScreenRoute.ListScreen.route)
                         }
                     ) {
                         androidx.compose.material3.Text(text = "Yes")

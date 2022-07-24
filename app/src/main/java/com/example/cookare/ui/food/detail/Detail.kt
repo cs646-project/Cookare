@@ -38,6 +38,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.toLowerCase
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -494,7 +495,7 @@ fun DetailScreenComponent(
                             val todo = if (isTodoEdit) Todo(todoText, timeText)
                             else Todo(todoText, timeText, id = selectedId)
                             onSaveTodo(todo)
-                            stockViewModel.addStock(mapOf(todoText to Integer.parseInt(timeText)))
+                            stockViewModel.addStock(mapOf(todoText.lowercase() to Integer.parseInt(timeText)))
                             onNavigate()
                         },
                         modifier = Modifier
