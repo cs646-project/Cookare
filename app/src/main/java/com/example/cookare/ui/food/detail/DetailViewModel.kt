@@ -67,7 +67,7 @@ class DetailViewModel(
 }
 
 data class DetailViewState(
-    val todo: String = "",
+    var todo: String = "",
     val time: String = "",
     val selectId: Long = -1L,
 )

@@ -181,6 +181,10 @@ fun DetailScreenComponent(
 
     val isTodoEdit = selectedId == -1L
 
+    var apiResultSet: MutableSet<String> = remember {
+        mutableSetOf()
+    }
+
     ModalBottomSheetLayout(
         sheetContent = {
             Box(
@@ -485,10 +489,12 @@ fun DetailScreenComponent(
                                 }
 
                                 val thread = thread {
-                                    searchByImage(queryImage, apiClient)
+                                    apiResultSet += searchByImage(queryImage, apiClient)
                                 }
 
                                 thread.join()
+
+                                onTodoTextChange(apiResultSet.elementAt(0))
                             },
                             modifier = Modifier
                                 .padding(vertical = 40.dp)
