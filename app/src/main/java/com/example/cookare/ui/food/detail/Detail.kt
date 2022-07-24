@@ -47,6 +47,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cookare.network.ObjectDetectAPIClient
 import com.example.cookare.ui.food.data.Todo
+import com.example.cookare.ui.home.isNumber
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
 import com.example.cookare.ui.theme.green200
@@ -184,6 +185,20 @@ fun DetailScreenComponent(
     var apiResultSet: MutableSet<String> = remember {
         mutableSetOf()
     }
+
+    var uploaded by remember {
+        mutableStateOf(false)
+    }
+
+    var num by remember {
+        mutableStateOf(0)
+    }
+
+    var init by remember {
+        mutableStateOf(0)
+    }
+
+    var numLists: MutableList<String> = MutableList(num) { "" }
 
     ModalBottomSheetLayout(
         sheetContent = {
@@ -453,19 +468,45 @@ fun DetailScreenComponent(
                         }
                     }
 
-                    OutlinedTextField(
-                        colors = TextFieldDefaultsMaterial.outlinedTextFieldColors(),
-                        value = todoText,
-                        onValueChange = { onTodoTextChange(it) },
-                        label = { Text(text = "Enter Food name") }
-                    )
-                    Spacer(modifier = Modifier.size(16.dp))
-                    OutlinedTextField(
-                        colors = TextFieldDefaultsMaterial.outlinedTextFieldColors(),
-                        value = timeText,
-                        onValueChange = { onTimeTextChange(it) },
-                        label = { Text(text = "Enter Number") }
-                    )
+                    if(apiResultSet.isNotEmpty()){
+                        if(init == 0){
+                            num = apiResultSet.size
+                            numLists = MutableList(num) { "" }
+                            init += 1
+                        }
+                        for(index in 1..num){
+                            OutlinedTextField(
+                                colors = TextFieldDefaultsMaterial.outlinedTextFieldColors(),
+                                value = apiResultSet.elementAt(index-1),
+                                onValueChange = { onTodoTextChange(it) },
+                                label = { Text(text = "Enter Food name") }
+                            )
+                            Spacer(modifier = Modifier.size(16.dp))
+                            OutlinedTextField(
+                                colors = TextFieldDefaultsMaterial.outlinedTextFieldColors(),
+                                value = numLists[index-1],
+                                onValueChange = {
+                                    numLists[index-1] = it
+                                },
+                                label = { Text(text = "Enter Number") }
+                            )
+                            Spacer(modifier = Modifier.size(16.dp))
+                        }
+                    }else{
+                        OutlinedTextField(
+                            colors = TextFieldDefaultsMaterial.outlinedTextFieldColors(),
+                            value = todoText,
+                            onValueChange = { onTodoTextChange(it) },
+                            label = { Text(text = "Enter Food name") }
+                        )
+                        Spacer(modifier = Modifier.size(16.dp))
+                        OutlinedTextField(
+                            colors = TextFieldDefaultsMaterial.outlinedTextFieldColors(),
+                            value = timeText,
+                            onValueChange = { onTimeTextChange(it) },
+                            label = { Text(text = "Enter Number") }
+                        )
+                    }
 
                     if (initPickPicture) {
                         Button(
@@ -493,8 +534,7 @@ fun DetailScreenComponent(
                                 }
 
                                 thread.join()
-
-                                onTodoTextChange(apiResultSet.elementAt(0))
+                                uploaded = true
                             },
                             modifier = Modifier
                                 .padding(vertical = 40.dp)
@@ -509,10 +549,18 @@ fun DetailScreenComponent(
 
                     Button(
                         onClick = {
-                            val todo = if (isTodoEdit) Todo(todoText, timeText)
-                            else Todo(todoText, timeText, id = selectedId)
-                            onSaveTodo(todo)
-                            stockViewModel.addStock(mapOf(todoText.lowercase() to Integer.parseInt(timeText)))
+                            if(uploaded){
+                               val newStockMap = (1..num).map {
+                                   apiResultSet.elementAt(it-1).lowercase() to
+                                   (if(numLists[it-1] == "" || !isNumber(numLists[it-1])) 0 else Integer.parseInt(numLists[it-1]))
+                               }.toMap()
+                                stockViewModel.addStock(newStockMap)
+                            }else{
+                                val todo = if (isTodoEdit) Todo(todoText, timeText)
+                                else Todo(todoText, timeText, id = selectedId)
+                                onSaveTodo(todo)
+                                stockViewModel.addStock(mapOf(todoText.lowercase() to Integer.parseInt(timeText)))
+                            }
                             onNavigate()
                         },
                         modifier = Modifier
