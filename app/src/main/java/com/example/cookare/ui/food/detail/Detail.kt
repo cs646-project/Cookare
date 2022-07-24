@@ -5,10 +5,10 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory.decodeFile
 import android.graphics.ImageDecoder
-import android.icu.number.IntegerWidth
 import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -44,7 +44,6 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.example.cookare.activities.matchInput
 import com.example.cookare.network.ObjectDetectAPIClient
 import com.example.cookare.ui.food.data.Todo
 import com.example.cookare.ui.theme.CookareTheme
@@ -397,6 +396,7 @@ fun DetailScreenComponent(
                                 )
                             }
 
+                            /*
                             var queryImage = decodeFile("${context.filesDir}/food1.png")
 
                             val thread = thread {
@@ -404,6 +404,8 @@ fun DetailScreenComponent(
                             }
 
                             thread.join()
+
+                             */
 
                         } else if (takenFromCamera) {
                             bitmap = if (Build.VERSION.SDK_INT < 28) {
@@ -433,6 +435,7 @@ fun DetailScreenComponent(
                                 )
                             }
 
+                            /*
                             var queryImage = decodeFile("${context.filesDir}/food2.png")
 
                             val thread = thread {
@@ -440,6 +443,8 @@ fun DetailScreenComponent(
                             }
 
                             thread.join()
+
+                             */
                         }
                     }
 
@@ -456,6 +461,33 @@ fun DetailScreenComponent(
                         onValueChange = { onTimeTextChange(it) },
                         label = { Text(text = "Enter Number") }
                     )
+
+                    if (initPickPicture) {
+                        Button(
+                            onClick = {
+                                var queryImage = if (!takenFromCamera) {
+                                    decodeFile("${context.filesDir}/food1.png")
+                                }
+                                else {
+                                    decodeFile("${context.filesDir}/food2.png")
+                                }
+
+                                val thread = thread {
+                                    searchByImage(queryImage, apiClient)
+                                }
+
+                                thread.join()
+                            },
+                            modifier = Modifier
+                                .padding(vertical = 40.dp)
+                                .height(50.dp)
+                                .width(200.dp)
+                                .clip(CircleShape)
+                                .background(color = green200)
+                        ) {
+                            Text(text = "Identify")
+                        }
+                    }
 
                     Button(
                         onClick = {
@@ -480,12 +512,13 @@ fun DetailScreenComponent(
                 }
             }
         }
-
     }
 }
 
-fun searchByImage(queryImage: Bitmap, apiClient: ObjectDetectAPIClient){
-    // println("queryImage: " + queryImage)
+
+fun searchByImage(queryImage: Bitmap, apiClient: ObjectDetectAPIClient): Set<String> {
+    // Log.i("Detail", "queryImage: $queryImage")
     val objectName = apiClient.annotateImage(queryImage)
-    // println("objectName: " + objectName)
+    Log.i("Detail", "objectName: $objectName")
+    return objectName
 }
