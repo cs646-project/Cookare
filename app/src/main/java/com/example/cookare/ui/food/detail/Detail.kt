@@ -24,6 +24,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +48,7 @@ import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.cookare.network.ObjectDetectAPIClient
 import com.example.cookare.ui.food.data.Todo
+import com.example.cookare.ui.theme.*
 import com.example.cookare.ui.home.isNumber
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.TextFieldDefaultsMaterial
@@ -55,6 +57,7 @@ import com.example.cookare.viewModels.StockViewModel
 import kotlinx.coroutines.launch
 import java.io.File
 import kotlin.concurrent.thread
+
 
 
 @Composable
@@ -372,15 +375,19 @@ fun DetailScreenComponent(
                                 }
                             }
                         },
+
                         modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxWidth(),
-                        shape = RoundedCornerShape(8.dp)
+                            .padding(vertical = 50.dp)
+                            .height(50.dp)
+                            .width(180.dp),
+                        shape = RoundedCornerShape(8.dp),
+                        colors = ButtonDefaults.buttonColors(green000)
+
                     ) {
                         Text(
                             text = "Pick a picture",
-                            modifier = Modifier.padding(8.dp),
-                            textAlign = TextAlign.Center,
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
                     }
@@ -467,6 +474,7 @@ fun DetailScreenComponent(
                              */
                         }
                     }
+             
 
                     if(apiResultSet.isNotEmpty()){
                         if(init == 0){
@@ -536,14 +544,23 @@ fun DetailScreenComponent(
                                 thread.join()
                                 uploaded = true
                             },
-                            modifier = Modifier
-                                .padding(vertical = 40.dp)
+
+                            shape = RoundedCornerShape(3.dp),
+                            colors = ButtonDefaults.buttonColors(green000),
+
+
+
+                                    modifier = Modifier
+//                                .padding(vertical = 50.dp)
                                 .height(50.dp)
-                                .width(200.dp)
-                                .clip(CircleShape)
-                                .background(color = green200)
+                                .width(180.dp)
+
                         ) {
-                            Text(text = "Identify")
+                            Text(text = "Identify",
+
+                                    fontSize = 17.sp,
+                                    fontWeight = FontWeight.Bold,
+                                    color = Color.White)
                         }
                     }
 
@@ -563,23 +580,32 @@ fun DetailScreenComponent(
                             }
                             onNavigate()
                         },
+                        shape = RoundedCornerShape(3.dp),
+                        colors = ButtonDefaults.buttonColors(green000),
+
                         modifier = Modifier
 
                             .padding(vertical = 40.dp)
                             .height(50.dp)
-                            .width(200.dp)
-                            .clip(CircleShape)
+                            .width(180.dp)
 
-                            .background(color = green200)
+
+
                     ) {
                         val text = if (isTodoEdit) "Save" else "Update"
-                        Text(text = text)
+                        Text(
+                            text = text,
+
+                            fontSize = 17.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.White)
                     }
                 }
             }
         }
     }
 }
+
 
 
 fun searchByImage(queryImage: Bitmap, apiClient: ObjectDetectAPIClient): Set<String> {

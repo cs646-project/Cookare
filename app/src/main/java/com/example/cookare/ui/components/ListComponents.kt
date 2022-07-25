@@ -12,16 +12,14 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.cookare.model.StockMap
 import com.example.cookare.ui.food.NavRoute
 import com.example.cookare.ui.food.data.Todo
-import com.example.cookare.ui.theme.BackgroundWhite
-import com.example.cookare.ui.theme.FunctionalGrey
-import com.example.cookare.ui.theme.green200
-import com.example.cookare.ui.theme.yel1
+import com.example.cookare.ui.theme.*
 import com.example.cookare.viewModels.StockViewModel
 
 
@@ -40,7 +38,7 @@ fun TodoItem(
 //    var count by remember { mutableStateOf(value) }
 
     Card(
-        backgroundColor = green200,
+        backgroundColor = green000,
         modifier = Modifier
             .padding(16.dp)
     ) {
@@ -53,11 +51,11 @@ fun TodoItem(
             Column(modifier = Modifier.weight(25f)) {
                 Text(
                     text = key,
-//                    style = MaterialTheme.typography.subtitle2,
-                    color = Color.Black,
+                    color = Color.White,
 //                    color = FunctionalGrey,
                     style = MaterialTheme.typography.button,
-                    fontSize = 20.sp,
+                    fontSize = 23.sp,
+                    fontWeight = FontWeight.Bold,
                 )
                 Spacer(modifier = Modifier.size(20.dp))
 //                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
