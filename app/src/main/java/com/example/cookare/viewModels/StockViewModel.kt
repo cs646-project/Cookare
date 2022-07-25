@@ -34,6 +34,17 @@ constructor(
         }
     }
 
+    fun updateStock( name: String, num: Int){
+        viewModelScope.launch {
+            val stockList = resStockList.value.toMutableMap()
+            stockList[name] = num
+            repository.addStock(
+                token = token,
+                stockMap = StockMap(stockMap = stockList.toMap())
+            )
+        }
+    }
+
     fun deleteStock( key: String){
         viewModelScope.launch {
             val stockList = resStockList.value.filterKeys { it != key }

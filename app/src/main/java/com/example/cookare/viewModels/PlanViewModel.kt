@@ -2,6 +2,7 @@ package com.example.cookare.viewModels
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.cookare.model.*
@@ -20,29 +21,8 @@ constructor(
 ) : ViewModel() {
 
     val resPlanList: MutableState<List<Data>> = mutableStateOf(listOf())
+//    val resPlanList: MutableLiveData<List<Data>>? = null
     init {
-//        viewModelScope.launch {
-//            val res = repository.postRecipe(
-//                token = token,
-//                recipe = recipe
-//            )
-//            resRecipe.value = res
-//        }
-
-//        viewModelScope.launch {
-//            val res = repository.searchRecipeById(
-//                token = token,
-//                recipeIdList = SearchById(listOf(5,6,7))
-//            )
-//            resRecipeList.value = res
-//        }
-//        viewModelScope.launch {
-//            val res = repository.getPlan(
-//                token = token,
-//                request = GetAllRecipe(null)
-//            )
-//            resPlanList.value = res
-//        }
         getPlan()
     }
 
@@ -57,6 +37,21 @@ constructor(
         }
     }
 
+//    fun updatePlan(planId: Int){
+//        viewModelScope.launch {
+//            val planList = resPlanList?.value?.map {  it.recipe  }?.map { it.id }?.toMutableList()
+//            if (planList != null) {
+//                planList += planId
+//            }
+//            if (planList != null) {
+//                repository.updatePlan(
+//                    token = token,
+//                    plan = Plan(planList = planList.toSet().toList() as List<Int>)
+//                )
+//            }
+//        }
+//    }
+
     fun deletePlan(planId: Int){
         viewModelScope.launch {
             val planList = resPlanList.value.map {  it.recipe  }.map { it.id }.toMutableList()
@@ -68,6 +63,19 @@ constructor(
         }
     }
 
+//    fun deletePlan(planId: Int){
+//        viewModelScope.launch {
+//            val planList = resPlanList?.value?.map {  it.recipe  }?.map { it.id }?.toMutableList()
+//            planList?.remove(planId)
+//            if (planList != null) {
+//                repository.deletePlan(
+//                    token = token,
+//                    plan = Plan(planList = planList.toSet().toList() as List<Int>)
+//                )
+//            }
+//        }
+//    }
+
     fun getPlan(){
         viewModelScope.launch {
             val res = repository.getPlan(
@@ -77,4 +85,14 @@ constructor(
             resPlanList.value = res
         }
     }
+
+//    fun getPlan(){
+//        viewModelScope.launch {
+//            val res = repository.getPlan(
+//                token = token,
+//                request = GetAllRecipe(null)
+//            )
+//            resPlanList?.value = res
+//        }
+//    }
 }

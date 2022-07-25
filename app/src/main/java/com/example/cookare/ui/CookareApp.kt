@@ -57,18 +57,26 @@ fun HomeScreenNavigate() {
     val navController = rememberNavController()
     val upPress = { upPress(navController) }
 
-    NavHost(navController = navController, startDestination = ScreenRoute.HomeScreen.route){
-        composable(route = ScreenRoute.HomeScreen.route){
+    NavHost(navController = navController, startDestination = ScreenRoute.HomeScreen.route) {
+        composable(route = ScreenRoute.HomeScreen.route) {
             HomeScreen(navController = navController, hiltViewModel(), hiltViewModel())
         }
-        composable(route = ScreenRoute.ProfileScreen.route){
+        composable(route = ScreenRoute.ProfileScreen.route) {
             ProfileScreen(navController = navController)
         }
-        composable(route = ScreenRoute.NotificationScreen.route){
+        composable(route = ScreenRoute.NotificationScreen.route) {
             NotificationScreen(upPress)
         }
-        composable(route = ScreenRoute.PostTemplates.route){
+        composable(route = ScreenRoute.PostTemplates.route) {
             PostTemplate(navController = navController, hiltViewModel())
+        }
+
+        composable(
+            route = ScreenRoute.EditPost.route + "/{id}",
+        ) { navBackStack ->
+            navBackStack.arguments?.getString("id")?.let {
+                EditPost(recipeId = Integer.parseInt(it), navController = navController, hiltViewModel())
+            }
         }
         cookareNavGraph(
             upPress

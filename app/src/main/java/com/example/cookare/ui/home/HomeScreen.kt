@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.amplifyframework.core.Amplify
 import com.example.cookare.R
@@ -78,7 +79,7 @@ fun HomeScreen(
             if (data.isNotEmpty()) {
                 if (currentLovePageState == LovePageState.Closed) {
                     FloatingActionButton(
-                        backgroundColor = green200,
+                        backgroundColor = green000,
 
                         onClick = { navController.navigate(ScreenRoute.PostTemplates.route) }) {
                         Icon(
@@ -91,19 +92,19 @@ fun HomeScreen(
                         )
                     }
                 } else {
-                    FloatingActionButton(
-                        backgroundColor = green000,
-
-                        onClick = { }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_cart),
-                            contentDescription = "add_cart",
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .size(32.dp),
-                            tint = BackgroundWhite
-                        )
-                    }
+//                    FloatingActionButton(
+//                        backgroundColor = green000,
+//
+//                        onClick = { }) {
+//                        Icon(
+//                            painter = painterResource(R.drawable.ic_cart),
+//                            contentDescription = "add_cart",
+//                            modifier = Modifier
+//                                .padding(10.dp)
+//                                .size(32.dp),
+//                            tint = BackgroundWhite
+//                        )
+//                    }
                 }
             } else {
                 currentLovePageState = LovePageState.Closed
@@ -112,6 +113,7 @@ fun HomeScreen(
 
                     onClick = {
                         navController.navigate(ScreenRoute.PostTemplates.route)
+//                        navController.navigate(ScreenRoute.PostTemplates.route)
                     }) {
                     Icon(
                         painter = painterResource(R.drawable.ic_add),
@@ -143,27 +145,39 @@ fun HomeScreen(
                     modifier = Modifier.padding(start = 20.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Recipe", fontSize = 18.sp, color = Gray100, fontWeight = FontWeight.Bold)
-                    if (data.isNotEmpty()) {
-                        NamesBar(
-                            pagerState = pagerState,
-                        )
-                    }
+                    androidx.compose.material.Text(
+                        modifier = Modifier.padding(5.dp, 20.dp, 8.dp, 0.dp),
+                        text = "My Recipe",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+//                    if (data.isNotEmpty()) {
+//                        NamesBar(
+//                            pagerState = pagerState,
+//                        )
+//                    }
                 }
 //                CommunityContent(pagerState = pagerState, hiltViewModel())
                 if (data.isNotEmpty()) {
-                    CommunityContent(pagerState = pagerState, data, planViewModel)
+//                    CommunityContent(pagerState = pagerState, data, planViewModel)
+                    RDContent(data = data, planViewModel = planViewModel)
                 } else {
-                    var defaultData = listOf<Data>(
-                        Data(
-                            recipe = Recipe(
-                                title = "Please add your own recipe!!!",
-                                coverUrl = R.string.cover_placeholder.toString()
-                            ),
-                            ingredients = listOf()
-                        )
+                    AsyncImage(
+                        model = "https://i.postimg.cc/7Z8rbqTP/welcome.jpg",
+                        contentDescription = "",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
                     )
-                    CommunityContent(pagerState = pagerState, defaultData, planViewModel)
+                    AsyncImage(
+                        model = "https://i.postimg.cc/QNmqHm9F/homepage.jpg",
+                        contentDescription = "",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp)
+                    )
+//                    CommunityContent(pagerState = pagerState, defaultData, planViewModel)
+
                 }
                 //RDContent(recipes = recipes)
             }
@@ -298,7 +312,7 @@ fun SearchBar() {
         }
     }
 }
-*/
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun NamesBar(pagerState: PagerState) {
@@ -346,24 +360,13 @@ fun CommunityContent(
         // the different pages
             page ->
         when (page) {
-//            0 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
-//            1 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
-//            2 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
-//            3 -> if(data.isNotEmpty()) RDContent(data = data) else emptyContent()
             0 -> RDContent(data = data, planViewModel = planViewModel)
             1 -> RDContent(data = data, planViewModel = planViewModel)
             2 -> RDContent(data = data, planViewModel = planViewModel)
             3 -> RDContent(data = data, planViewModel = planViewModel)
         }
     }
-}
-
-@Composable
-fun emptyContent() {
-    Column() {
-        Text(text = "Please add your own receipt")
-    }
-}
+}*/
 
 @Composable
 fun RDContent(data: List<Data>, planViewModel: PlanViewModel) {
@@ -422,32 +425,6 @@ fun LovesArea(
                 )
             ) {
                 Column {
-                    /*
-                    recipes[index]?.coverUrl?.let { url ->
-                        val image =
-                            loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
-                        image?.let { img ->
-                            Image(
-                                bitmap = img.asImageBitmap(),
-                                contentDescription = "Recipe Featured Image",
-                                Modifier
-                                    .clip(RoundedCornerShape(16.dp))
-                                    .fillMaxWidth()
-                                    .aspectRatio(1.35f),
-                                contentScale = ContentScale.Crop,
-                                alignment = Alignment.Center
-                            )
-                        }
-                    }
-
-                     */
-
-
-
-
-
-
-
                     recipes[index]?.coverUrl?.let {
                         val downloadedImage = recipes[index].coverUrl?.let { it1 ->
                             downloadPhoto(
@@ -467,10 +444,6 @@ fun LovesArea(
                         )
                     }
 
-
-
-
-
                     Row(
                         Modifier.padding(8.dp, 12.dp, 8.dp, 8.dp),
                         verticalAlignment = Alignment.CenterVertically
@@ -484,18 +457,12 @@ fun LovesArea(
                                 )
                             }
                             Spacer(Modifier.height(4.dp))
-//                            androidx.compose.material3.Text(
-//                                recipes[index].tags.toString(),
-//                                color =Gray,
-//                                fontSize = 14.sp
-//                            )
                         }
                         Spacer(Modifier.weight(1f))
                         Row(
                             Modifier
                                 .clip(RoundedCornerShape(10.dp))
                                 .background(green100),
-//                                .padding(6.dp, 11.dp, 8.dp, 8.dp),
                             verticalAlignment = Alignment.CenterVertically
                         ) {
 
@@ -524,7 +491,7 @@ fun LovesArea(
                                     showCartDialog = false
                                 },
                                 text = {
-                                    androidx.compose.material3.Text("Add to list successfully!")
+                                    androidx.compose.material3.Text("Added it to list successfully!")
                                 },
                                 confirmButton = {
                                     androidx.compose.material3.Button(
@@ -577,7 +544,7 @@ fun LoveDetailsPage(
     val titlePaddingTop by animateDpAsState(if (pageState > LovePageState.Closed) 18.dp else 12.dp)
     val titlePaddingBottom by animateDpAsState(if (pageState > LovePageState.Closed) 16.dp else 8.dp)
     val titleOffsetY by animateDpAsState(if (pageState > LovePageState.Closed) (-40).dp else 0.dp)
-    val titleFontSize by animateFloatAsState(if (pageState > LovePageState.Closed) 18f else 15f)
+    val titleFontSize by animateFloatAsState(if (pageState > LovePageState.Closed) 20f else 16f)
     val titleFontWeight by animateIntAsState(if (pageState > LovePageState.Closed) 900 else 700)
     val titleSpacing by animateDpAsState(if (pageState > LovePageState.Closed) 10.dp else 4.dp)
     val subtitleFontSize by animateFloatAsState(if (pageState > LovePageState.Closed) 15f else 14f)
@@ -629,29 +596,6 @@ fun LoveDetailsPage(
                 .padding(paddingSize)
         ) {
             Column(Modifier.verticalScroll(rememberScrollState())) {
-                /*
-                recipe.coverUrl?.let { url ->
-                    val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
-                    image?.let { img ->
-                        Image(
-                            bitmap = img.asImageBitmap(),
-                            contentDescription = "Recipe Featured Image",
-                            Modifier
-                                .clip(RoundedCornerShape(imageCornerSize))
-                                .fillMaxWidth()
-                                .aspectRatio(imageRatio),
-                            contentScale = ContentScale.Crop,
-                            alignment = Alignment.Center
-                        )
-                    }
-                }
-
-                 */
-
-
-
-
-
                 recipe.coverUrl?.let {
                     val downloadedImage = downloadPhoto(recipe.coverUrl, context)
                     Image(
@@ -665,9 +609,6 @@ fun LoveDetailsPage(
                         alignment = Alignment.Center
                     )
                 }
-
-
-
 
                 Row(
                     Modifier
@@ -694,28 +635,21 @@ fun LoveDetailsPage(
                             )
                         }
                         Spacer(Modifier.height(titleSpacing))
-                        androidx.compose.material3.Text(
-                            recipe.tags.toString(),
-                            color = Gray,
-                            fontSize = subtitleFontSize.sp
-                        )
+//                        androidx.compose.material3.Text(
+//                            recipe.tags.toString(),
+//                            color = Gray,
+//                            fontSize = subtitleFontSize.sp
+//                        )
                     }
                     Spacer(Modifier.weight(1f))
 
                     Row {
                         OutlinedButton(
                             onClick = {
-//                            val searchList: List<Int> = listOf(recipe.id) as List<Int>
-//                            Log.d("searchList", "recipeId ${searchList[0]}" )
-//                            viewModel.searchById(searchList)
-//                            navController.navigate(ScreenRoute.PostDetails.route)
+                                navController.navigate(ScreenRoute.EditPost.route + "/${recipe.id}")
 
-                                val intent = Intent(context, EditPostActivity::class.java)
-                                intent.putExtra("id", recipe.id.toString())
-                                context.startActivity(intent)
-
-                                onPageClosing()
-                                currentLovePageState = LovePageState.Closed
+//                                onPageClosing()
+//                                currentcartLovePageState = LovePageState.Closed
                             },
                             modifier = Modifier.size(50.dp),
                             shape = CircleShape,
@@ -822,10 +756,6 @@ fun LoveDetailsPage(
                 {
                     clicked = true
                     showDialog = true
-
-//                    val intent = Intent(context, MainActivity::class.java)
-//                    context.startActivity(intent)
-//
                 },
                 Modifier
                     .align(Alignment.TopEnd)
@@ -853,7 +783,7 @@ fun LoveDetailsPage(
                             TextButton(
                                 onClick = {
                                     recipe.id?.let { viewModel.deletdById(recipeId = it) }
-                                    onPageClosing()
+//                                    onPageClosing()
                                     navController.navigate(ScreenRoute.HomeScreen.route)
                                 }
                             ) {

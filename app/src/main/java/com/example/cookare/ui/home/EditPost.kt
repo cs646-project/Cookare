@@ -1,5 +1,7 @@
-package com.example.cookare.activities
+package com.example.cookare.ui.home
 
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.runtime.Composable
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -27,6 +29,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
@@ -56,6 +59,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.cookare.R
 import com.example.cookare.model.Ingredient
 import coil.compose.rememberAsyncImagePainter
@@ -66,7 +70,9 @@ import com.example.cookare.ui.auth
 import com.example.cookare.ui.home.isNumber
 import com.example.cookare.ui.theme.CookareTheme
 import com.example.cookare.ui.theme.green000
+import com.example.cookare.ui.theme.green500
 import com.example.cookare.ui.userId
+import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.viewModels.PostRecipeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -75,29 +81,14 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 
-@AndroidEntryPoint
-class EditPostActivity : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val searchId = Integer.parseInt(intent.getStringExtra("id"))
-        Log.d("searchId", "recipeId $searchId")
-
-        setContent {
-            CookareTheme {
-                EditRecipeScreen(searchId, hiltViewModel())
-            }
-        }
-    }
-}
-
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun EditRecipeScreen(
+fun EditPost(
     recipeId: Int,
+    navController: NavController,
     viewModel: PostRecipeViewModel
 ) {
+    Log.d("recipeId", "ShowResult: $recipeId")
     viewModel.searchById(listOf(recipeId))
     var data = viewModel.resRecipeByIdList.value
     val recipes = data.map { it.recipe }
@@ -304,12 +295,7 @@ fun EditRecipeScreen(
                     ) {
                         OutlinedButton(
                             onClick = {
-                                var intent = Intent(context, MainActivity::class.java)
-                                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
-                                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
-                                intent.putExtra("token", auth)
-                                intent.putExtra("id", userId)
-                                context.startActivity(intent)
+                                      navController.navigateUp()
                             },
                             modifier = Modifier
                                 .size(60.dp)
@@ -344,74 +330,7 @@ fun EditRecipeScreen(
                     }
                 }
 
-                Text(
-                    "Recipe detail ",
-                    Modifier
-                        .padding(14.dp, 24.dp, 14.dp, 14.dp),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
 
-                title?.let { it1 ->
-                    OutlinedTextField(
-                        value = it1,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth(),
-                        label = { Text(text = "Title") },
-                        placeholder = { Text(text = "") },
-                        onValueChange = {
-                            title = it
-                        }
-                    )
-                }
-
-                content?.let { it1 ->
-                    OutlinedTextField(
-                        value = it1,
-                        modifier = Modifier
-                            .padding(8.dp)
-                            .fillMaxWidth(),
-                        label = { Text(text = "Content") },
-                        onValueChange = {
-                            content = it
-                        }
-                    )
-                }
-
-                OutlinedTextField(
-                    value = tags,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    label = { Text(text = "Tags") },
-                    onValueChange = {
-                        tags = it
-                    }
-                )
-
-                androidx.compose.material.Button(
-                    onClick = {
-                        coroutineScope.launch {
-                            if(!bottomSheetModalState.isVisible){
-                                bottomSheetModalState.show()
-                            }else{
-                                bottomSheetModalState.hide()
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    androidx.compose.material.Text(
-                        text = "Take Picture",
-                        modifier = Modifier.padding(8.dp),
-                        textAlign = TextAlign.Center,
-                        color =  Color.White
-                    )
-                }
 
                 if (!takenFromCamera && imageUri != null) {
                     Log.i("Take Photo", "from gallery")
@@ -481,75 +400,151 @@ fun EditRecipeScreen(
                             alignment = Alignment.TopCenter
                         )
                     }
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Text(
-                        "Ingredients",
-                        Modifier
-                            .padding(14.dp, 24.dp, 14.dp, 14.dp),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    OutlinedButton(
+                    Button(
                         onClick = {
-                            count += 1
+                            coroutineScope.launch {
+                                if(!bottomSheetModalState.isVisible){
+                                    bottomSheetModalState.show()
+                                }else{
+                                    bottomSheetModalState.hide()
+                                }
+                            }
                         },
                         modifier = Modifier
-                            .size(30.dp),
-                        shape = CircleShape,
-                        border = BorderStroke(1.5.dp, green000),
-                        colors = ButtonDefaults.buttonColors(green000),
-                        contentPadding = PaddingValues(0.dp),
+                            .padding(16.dp)
+                            .fillMaxWidth(),
+                        colors=ButtonDefaults.buttonColors(green500),
+                        shape = RoundedCornerShape(8.dp)
                     ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_add),
-                            contentDescription = "add ingredients",
-                            modifier = Modifier
-                                .padding(6.dp)
-                                .size(60.dp),
-                            tint = Color.White
+                        androidx.compose.material.Text(
+                            text = "Change Picture",
+                            modifier = Modifier.padding(8.dp),
+                            textAlign = TextAlign.Center,
+                            color =  Color.White,
+
                         )
                     }
                 }
+Column(modifier = Modifier.padding(horizontal = 10.dp)){
+    Text(
+        "Recipe detail ",
+        Modifier
+            .padding(14.dp, 24.dp, 14.dp, 14.dp),
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold
+    )
+
+    title?.let { it1 ->
+        OutlinedTextField(
+            value = it1,
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+            label = { Text(text = "Title") },
+            placeholder = { Text(text = "") },
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = green500,
+                backgroundColor = Color.Transparent,
+                cursorColor = green500,
+            ),
+            onValueChange = {
+                title = it
+            }
+        )
+    }
+
+    content?.let { it1 ->
+        OutlinedTextField(
+            value = it1,
+            modifier = Modifier
+                .padding(8.dp)
+                .fillMaxWidth(),
+            label = { Text(text = "Content") },
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = green500,
+                backgroundColor = Color.Transparent,
+                cursorColor = green500,
+            ),
+            onValueChange = {
+                content = it
+            }
+        )
+    }
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        Text(
+            "Ingredients",
+            Modifier
+                .padding(14.dp, 24.dp, 14.dp, 14.dp)
+                .weight(8f),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        OutlinedButton(
+            onClick = {
+                count += 1
+            },
+            modifier = Modifier
+                .size(30.dp).padding(end=10.dp).weight(1f),
+            shape = CircleShape,
+            border = BorderStroke(1.5.dp, green000),
+            colors = ButtonDefaults.buttonColors(green000),
+            contentPadding = PaddingValues(0.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_add),
+                contentDescription = "add ingredients",
+                modifier = Modifier
+                    .padding(end = 10.dp)
+                    .size(60.dp),
+                tint = Color.White
+            )
+        }
+    }
 
 
-                for (index in 1..(num+count)) {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
+    for (index in 1..(num+count)) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
 
-                        ingredientNameMap["ingredientName$index"]!!.value?.let { it1 ->
-                            OutlinedTextField(
-                                value = it1,
-                                modifier = Modifier
-                                    .padding(8.dp)
-                                    .weight(1f),
-                                label = { Text(text = "Name$index") },
-                                placeholder = { Text(text = "") },
-                                onValueChange = {
-                                    ingredientNameMap["ingredientName$index"]!!.value = it
-                                }
-                            )
-                        }
-
-                        OutlinedTextField(
-                            value = ingredientNumMap["ingredientNum$index"]!!.value,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .weight(1f),
-                            label = { Text(text = "Number$index") },
-                            placeholder = { Text(text = "") },
-                            onValueChange = {
-                                ingredientNumMap["ingredientNum$index"]!!.value = it
-                            }
-                        )
+            ingredientNameMap["ingredientName$index"]!!.value?.let { it1 ->
+                OutlinedTextField(
+                    value = it1,
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .weight(1f),
+                    label = { Text(text = "Name$index") },
+                    placeholder = { Text(text = "") },
+                    onValueChange = {
+                        ingredientNameMap["ingredientName$index"]!!.value = it
                     }
+                )
+            }
+
+            OutlinedTextField(
+                value = ingredientNumMap["ingredientNum$index"]!!.value,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(1f),
+                label = { Text(text = "Number$index") },
+                placeholder = { Text(text = "") },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = green500,
+                    backgroundColor = Color.Transparent,
+                    cursorColor = green500,
+                ),
+                onValueChange = {
+                    ingredientNumMap["ingredientNum$index"]!!.value = it
                 }
+            )
+        }
+    }
+}
+
             }
 
             item {
@@ -563,10 +558,13 @@ fun EditRecipeScreen(
                                     content,
                                     Integer.parseInt(tags),
                                     userId,
-                                    uploadPhotoUri(imageUri!!, context),
+                                    uploadPhotoUri(
+                                        imageUri!!,
+                                        context
+                                    ),
                                     (1..num+count).map{
                                         Ingredient(
-                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value?.lowercase() else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
                                     }.filter {
@@ -585,10 +583,13 @@ fun EditRecipeScreen(
                                     content,
                                     Integer.parseInt(tags),
                                     userId,
-                                    uploadPhotoUri(photoUri!!, context),
+                                    uploadPhotoUri(
+                                        photoUri!!,
+                                        context
+                                    ),
                                     (1..num+count).map{
                                         Ingredient(
-                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value?.lowercase() else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
                                     }.filter {
@@ -610,7 +611,7 @@ fun EditRecipeScreen(
                                     coverUrl,
                                     (1..num+count).map{
                                         Ingredient(
-                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value else "",
+                                            if(ingredientNameMap["ingredientName$it"]?.value != "") ingredientNameMap["ingredientName$it"]!!.value?.lowercase() else "",
                                             if(ingredientNumMap["ingredientNum$it"]?.value != "" && isNumber(ingredientNumMap["ingredientNum$it"]?.value)) Integer.parseInt(ingredientNumMap["ingredientNum$it"]!!.value) else 0
                                         )
                                     }.filter {
@@ -621,19 +622,17 @@ fun EditRecipeScreen(
                                 )
                             )
                         }
-
-                        var intent = Intent(context, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
-                        intent.putExtra("token", auth)
-                        intent.putExtra("id", userId)
-                        context.startActivity(intent)
+                        navController.navigate(ScreenRoute.HomeScreen.route){
+                            launchSingleTop = true
+                        }
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp)
+                        .padding(vertical = 16.dp, horizontal = 20.dp)
                         .height(50.dp)
-                        .clip(CircleShape)
+                        .clip(CircleShape),
+                    colors=ButtonDefaults.buttonColors(green500)
+
                 ) {
                     Text(text = "Edit")
                 }

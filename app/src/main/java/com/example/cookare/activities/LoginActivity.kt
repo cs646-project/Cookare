@@ -1,6 +1,7 @@
 package com.example.cookare.activities
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.WindowManager
@@ -59,7 +60,6 @@ class LoginActivity : ComponentActivity() {
             WindowManager.LayoutParams.FLAG_FULLSCREEN,
             WindowManager.LayoutParams.FLAG_FULLSCREEN
         )
-
     }
 }
 
@@ -218,16 +218,14 @@ fun LoginSreen(){
                 ){
                     if (loading_login) {
                         HorizontalDottedProgressBar()
-                        // val context = LocalContext.current
-                        // context.startActivity(Intent(context, MainActivity::class.java))
                         val context = LocalContext.current
+                        val activity = (context as? Activity)
                         var intent = Intent(context, MainActivity::class.java)
                         intent.putExtra("token", body.data.token)
                         intent.putExtra("id", body.data.user.id.toString())
-                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP;
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK;
+
                         context.startActivity(intent)
-                        // loading_login = false
+                        activity?.finish()
                     } else {
                         Text(text = "Log In")
                     }
@@ -366,7 +364,7 @@ fun matchInput(email: String, password: String):Body{
     val response = OkHttpClient().newCall(request).execute()
     // println("response: " + response)
     val body = response?.body?.string()
-    // println("body: " + body)
+    // println("body in Login: " + body)
     val gson = GsonBuilder().create()
     var UserObject = gson.fromJson(body, Body::class.java)
 

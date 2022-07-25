@@ -54,7 +54,9 @@ import com.example.cookare.ui.components.CookareSurface
 
 import com.example.cookare.ui.food.TodoNavHost
 import com.example.cookare.ui.list.ListScreen
+import com.example.cookare.ui.list.ListScreenNavigate
 import com.example.cookare.ui.theme.CookareTheme
+import com.example.cookare.ui.utils.ScreenRoute
 import com.guru.fontawesomecomposelib.FaIcon
 import com.guru.fontawesomecomposelib.FaIconType
 import java.util.*
@@ -71,7 +73,8 @@ fun NavGraphBuilder.addHomeGraph(
         TodoNavHost()
     }
     composable(HomeSections.LIST.route) {
-        ListScreen(hiltViewModel())
+        ListScreenNavigate()
+//        ListScreen(hiltViewModel(), hiltViewModel(),navController)
     }
 }
 

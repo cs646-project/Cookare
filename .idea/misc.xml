@@ -67,8 +67,10 @@
         <entry key="../../../../../../layout/compose-model-1656528829842.xml" value="0.1" />
         <entry key="../../../../../../layout/compose-model-1657577761890.xml" value="0.1" />
         <entry key="../../../../../../layout/compose-model-1657901668978.xml" value="0.1" />
+        <entry key="../../../../../../layout/compose-model-1658497845066.xml" value="0.5329512893982808" />
         <entry key="../../../../../layout/compose-model-1657744565937.xml" value="0.1" />
         <entry key="../../../../../layout/compose-model-1657744634432.xml" value="0.7469135802469136" />
+        <entry key="../../../../../layout/compose-model-1658713267580.xml" value="0.1" />
         <entry key="../../../../layout/compose-model-1656268081877.xml" value="0.7927272727272727" />
         <entry key="../../../../layout/compose-model-1656269718763.xml" value="0.1527777777777778" />
         <entry key="../../../../layout/compose-model-1656283947409.xml" value="0.25" />
@@ -88,9 +90,11 @@
         <entry key="../../../../layout/compose-model-1656405376428.xml" value="1.0" />
         <entry key="../../../../layout/compose-model-1657741368972.xml" value="0.13055555555555556" />
         <entry key="../../../../layout/compose-model-1657742427815.xml" value="0.14444444444444443" />
-        <entry key="..\:/Waterloo/Class/CS646/project/design/SHYTRY/Cookare/app/src/main/res/xml/provider_paths.xml" value="0.2341485507246377" />
+        <entry key="../../../../layout/compose-model-1658717200320.xml" value="0.15" />
         <entry key="../../../layout/compose-model-1658347755827.xml" value="0.1" />
+        <entry key="..\:/Waterloo/Class/CS646/project/design/SHYTRY/Cookare/app/src/main/res/xml/provider_paths.xml" value="0.2341485507246377" />
         <entry key="app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/ic_baseline_camera_alt_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_baseline_favorite_border_24.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_splash.xml" value="0.17346014492753623" />
