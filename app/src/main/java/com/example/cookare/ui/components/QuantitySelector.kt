@@ -54,7 +54,7 @@ fun QuantitySelector(
             Text(
                 text = stringResource(R.string.quantity),
                 style = MaterialTheme.typography.caption,
-                fontSize = 20.sp,
+                fontSize = 18.sp,
                 color = Color.White,
 //                color = Color.Black,
                 fontWeight = FontWeight.Bold,
@@ -84,7 +84,7 @@ fun QuantitySelector(
             Text(
                 text = "$it",
                 style = MaterialTheme.typography.subtitle2,
-                fontSize = 25.sp,
+                fontSize = 18.sp,
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 fontWeight = FontWeight.Bold,

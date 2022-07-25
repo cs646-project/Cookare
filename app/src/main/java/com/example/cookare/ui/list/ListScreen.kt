@@ -121,8 +121,8 @@ fun ListScreen(
                     androidx.compose.material.Text(
                         modifier = Modifier.padding(25.dp, 20.dp, 28.dp, 0.dp),
                         text = "Selected Recipe",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
                     )
                     androidx.compose.material.Text(
                         modifier = Modifier.padding(25.dp, 10.dp, 28.dp, 10.dp),
@@ -150,7 +150,7 @@ fun ListScreen(
 //                    }
                     if (data.isNotEmpty()) {
                         LazyColumn(
-                            modifier = Modifier.heightIn(max = 300.dp)
+                            modifier = Modifier.heightIn(max = 180.dp)
                         )
                         {
                             items(recipes) { recipe ->
@@ -172,36 +172,36 @@ fun ListScreen(
                     Divider()
                     androidx.compose.material.Text(
                         modifier = Modifier.padding(25.dp, 20.dp, 28.dp, 10.dp),
-                        text = "Your List",
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.Medium
+                        text = "My List",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
                     )
 
                     if (showList) {
-                        AsyncImage(
-                            model = "https://i.postimg.cc/ZqhntcMK/shopping-list.jpg",
-                            contentDescription = "",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 6.dp)
-                        )
+
                         LazyColumn(
                         )
                         {
                             items(1) {
+                                AsyncImage(
+                                    model = "https://i.postimg.cc/ZqhntcMK/shopping-list.jpg",
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                )
 
                                 for (entry in shoppingList.entries.iterator()) {
                                     CardList(entry.key, entry.value)
                                 }
+                                AsyncImage(
+                                    model = "https://i.postimg.cc/dtfpZ5Ms/shopping-bottom.jpg",
+                                    contentDescription = "",
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                )
                             }
                         }
-                        AsyncImage(
-                            model = "https://i.postimg.cc/dtfpZ5Ms/shopping-bottom.jpg",
-                            contentDescription = "",
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 7.dp)
-                        )
+
                     }
                     else{
                         AsyncImage(
@@ -365,7 +365,7 @@ fun CardList(
       //  border = BorderStroke(2.dp, green900),
         shape = RoundedCornerShape(0.dp),
         modifier = Modifier
-            .padding(horizontal = 18.dp)
+            .padding(horizontal = 85.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

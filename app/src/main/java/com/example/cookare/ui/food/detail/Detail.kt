@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
@@ -46,6 +47,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.cookare.R
 import com.example.cookare.network.ObjectDetectAPIClient
 import com.example.cookare.ui.food.data.Todo
 import com.example.cookare.ui.theme.*
@@ -365,32 +367,31 @@ fun DetailScreenComponent(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Button(
-                        onClick = {
-                            coroutineScope.launch {
-                                if (!bottomSheetModalState.isVisible) {
-                                    bottomSheetModalState.show()
-                                } else {
-                                    bottomSheetModalState.hide()
-                                }
-                            }
-                        },
+//                    Button(
+//                        onClick = {
+//                            coroutineScope.launch {
+//                                if (!bottomSheetModalState.isVisible) {
+//                                    bottomSheetModalState.show()
+//                                } else {
+//                                    bottomSheetModalState.hide()
+//                                }
+//                            }
+//                        },
+//
+//                        modifier = Modifier
+//                            .padding(vertical = 10.dp),
+//                        shape = RoundedCornerShape(8.dp),
+//                        colors = ButtonDefaults.buttonColors(green000)
+//
+//                    ) {
+//                        Text(
+//                            text = "Pick a picture",
+//                            fontSize = 17.sp,
+//                            fontWeight = FontWeight.Bold,
+//                            color = Color.White
+//                        )
+//                    }
 
-                        modifier = Modifier
-                            .padding(vertical = 50.dp)
-                            .height(50.dp)
-                            .width(180.dp),
-                        shape = RoundedCornerShape(8.dp),
-                        colors = ButtonDefaults.buttonColors(green000)
-
-                    ) {
-                        Text(
-                            text = "Pick a picture",
-                            fontSize = 17.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = Color.White
-                        )
-                    }
 
                     if (initPickPicture) {
                         if (!takenFromCamera) {
@@ -500,20 +501,48 @@ fun DetailScreenComponent(
                             )
                             Spacer(modifier = Modifier.size(16.dp))
                         }
-                    }else{
-                        OutlinedTextField(
-                            colors = TextFieldDefaultsMaterial.outlinedTextFieldColors(),
-                            value = todoText,
-                            onValueChange = { onTodoTextChange(it) },
-                            label = { Text(text = "Enter Food name") }
-                        )
+                    }
+                    else{
                         Spacer(modifier = Modifier.size(16.dp))
-                        OutlinedTextField(
-                            colors = TextFieldDefaultsMaterial.outlinedTextFieldColors(),
-                            value = timeText,
-                            onValueChange = { onTimeTextChange(it) },
-                            label = { Text(text = "Enter Number") }
-                        )
+                        Row(verticalAlignment = Alignment.CenterVertically){
+                            Column() {
+                                OutlinedTextField(
+                                    colors = TextFieldDefaultsMaterial.outlinedTextFieldColors(),
+                                    value = todoText,
+                                    onValueChange = { onTodoTextChange(it) },
+                                    label = { Text(text = "Enter Food name") }
+                                )
+                                Spacer(modifier = Modifier.size(16.dp))
+                                OutlinedTextField(
+                                    colors = TextFieldDefaultsMaterial.outlinedTextFieldColors(),
+                                    value = timeText,
+                                    onValueChange = { onTimeTextChange(it) },
+                                    label = { Text(text = "Enter Number") }
+                                )
+                            }
+                            OutlinedButton(
+                                onClick = {
+                                    coroutineScope.launch {
+                                        if (!bottomSheetModalState.isVisible) {
+                                            bottomSheetModalState.show()
+                                        } else {
+                                            bottomSheetModalState.hide()
+                                        }
+                                    }
+                                },
+                                modifier = Modifier.padding(10.dp),
+                                shape = CircleShape,
+                                contentPadding = PaddingValues(0.dp),
+                            ) {
+                                androidx.compose.material3.Icon(
+                                    painterResource(R.drawable.ic_scan), "", Modifier.size(24.dp),
+                                    tint = green000,
+                                )
+
+                            }
+                        }
+
+
                     }
 
                     if (initPickPicture) {
@@ -544,16 +573,12 @@ fun DetailScreenComponent(
                                 thread.join()
                                 uploaded = true
                             },
-
                             shape = RoundedCornerShape(3.dp),
-                            colors = ButtonDefaults.buttonColors(green000),
-
-
-
-                                    modifier = Modifier
+                            colors = ButtonDefaults.buttonColors(green500),
+                            modifier = Modifier
 //                                .padding(vertical = 50.dp)
-                                .height(50.dp)
-                                .width(180.dp)
+                                        .height(50.dp)
+                                        .width(180.dp)
 
                         ) {
                             Text(text = "Identify",
@@ -581,11 +606,11 @@ fun DetailScreenComponent(
                             onNavigate()
                         },
                         shape = RoundedCornerShape(3.dp),
-                        colors = ButtonDefaults.buttonColors(green000),
-
+                        colors = ButtonDefaults.buttonColors(green500),
                         modifier = Modifier
 
                             .padding(vertical = 40.dp)
+
                             .height(50.dp)
                             .width(180.dp)
 

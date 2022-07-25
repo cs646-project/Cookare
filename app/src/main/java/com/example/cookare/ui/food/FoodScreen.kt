@@ -2,10 +2,13 @@ package com.example.cookare.ui.food
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.material.icons.Icons
@@ -65,36 +68,26 @@ fun FoodScreen(
     }) {
         Column() {
             if(stockViewModel.resStockList.value.isEmpty()){
-                Card(
-                    backgroundColor = green000,
+                /*Card(
+                    backgroundColor = green500,
                     modifier = Modifier
-                        .padding(10.dp)
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp, vertical = 20.dp)
+                        .height(80.dp)
                 ){
                     Spacer(modifier = Modifier.size(16.dp))
-                    Column(modifier = Modifier.fillMaxWidth()){
-                        Row{
-
-                        }
-
 
                         androidx.compose.material.Text(
                             modifier = Modifier.padding(25.dp, 20.dp, 28.dp, 0.dp),
-                            text = "Welcome Food section",
+                            text = "Welcome to Food section!",
                             fontSize = 25.sp,
                             fontWeight = FontWeight.Bold,
                             color = Color.White
                         )
-                        Spacer(modifier = Modifier.size(20.dp))
-                        androidx.compose.material.Text(
-                            modifier = Modifier.padding(25.dp, 10.dp, 28.dp, 0.dp),
-                            text = "Scan your food NOW.",
-                            fontSize = 20.sp,
-                            color = Color.White
-                        )
-                    }
+
+                    Spacer(modifier = Modifier.size(16.dp))
 
                 }
-                Spacer(modifier = Modifier.size(20.dp))
 
                 Row(
                     Modifier
@@ -105,7 +98,6 @@ fun FoodScreen(
                     Image(
                         painterResource(R.drawable.ic_555), "avatar",
                         Modifier
-//
                             .width(180.dp)
                             .height(250.dp)
                     )
@@ -115,34 +107,62 @@ fun FoodScreen(
                             .padding(horizontal = 10.dp)
                             .weight(1f)
                     ) {
-                        Text("Welcome Food section！", fontSize = 18.sp, color = Gray100,fontWeight = FontWeight.Bold)
-                        Text("you can scan your food using our camera below", fontSize = 18.sp, fontWeight = FontWeight.Bold)
-                        Text("right now!", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+                        Text("Welcome to Food section！", fontSize = 18.sp, color = Gray100,fontWeight = FontWeight.Bold)
+                        Text("Scan your food using our camera below", fontSize = 18.sp, fontWeight = FontWeight.Medium)
+
                     }
 
 
                 }
-                Spacer(modifier = Modifier.size(20.dp))
-                Image(
-                    painterResource(R.drawable.ic_burger), "avatar",
-                    Modifier
-                        .padding(horizontal = 150.dp)
-                        .width(100.dp)
-                        .height(150.dp)
+
+*/
+                AsyncImage(
+                    model = "https://i.postimg.cc/XYNnpXdK/food1.jpg",
+                    contentDescription = "",
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 10.dp)
                 )
+                Divider()
+
+                    AsyncImage(
+                        model = "https://i.postimg.cc/Gmz9rKcd/food4.jpg",
+                        contentDescription = "",
+                        modifier = Modifier
+                            .fillMaxWidth()
+
+                    )
+
+
 
 
 
 
 
             }else{
-                for(entry in stockViewModel.resStockList.value.entries.iterator()){
-                    TodoItem(
-                        key = entry.key,
-                        value = entry.value,
-                        stockViewModel = stockViewModel,
-                        navController = navController
+                Column() {
+                    androidx.compose.material.Text(
+                        modifier = Modifier.padding(25.dp, 20.dp, 28.dp, 0.dp),
+                        text = "My stock",
+                        fontSize = 24.sp,
+                        fontWeight = FontWeight.Bold
                     )
+                    androidx.compose.material.Text(
+                        modifier = Modifier.padding(25.dp, 10.dp, 28.dp, 10.dp),
+                        text = "Here are the food in your fridge.",
+                        fontSize = 15.sp,
+                        color = Gray100
+                    )
+                    Divider()
+                    for(entry in stockViewModel.resStockList.value.entries.iterator()){
+                        TodoItem(
+                            key = entry.key,
+                            value = entry.value,
+                            stockViewModel = stockViewModel,
+                            navController = navController
+                        )
+                }
+
                 }
             }
         }

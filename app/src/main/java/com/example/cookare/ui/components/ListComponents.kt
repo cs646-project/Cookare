@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -38,26 +39,28 @@ fun TodoItem(
 //    var count by remember { mutableStateOf(value) }
 
     Card(
-        backgroundColor = green000,
+        backgroundColor = green500,
         modifier = Modifier
-            .padding(16.dp)
+            .padding(20.dp,10.dp,20.dp,5.dp),
+        shape = RoundedCornerShape(10.dp)
     ) {
         Spacer(modifier = Modifier.size(16.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
         ) {
-            Spacer(modifier = Modifier.size(16.dp))
+            Spacer(modifier = Modifier.size(10.dp))
             Column(modifier = Modifier.weight(25f)) {
+                Spacer(modifier = Modifier.size(5.dp))
                 Text(
                     text = key,
                     color = Color.White,
 //                    color = FunctionalGrey,
                     style = MaterialTheme.typography.button,
-                    fontSize = 23.sp,
-                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    fontWeight = FontWeight.Medium,
                 )
-                Spacer(modifier = Modifier.size(20.dp))
+                Spacer(modifier = Modifier.size(10.dp))
 //                CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
 //                    Text(text = value.toString(), style = MaterialTheme.typography.body2)
 //                }
@@ -85,8 +88,9 @@ fun TodoItem(
 //                    stockViewModel = stockViewModel,
 //                    key = key
                 )
+                Spacer(modifier = Modifier.size(5.dp))
             }
-            Spacer(modifier = Modifier.size(16.dp))
+
             IconButton(
                 onClick = {
                     showDeleteDialog = true

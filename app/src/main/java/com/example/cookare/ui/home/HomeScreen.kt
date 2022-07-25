@@ -148,7 +148,7 @@ fun HomeScreen(
                     androidx.compose.material.Text(
                         modifier = Modifier.padding(5.dp, 20.dp, 8.dp, 0.dp),
                         text = "My Recipe",
-                        fontSize = 20.sp,
+                        fontSize = 24.sp,
                         fontWeight = FontWeight.Bold
                     )
 //                    if (data.isNotEmpty()) {
