@@ -4,6 +4,7 @@ package com.example.cookare.ui.profile
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -135,7 +136,8 @@ private fun Body(
 
                                     .padding(vertical = 30.dp, horizontal = 40.dp)
                                     .height(50.dp)
-                                    .clip(CircleShape)
+                                    .clip(CircleShape),
+                                colors= androidx.compose.material3.ButtonDefaults.buttonColors(green500)
                             ) {
 
                                 androidx.compose.material3.Text(text = "Update")
@@ -149,7 +151,8 @@ private fun Body(
 
                                     .padding(vertical = 30.dp, horizontal = 30.dp)
                                     .height(50.dp)
-                                    .clip(CircleShape)
+                                    .clip(CircleShape),
+                                colors= androidx.compose.material3.ButtonDefaults.buttonColors(green500)
                             ) {
 
                                 androidx.compose.material3.Text(text = "Log Out")

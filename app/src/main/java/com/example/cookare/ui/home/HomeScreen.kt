@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.amplifyframework.core.Amplify
 import com.example.cookare.R
@@ -91,19 +92,19 @@ fun HomeScreen(
                         )
                     }
                 } else {
-                    FloatingActionButton(
-                        backgroundColor = green000,
-
-                        onClick = { }) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_cart),
-                            contentDescription = "add_cart",
-                            modifier = Modifier
-                                .padding(10.dp)
-                                .size(32.dp),
-                            tint = BackgroundWhite
-                        )
-                    }
+//                    FloatingActionButton(
+//                        backgroundColor = green000,
+//
+//                        onClick = { }) {
+//                        Icon(
+//                            painter = painterResource(R.drawable.ic_cart),
+//                            contentDescription = "add_cart",
+//                            modifier = Modifier
+//                                .padding(10.dp)
+//                                .size(32.dp),
+//                            tint = BackgroundWhite
+//                        )
+//                    }
                 }
             } else {
                 currentLovePageState = LovePageState.Closed
@@ -144,7 +145,12 @@ fun HomeScreen(
                     modifier = Modifier.padding(start = 20.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text("Recipe", fontSize = 18.sp, color = Gray100, fontWeight = FontWeight.Bold)
+                    androidx.compose.material.Text(
+                        modifier = Modifier.padding(5.dp, 20.dp, 8.dp, 0.dp),
+                        text = "My Recipe",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    )
 //                    if (data.isNotEmpty()) {
 //                        NamesBar(
 //                            pagerState = pagerState,
@@ -156,17 +162,22 @@ fun HomeScreen(
 //                    CommunityContent(pagerState = pagerState, data, planViewModel)
                     RDContent(data = data, planViewModel = planViewModel)
                 } else {
-                    var defaultData = listOf<Data>(
-                        Data(
-                            recipe = Recipe(
-                                title = "Please add your own recipe!!!",
-                                coverUrl = R.string.cover_placeholder.toString()
-                            ),
-                            ingredients = listOf()
-                        )
+                    AsyncImage(
+                        model = "https://i.postimg.cc/7Z8rbqTP/welcome.jpg",
+                        contentDescription = "",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp)
+                    )
+                    AsyncImage(
+                        model = "https://i.postimg.cc/QNmqHm9F/homepage.jpg",
+                        contentDescription = "",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 10.dp)
                     )
 //                    CommunityContent(pagerState = pagerState, defaultData, planViewModel)
-                    RDContent(defaultData, planViewModel)
+
                 }
                 //RDContent(recipes = recipes)
             }
@@ -301,7 +312,7 @@ fun SearchBar() {
         }
     }
 }
-*/
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun NamesBar(pagerState: PagerState) {
@@ -355,7 +366,7 @@ fun CommunityContent(
             3 -> RDContent(data = data, planViewModel = planViewModel)
         }
     }
-}
+}*/
 
 @Composable
 fun RDContent(data: List<Data>, planViewModel: PlanViewModel) {
@@ -533,7 +544,7 @@ fun LoveDetailsPage(
     val titlePaddingTop by animateDpAsState(if (pageState > LovePageState.Closed) 18.dp else 12.dp)
     val titlePaddingBottom by animateDpAsState(if (pageState > LovePageState.Closed) 16.dp else 8.dp)
     val titleOffsetY by animateDpAsState(if (pageState > LovePageState.Closed) (-40).dp else 0.dp)
-    val titleFontSize by animateFloatAsState(if (pageState > LovePageState.Closed) 18f else 15f)
+    val titleFontSize by animateFloatAsState(if (pageState > LovePageState.Closed) 20f else 16f)
     val titleFontWeight by animateIntAsState(if (pageState > LovePageState.Closed) 900 else 700)
     val titleSpacing by animateDpAsState(if (pageState > LovePageState.Closed) 10.dp else 4.dp)
     val subtitleFontSize by animateFloatAsState(if (pageState > LovePageState.Closed) 15f else 14f)
@@ -624,11 +635,11 @@ fun LoveDetailsPage(
                             )
                         }
                         Spacer(Modifier.height(titleSpacing))
-                        androidx.compose.material3.Text(
-                            recipe.tags.toString(),
-                            color = Gray,
-                            fontSize = subtitleFontSize.sp
-                        )
+//                        androidx.compose.material3.Text(
+//                            recipe.tags.toString(),
+//                            color = Gray,
+//                            fontSize = subtitleFontSize.sp
+//                        )
                     }
                     Spacer(Modifier.weight(1f))
 
@@ -638,7 +649,7 @@ fun LoveDetailsPage(
                                 navController.navigate(ScreenRoute.EditPost.route + "/${recipe.id}")
 
 //                                onPageClosing()
-//                                currentLovePageState = LovePageState.Closed
+//                                currentcartLovePageState = LovePageState.Closed
                             },
                             modifier = Modifier.size(50.dp),
                             shape = CircleShape,
