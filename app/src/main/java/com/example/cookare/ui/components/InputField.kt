@@ -10,13 +10,12 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.cookare.ui.theme.CardWhite
-import com.example.cookare.ui.theme.Gray
-import com.example.cookare.ui.theme.green100
+import com.example.cookare.ui.theme.*
 
 
 @Composable
@@ -40,8 +39,12 @@ fun InputField (cata:String,input_item:String ){
         TextField(value = pwd,
             placeholder = { Text(text = input_item) },
             onValueChange = { str -> pwd = str },
-            modifier = Modifier.scale(scaleY = 0.9F, scaleX = 0.9F).background(CardWhite),
-            colors = TextFieldDefaults.textFieldColors(focusedIndicatorColor = green100)
+            modifier = Modifier.scale(scaleY = 0.9F, scaleX = 0.9F),
+            colors = TextFieldDefaults.textFieldColors(
+                focusedIndicatorColor = green500,
+                backgroundColor = Color.Transparent,
+                cursorColor = green500,
+            ),
 
         )
 

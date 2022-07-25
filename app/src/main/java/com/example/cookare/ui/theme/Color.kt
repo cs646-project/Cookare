@@ -10,8 +10,9 @@ val CardWhite=Color(0xfffef1e6)
 val green100 = Color(0xFFDFF0D4)
 val green000 = Color(0xFF9FC088)
 val green200 = Color(0xFFFAFDF8)
-val green500 = Color(0xFF88A376)
+val green500 = Color(0xFF85A273)
 val green700 = Color(0xFF88A376)
+val green900 = Color(0xFF578134)
 
 
 val purple700 = Color(0xFFD8ECCB)

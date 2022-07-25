@@ -23,8 +23,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material3.*
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -57,8 +59,7 @@ import com.amplifyframework.core.Amplify
 import com.example.cookare.R
 import com.example.cookare.model.Ingredient
 import com.example.cookare.model.Recipe
-import com.example.cookare.ui.theme.CookareTheme
-import com.example.cookare.ui.theme.green000
+import com.example.cookare.ui.theme.*
 import com.example.cookare.ui.userId
 import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.viewModels.PostRecipeViewModel
@@ -260,7 +261,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
     ) {
         LazyColumn(state = rememberLazyListState()) {
             item {
-                Column {
+                Column() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -305,37 +306,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                     }
                 }
 
-                Text(
-                    "Recipe detail ",
-                    Modifier
-                        .padding(14.dp, 24.dp, 14.dp, 14.dp),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
 
-                OutlinedTextField(
-                    value = title,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    label = { Text(text = "Title") },
-                    placeholder = { Text(text = "") },
-                    onValueChange = {
-                        title = it
-                    }
-                )
-
-                OutlinedTextField(
-                    value = content,
-                    modifier = Modifier
-                        .padding(8.dp)
-                        .fillMaxWidth(),
-                    label = { Text(text = "Content") },
-                    placeholder = { Text(text = "") },
-                    onValueChange = {
-                        content = it
-                    }
-                )
 
 //                OutlinedTextField(
 //                    value = tags,
@@ -349,28 +320,7 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
 //                    }
 //                )
 
-                androidx.compose.material.Button(
-                    onClick = {
-                        coroutineScope.launch {
-                            if(!bottomSheetModalState.isVisible){
-                                bottomSheetModalState.show()
-                            }else{
-                                bottomSheetModalState.hide()
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxWidth(),
-                    shape = RoundedCornerShape(8.dp)
-                ) {
-                    androidx.compose.material.Text(
-                        text = "Take Picture",
-                        modifier = Modifier.padding(8.dp),
-                        textAlign = TextAlign.Center,
-                        color =  Color.White
-                    )
-                }
+
 
                 if (!takenFromCamera && imageUri != null) {
                     Log.i("Take Photo", "from gallery")
@@ -428,89 +378,209 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                 else {
                     Log.i("Take Photo", "from default")
 
-                    val downloadedImage = downloadPhoto(coverUrl, context)
-                    Image(
-                        painter = rememberAsyncImagePainter(downloadedImage),
-                        contentDescription = "Recipe Featured Image",
-                        Modifier
-                            .clip(RoundedCornerShape(16.dp))
-                            .fillMaxWidth()
-                            .aspectRatio(1.35f),
-                        contentScale = ContentScale.Fit,
-                        alignment = Alignment.TopCenter
-                    )
-
-                }
-
-                Row(
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
-                ){
-                    Text(
-                        "Ingredients",
-                        Modifier
-                            .padding(14.dp, 24.dp, 14.dp, 14.dp),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-
-                    OutlinedButton(
-                        onClick = {
-                            num += 1
-                            Log.d("Debug" , "ShowResult: Click!!!! $num")
-                        },
+//                    val downloadedImage = downloadPhoto(coverUrl, context)
+//                    Image(
+//                        painter = rememberAsyncImagePainter(downloadedImage),
+//                        contentDescription = "Recipe Featured Image",
+//                        Modifier
+//                            .clip(RoundedCornerShape(16.dp))
+//                            .fillMaxWidth()
+//                            .aspectRatio(1.35f),
+//                        contentScale = ContentScale.Fit,
+//                        alignment = Alignment.TopCenter
+//                    )
+                    Box(
                         modifier = Modifier
-                            .size(30.dp),
-                        shape = CircleShape,
-                        border = BorderStroke(1.5.dp, green000),
-                        colors = ButtonDefaults.buttonColors(green000),
-                        contentPadding = PaddingValues(0.dp),
+                            .padding(vertical = 10.dp)
+                            .fillMaxWidth()
+                            .height(200.dp)
+                            .background(green200),
+                        contentAlignment = Alignment.Center,
                     ) {
-                        Icon(
-                            painter = painterResource(R.drawable.ic_add),
-                            contentDescription = "add ingredients",
-                            modifier = Modifier
-                                .padding(6.dp)
-                                .size(60.dp),
-                            tint = Color.White
-                        )
-                    }
-                }
+//                        androidx.compose.material.Button(
+//                            onClick = {
+//                                coroutineScope.launch {
+//                                    if(!bottomSheetModalState.isVisible){
+//                                        bottomSheetModalState.show()
+//                                    }else{
+//                                        bottomSheetModalState.hide()
+//                                    }
+//                                }
+//                            },
+//                            modifier = Modifier
+//                                .padding(16.dp)
+//                                .fillMaxWidth(),
+//                            shape = RoundedCornerShape(8.dp)
+//                        ) {
+//                            androidx.compose.material.Text(
+//                                text = "Take Picture",
+//                                modifier = Modifier.padding(8.dp).background(color = green500),
+//                                textAlign = TextAlign.Center,
+//                                color =  Color.White
+//                            )
+//                        }
+                        Column(horizontalAlignment = Alignment.CenterHorizontally){
+                            androidx.compose.material.OutlinedButton(
+                                onClick = {
+                                    coroutineScope.launch {
+                                        if(!bottomSheetModalState.isVisible){
+                                            bottomSheetModalState.show()
+                                        }else{
+                                            bottomSheetModalState.hide()
+                                        }
+                                    }
+                                },
+                                modifier = Modifier.size(50.dp),
+                                shape = CircleShape,
+                                contentPadding = PaddingValues(0.dp),
+                            ) {
+                                Icon(
+                                    painterResource(R.drawable.ic_camera), "", Modifier.size(24.dp),
+                                    tint = Gray,
+                                )
 
-
-                for (index in 1..num) {
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-
-                        OutlinedTextField(
-                            value = ingredientNameMap["ingredientName$index"]!!.value,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .weight(1f),
-                            label = { Text(text = "Name$index") },
-                            placeholder = { Text(text = "") },
-                            onValueChange = {
-                                ingredientNameMap["ingredientName$index"]!!.value = it
                             }
-                        )
+                            Text("Click the camera, upload your cover! ",
+                                Modifier
+                                    .padding(14.dp, 24.dp, 14.dp, 7.dp),
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Medium,
+                                color= Gray)
+                        }
 
-                        OutlinedTextField(
-                            value = ingredientNumMap["ingredientNum$index"]!!.value,
-                            modifier = Modifier
-                                .padding(8.dp)
-                                .weight(1f),
-                            label = { Text(text = "Number$index") },
-                            placeholder = { Text(text = "") },
-                            onValueChange = {
-                                ingredientNumMap["ingredientNum$index"]!!.value = it
-                            }
-                        )
                     }
 
+
+
+
                 }
+Column(modifier = Modifier.padding(horizontal = 10.dp)) {
+    Text(
+        "Recipe detail ",
+        Modifier
+            .padding(14.dp, 14.dp, 14.dp, 7.dp),
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold
+    )
+
+    OutlinedTextField(
+        value = title,
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
+        label = { Text(text = "Title") },
+        placeholder = { Text(text = "") },
+        colors = TextFieldDefaults.textFieldColors(
+            focusedIndicatorColor = green500,
+            backgroundColor = Color.Transparent,
+            cursorColor = green500,
+        ),
+
+
+        onValueChange = {
+            title = it
+        }
+    )
+
+    OutlinedTextField(
+        value = content,
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
+        label = { Text(text = "Content") },
+        placeholder = { Text(text = "") },
+        colors = TextFieldDefaults.textFieldColors(
+            focusedIndicatorColor = green500,
+            backgroundColor = Color.Transparent,
+            cursorColor = green500,
+        ),
+        onValueChange = {
+            content = it
+        }
+    )
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            "Ingredients",
+            Modifier
+                .padding(14.dp, 24.dp, 14.dp, 14.dp)
+                .weight(8f),
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+
+        OutlinedButton(
+            onClick = {
+                num += 1
+                Log.d("Debug", "ShowResult: Click!!!! $num")
+            },
+            modifier = Modifier
+                .size(30.dp)
+                .padding(end = 10.dp)
+                .weight(1f),
+            shape = CircleShape,
+            border = BorderStroke(1.5.dp, green000),
+            colors = ButtonDefaults.buttonColors(green000),
+            contentPadding = PaddingValues(0.dp),
+        ) {
+            Icon(
+                painter = painterResource(R.drawable.ic_add),
+                contentDescription = "add ingredients",
+                modifier = Modifier
+                    .padding(6.dp)
+                    .size(60.dp),
+                tint = Color.White
+            )
+        }
+
+    }
+    for (index in 1..num) {
+        Row(
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+
+            OutlinedTextField(
+                value = ingredientNameMap["ingredientName$index"]!!.value,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(1f),
+                label = { Text(text = "Name$index") },
+                placeholder = { Text(text = "") },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = green500,
+                    backgroundColor = Color.Transparent,
+                    cursorColor = green500,
+                ),
+                onValueChange = {
+                    ingredientNameMap["ingredientName$index"]!!.value = it
+                }
+            )
+
+            OutlinedTextField(
+                value = ingredientNumMap["ingredientNum$index"]!!.value,
+                modifier = Modifier
+                    .padding(8.dp)
+                    .weight(1f),
+                label = { Text(text = "Number$index") },
+                placeholder = { Text(text = "") },
+                colors = TextFieldDefaults.textFieldColors(
+                    focusedIndicatorColor = green500,
+                    backgroundColor = Color.Transparent,
+                    cursorColor = green500,
+                ),
+                onValueChange = {
+                    ingredientNumMap["ingredientNum$index"]!!.value = it
+                }
+            )
+        }
+
+    }
+
+
+}
             }
-
             item {
                 Button(
                     onClick = {
@@ -594,13 +664,20 @@ fun PostTemplate(navController: NavController, viewModel: PostRecipeViewModel) {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 16.dp)
+                        .padding(vertical = 16.dp, horizontal = 20.dp)
                         .height(50.dp)
-                        .clip(CircleShape)
+                        .clip(CircleShape),
+                    colors=ButtonDefaults.buttonColors(green500)
                 ) {
                     Text(text = "Add")
                 }
             }
+
+
+
+
+
+
         }
     }
 }

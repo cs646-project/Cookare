@@ -100,7 +100,7 @@ fun ListScreen(
 
     Scaffold(floatingActionButton = {
         FloatingActionButton(
-            backgroundColor = if(data.isEmpty()) Color.DarkGray else green000,
+            backgroundColor = green000,
             onClick = {
             listGenerateViewModel.generateList()
             showList = true
@@ -125,14 +125,8 @@ fun ListScreen(
                         fontWeight = FontWeight.Medium
                     )
                     androidx.compose.material.Text(
-                        modifier = Modifier.padding(25.dp, 10.dp, 28.dp, 0.dp),
+                        modifier = Modifier.padding(25.dp, 10.dp, 28.dp, 10.dp),
                         text = "Here are some recipes you selected.",
-                        fontSize = 15.sp,
-                        color = Gray100
-                    )
-                    androidx.compose.material.Text(
-                        modifier = Modifier.padding(25.dp, 0.dp, 28.dp, 10.dp),
-                        text = "Click GET, and generate your list!",
                         fontSize = 15.sp,
                         color = Gray100
                     )
@@ -164,45 +158,58 @@ fun ListScreen(
                             }
                         }
                     }else{
-                        Column(Modifier.padding(24.dp, 2.dp, 24.dp, 2.dp)) {
-                            Surface(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 8.dp)
-                                    .clip(RoundedCornerShape(16.dp))
-                                    .background(Color.White)
-                                    .padding(8.dp)
 
-                            ){
-                                androidx.compose.material.Text(
-                                    text = "No recipe selected yet!",
+                                AsyncImage(
+                                    model = "https://i.postimg.cc/pLfDhk43/select-instruction.jpg",
+                                    contentDescription = "",
                                     modifier = Modifier
-                                        .fillMaxWidth(0.85f)
-                                        .wrapContentWidth(Alignment.Start),
-                                    fontSize = 18.sp
+                                        .fillMaxWidth()
                                 )
-                            }
-                        }
+
+
                     }
 
                     Divider()
                     androidx.compose.material.Text(
-                        modifier = Modifier.padding(25.dp, 20.dp, 28.dp, 0.dp),
+                        modifier = Modifier.padding(25.dp, 20.dp, 28.dp, 10.dp),
                         text = "Your List",
                         fontSize = 20.sp,
                         fontWeight = FontWeight.Medium
                     )
 
                     if (showList) {
+                        AsyncImage(
+                            model = "https://i.postimg.cc/ZqhntcMK/shopping-list.jpg",
+                            contentDescription = "",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 6.dp)
+                        )
                         LazyColumn(
                         )
                         {
                             items(1) {
+
                                 for (entry in shoppingList.entries.iterator()) {
                                     CardList(entry.key, entry.value)
                                 }
                             }
                         }
+                        AsyncImage(
+                            model = "https://i.postimg.cc/dtfpZ5Ms/shopping-bottom.jpg",
+                            contentDescription = "",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 7.dp)
+                        )
+                    }
+                    else{
+                        AsyncImage(
+                            model = "https://i.postimg.cc/fRTywK7w/list-generation.jpg",
+                            contentDescription = "",
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
                     }
 
                     /*androidx.compose.material.Text(
@@ -354,25 +361,32 @@ fun CardList(
     value: Int
 ) {
     Card(
-        backgroundColor = green200,
+        backgroundColor = Color.White,
+      //  border = BorderStroke(2.dp, green900),
+        shape = RoundedCornerShape(0.dp),
         modifier = Modifier
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 18.dp)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 15.dp, vertical = 5.dp),
+                .padding(horizontal = 15.dp, vertical = 20.dp),
         ) {
-            Checkbox(checked = true/*TODO*/, onCheckedChange = {/*TODO*/ })
+            val isChecked = remember {mutableStateOf(false)}
+            Checkbox(checked = isChecked.value ,
+                colors = CheckboxDefaults.colors(
+                            checkedColor = green700,
+                            uncheckedColor = green500),
+                onCheckedChange = {isChecked.value=it })
 
 
             androidx.compose.material.Text(
                 text = key,
                 style = MaterialTheme.typography.h6,
                 modifier = Modifier
-                    .padding(start = 15.dp)
-                    .weight(1f)
+                    .padding(start = 20.dp)
+                    .weight(2f)
             )
 
 
@@ -382,15 +396,6 @@ fun CardList(
                 modifier = Modifier.weight(1f)
             )
 
-
-
-            IconButton(
-                onClick = {
-                    /*TODO*/
-                }
-            ) {
-                Icon(imageVector = Icons.Default.Clear, contentDescription = null)
-            }
         }
         Divider()
 
