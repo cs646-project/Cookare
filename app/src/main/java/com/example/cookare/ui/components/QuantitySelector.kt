@@ -30,13 +30,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cookare.R
-import com.example.cookare.ui.theme.BackgroundWhite
-import com.example.cookare.ui.theme.green700
+import com.example.cookare.ui.theme.*
 import com.example.cookare.viewModels.StockViewModel
 
 
@@ -55,8 +55,9 @@ fun QuantitySelector(
                 text = stringResource(R.string.quantity),
                 style = MaterialTheme.typography.caption,
                 fontSize = 20.sp,
-//                color = BackgroundWhite,
-                color = Color.Black,
+                color = Color.White,
+//                color = Color.Black,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier
                     .padding(end = 25.dp)
                     .align(Alignment.CenterVertically)
@@ -64,6 +65,7 @@ fun QuantitySelector(
         }
 //
         FloatingActionButton(
+            backgroundColor = green100,
             onClick =
 
                 decreaseItemCount
@@ -72,7 +74,7 @@ fun QuantitySelector(
             ,
             modifier = Modifier.height(20.dp).width(20.dp) .align(Alignment.CenterVertically)
         ) {
-            Icon(imageVector = Icons.Default.Remove, contentDescription = null, tint = BackgroundWhite)
+            Icon(imageVector = Icons.Default.Remove, contentDescription = null, tint = Color.Black)
         }
         Crossfade(
             targetState = count,
@@ -83,20 +85,21 @@ fun QuantitySelector(
                 text = "$it",
                 style = MaterialTheme.typography.subtitle2,
                 fontSize = 25.sp,
-//                color = BackgroundWhite,
-                color = Color.Black,
+                color = Color.White,
                 textAlign = TextAlign.Center,
-                modifier = Modifier.widthIn(min = 30.dp)
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.widthIn(min = 50.dp)
             )
         }
 //
         FloatingActionButton(
+            backgroundColor = green100,
             onClick =
                 increaseItemCount
 //                Log.d("Increase", "ShowResult: $count")
                       ,
             modifier = Modifier.height(20.dp).width(20.dp) .align(Alignment.CenterVertically)) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = null, tint = BackgroundWhite)
+            Icon(imageVector = Icons.Default.Add, contentDescription = null, tint = Color.Black)
         }
     }
 }
