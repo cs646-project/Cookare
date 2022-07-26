@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,18 +12,14 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -36,37 +31,12 @@ import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.compose.rememberAsyncImagePainter
 import com.amplifyframework.core.Amplify
-import com.example.cookare.R
-import com.example.cookare.ui.components.CookareDivider
-import com.example.cookare.mapper.EntityMapper
-import com.example.cookare.mapper.RecipeNetworkMapper
-import com.example.cookare.model.Ingredient
 import com.example.cookare.model.Recipe
-import com.example.cookare.model.loves
-import com.example.cookare.network.RecipeSearchResponse
-import com.example.cookare.ui.food.RecipeCard
-import com.example.cookare.ui.food.data.Todo
-import com.example.cookare.ui.home.EditPost
-import com.example.cookare.ui.home.HomeScreen
-import com.example.cookare.ui.home.PostTemplate
-import com.example.cookare.ui.home.notification.NotificationScreen
-import com.example.cookare.ui.profile.ProfileScreen
 import com.example.cookare.ui.theme.*
-import com.example.cookare.ui.upPress
-import com.example.cookare.ui.utils.DEFAULT_RECIPE_IMAGE
 import com.example.cookare.ui.utils.ScreenRoute
-import com.example.cookare.ui.utils.loadPicture
 import com.example.cookare.viewModels.ListGenerateViewModel
 import com.example.cookare.viewModels.PlanViewModel
-import com.example.cookare.viewModels.PostRecipeViewModel
-import com.example.cookare.viewModels.StockViewModel
-import okhttp3.HttpUrl.Companion.toHttpUrl
-import okhttp3.OkHttpClient
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
-import kotlin.concurrent.thread
 
 @Composable
 fun ListScreenNavigate() {

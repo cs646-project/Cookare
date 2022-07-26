@@ -41,9 +41,6 @@
         <activity
             android:name=".activities.SignupActivity"
             android:theme="@style/Theme.Cookare"/>
-        <activity
-            android:name=".activities.EditPostActivity"
-            android:theme="@style/Theme.Cookare"/>
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

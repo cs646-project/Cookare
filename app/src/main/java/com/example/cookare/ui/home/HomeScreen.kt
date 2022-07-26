@@ -1,7 +1,6 @@
 package com.example.cookare.ui.home
 
 import android.content.Context
-import android.content.Intent
 import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.*
@@ -12,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Edit
@@ -39,9 +37,7 @@ import coil.compose.AsyncImage
 import coil.compose.rememberImagePainter
 import com.amplifyframework.core.Amplify
 import com.example.cookare.R
-import com.example.cookare.activities.EditPostActivity
 import com.example.cookare.model.Data
-import com.example.cookare.model.Recipe
 import com.example.cookare.model.users
 import com.example.cookare.ui.components.TopBar
 import com.example.cookare.ui.theme.*
@@ -49,10 +45,7 @@ import com.example.cookare.ui.utils.ScreenRoute
 import com.example.cookare.viewModels.PlanViewModel
 import com.example.cookare.viewModels.PostRecipeViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-import kotlinx.coroutines.launch
 import java.io.File
 
 

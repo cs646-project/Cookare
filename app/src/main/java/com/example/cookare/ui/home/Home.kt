@@ -42,7 +42,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.core.os.ConfigurationCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -53,10 +52,8 @@ import com.example.cookare.ui.components.CookareSurface
 
 
 import com.example.cookare.ui.food.TodoNavHost
-import com.example.cookare.ui.list.ListScreen
 import com.example.cookare.ui.list.ListScreenNavigate
 import com.example.cookare.ui.theme.CookareTheme
-import com.example.cookare.ui.utils.ScreenRoute
 import com.guru.fontawesomecomposelib.FaIcon
 import com.guru.fontawesomecomposelib.FaIconType
 import java.util.*

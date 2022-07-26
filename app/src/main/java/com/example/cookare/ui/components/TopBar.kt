@@ -23,7 +23,6 @@ import coil.compose.AsyncImage
 import com.example.cookare.R
 import com.example.cookare.model.User
 import com.example.cookare.ui.utils.ScreenRoute
-import com.example.cookare.model.users
 import com.example.cookare.ui.theme.*
 
 @Composable

@@ -3,10 +3,7 @@ package com.example.cookare.network
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Base64
-import com.android.volley.toolbox.Volley
 import com.example.example.DetectResultResponse
-import com.google.android.gms.tasks.Task
-import com.google.android.gms.tasks.TaskCompletionSource
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.Request

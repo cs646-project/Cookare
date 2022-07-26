@@ -3,7 +3,6 @@ package com.example.cookare.ui.components
 
 import android.util.Log
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -17,9 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.example.cookare.model.StockMap
 import com.example.cookare.ui.food.NavRoute
-import com.example.cookare.ui.food.data.Todo
 import com.example.cookare.ui.theme.*
 import com.example.cookare.viewModels.StockViewModel
 
